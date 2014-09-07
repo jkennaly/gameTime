@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+
+    <Resource name="jdbc/festival_master"
+
+              auth="Container"
+
+              type="javax.sql.DataSource"
+
+              username="festival_master"
+
+              password="testPASSWORD"
+
+              driverClassName="com.mysql.jdbc.Driver"
+
+              url="jdbc:mysql://localhost:3306/festival_master"
+
+              maxActive="15"
+
+              maxIdle="3"/>
+
+
+</Context>

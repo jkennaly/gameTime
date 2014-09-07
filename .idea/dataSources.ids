@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source source="LOCAL" name="MySQL - festival_master@localhost" uuid="16423534-dbd9-4344-9f5e-c81c5ea6742f">
+    <database-info product="MySQL" version="5.5.38-0ubuntu0.14.04.1" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.31 ( Revision: alexander.soklakov@oracle.com-20140520065950-groqzzbvxprqdmnz )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact"/>
+    <schema name="" catalog="festival_master"/>
+    <table name="Users" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="credentials_version" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="username" sqlType="VARCHAR" precision="60" scale="0" nullable="false" jdbcType="12"/>
+      <column name="email" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
+      <column name="salt" sqlType="VARCHAR" precision="120" scale="0" nullable="true" jdbcType="12"/>
+      <column name="hashedpw" sqlType="VARCHAR" precision="120" scale="0" nullable="true" jdbcType="12"/>
+      <column name="level" sqlType="VARCHAR" precision="30" scale="0" nullable="true" jdbcType="12"/>
+      <column name="count" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="group" sqlType="VARCHAR" precision="4096" scale="0" nullable="false" jdbcType="12"/>
+      <column name="used_key" sqlType="VARCHAR" precision="10" scale="0" nullable="false" jdbcType="12"/>
+      <column name="public_key" sqlType="VARCHAR" precision="10" scale="0" nullable="false" jdbcType="12"/>
+      <column name="private_key" sqlType="VARCHAR" precision="10" scale="0" nullable="false" jdbcType="12"/>
+      <column name="credited" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="all_keys" sqlType="VARCHAR" precision="14000" scale="0" nullable="false" jdbcType="12"/>
+      <column name="mobile_auth_key" sqlType="VARCHAR" precision="120" scale="0" nullable="false" jdbcType="12"/>
+      <column name="follows" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="blocks" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="credits" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="access" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="interested" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="deleted" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="access_levels" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <column name="value" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="band_list" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="festival" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="festival_series" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="band" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="priority" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="deleted" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="festival_2" unique="true" columns="festival,band"/>
+    </table>
+    <table name="band_list_speculative" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="festival" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="festival_series" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="band" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="priority" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="user" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="deleted" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="festival_2" unique="true" columns="festival,band"/>
+    </table>
+    <table name="band_priorities" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="user" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="level" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="default" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="deleted" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="level" unique="true" columns="level"/>
+    </table>
+    <table name="bandgenres" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="band" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="genre" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="user" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="bands" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <column name="festivals" sqlType="VARCHAR" precision="8096" scale="0" nullable="false" jdbcType="12"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
+      <column name="deleted" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="name" unique="true" columns="name"/>
+    </table>
+    <table name="dates" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="festival" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="festival_series" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="name" sqlType="VARCHAR" precision="30" scale="0" nullable="false" jdbcType="12"/>
+      <column name="venue" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="basedate" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="mode" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="deleted" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="days" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="festival" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="festival_series" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="name" sqlType="VARCHAR" precision="25" scale="0" nullable="false" jdbcType="12"/>
+      <column name="days_offset" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="deleted" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="discussion_monitor" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="user" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="message" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="read_discussion" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="deleted" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="phptime" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="discussions" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="user" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="message" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="content" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="deleted" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="phptime" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="fest_modes" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="25" scale="0" nullable="false" jdbcType="12"/>
+      <column name="timestmp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="festival_monitor" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="user" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="festival" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="deleted" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="phptime" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="festival_series" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="user" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="deleted" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="festivals" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="1024" scale="0" nullable="false" jdbcType="12"/>
+      <column name="year" sqlType="VARCHAR" precision="1024" scale="0" nullable="false" jdbcType="12"/>
+      <column name="mode" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="dbname" sqlType="VARCHAR" precision="1024" scale="0" nullable="false" jdbcType="12"/>
+      <column name="series" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="sitename" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="creator" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="start_time" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="length" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="website" sqlType="VARCHAR" precision="1000" scale="0" nullable="false" jdbcType="12"/>
+      <column name="description" sqlType="VARCHAR" precision="1000" scale="0" nullable="false" jdbcType="12"/>
+      <column name="cost" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="num_days" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MQ=="/>
+      <column name="num_dates" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="gametime_start" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="gametime_end" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="header" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="dates" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="days_venues" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="stages" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="band_list" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="band_priority" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="band_days_v" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="band_days" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="band_stages" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="set_times" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="header_v" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="dates_v" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="days_venues_v" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="stages_v" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="band_list_v" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="band_priority_v" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="band_stages_v" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="set_times_v" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <column name="deleted" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="festtypes" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="30" scale="0" nullable="false" jdbcType="12"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="genre_parents" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="genre" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="deleted" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="genre_2" unique="true" columns="genre"/>
+      <index name="genre" unique="false" columns="genre"/>
+    </table>
+    <table name="genres" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <column name="parent" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="deleted" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="key_gametime" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="user" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="key" sqlType="VARCHAR" precision="10" scale="0" nullable="false" jdbcType="12"/>
+      <column name="deleted" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="user" unique="true" columns="user"/>
+    </table>
+    <table name="message_remarks" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="messages" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="festival" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="LTE="/>
+      <column name="band" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="LTE="/>
+      <column name="day" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="LTE="/>
+      <column name="date" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="LTE="/>
+      <column name="remark" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="LTE="/>
+      <column name="flag" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="LTE="/>
+      <column name="privacy" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="LTE="/>
+      <column name="mode" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="LTE="/>
+      <column name="fromuser" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="LTE="/>
+      <column name="touser" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="LTE="/>
+      <column name="festival_action" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="LTE="/>
+      <column name="site_action" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="LTE="/>
+      <column name="submit" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="LTE="/>
+      <column name="admin" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="LTE="/>
+      <column name="discussion" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="LTE="/>
+      <column name="location" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="LTE="/>
+      <column name="place" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="LTE="/>
+      <column name="festival_series" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="LTE="/>
+      <column name="coordx" sqlType="DECIMAL" precision="10" scale="0" nullable="false" jdbcType="3"/>
+      <column name="coordy" sqlType="DECIMAL" precision="10" scale="0" nullable="false" jdbcType="3"/>
+      <column name="lat" sqlType="POINT" precision="0" scale="0" nullable="false" jdbcType="1111"/>
+      <column name="long" sqlType="POINT" precision="0" scale="0" nullable="false" jdbcType="1111"/>
+      <column name="subject" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="content" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="discussion_comments" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="phptime" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="deleted" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="festival" unique="false" columns="festival,band,day,remark,privacy,mode,fromuser,touser,festival_action,site_action,admin,discussion,location,place,festival_series"/>
+    </table>
+    <table name="messages_privacy" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="mobile_access" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
+      <column name="user" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="fest" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="auth" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="tag" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="phptime" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="detectedip" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="claimedip" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="page_access" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="page_name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="count" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="last_access" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="pics" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="user" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="pic" sqlType="MEDIUMBLOB" precision="16777215" scale="0" nullable="false" jdbcType="-4"/>
+      <column name="scaled_pic" sqlType="MEDIUMBLOB" precision="16777215" scale="0" nullable="false" jdbcType="-4"/>
+      <column name="clicks" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="descrip" sqlType="VARCHAR" precision="25" scale="0" nullable="false" jdbcType="12" def="J0NoZWNrIGl0IG91dCc="/>
+      <column name="name" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <column name="type" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <column name="size" sqlType="FLOAT" precision="12" scale="0" nullable="false" jdbcType="7"/>
+      <column name="band" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <column name="width" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="height" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="h2w_ratio" sqlType="FLOAT" precision="12" scale="0" nullable="false" jdbcType="7"/>
+      <column name="shape" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="deleted" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="reviewed" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="pics_users" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="pic" sqlType="MEDIUMBLOB" precision="16777215" scale="0" nullable="false" jdbcType="-4"/>
+      <column name="scaled_pic" sqlType="MEDIUMBLOB" precision="16777215" scale="0" nullable="false" jdbcType="-4"/>
+      <column name="filename" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="user" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="type" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="default" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="deleted" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="places" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="festival" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="festival_series" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="type" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="name" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <column name="priority" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="deleted" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="layout" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="placetypes" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="25" scale="0" nullable="false" jdbcType="12"/>
+      <column name="deleted" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="sets" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="festival" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="festival_series" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="band" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="day" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="stage" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="dates" sqlType="VARCHAR" precision="1000" scale="0" nullable="false" jdbcType="12"/>
+      <column name="start" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="end" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="deleted" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="stage_layouts" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="image" sqlType="MEDIUMBLOB" precision="16777215" scale="0" nullable="false" jdbcType="-4"/>
+      <column name="filename" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="user" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="type" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="default" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="deleted" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="stage_priorities" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="user" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="level" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="default" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="deleted" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="user_setting" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="description" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <column name="deleted" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="user_setting_current" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="user" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="user_setting" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="value" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="deleted" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="user" unique="true" columns="user,user_setting"/>
+    </table>
+    <table name="user_setting_value" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="user_setting" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="item" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="value" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="deleted" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="venues" schema="" catalog="festival_master" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="user" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="timezone" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="country" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="state" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="city" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <column name="street_address" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="deleted" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="timestamp" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+  </data-source>
+</component>

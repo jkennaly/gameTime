@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" hash="4105711942">
+    <data-source source="LOCAL" name="MySQL - festival_master@localhost" uuid="16423534-dbd9-4344-9f5e-c81c5ea6742f">
+      <driver-ref>mysql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306/festival_master</jdbc-url>
+      <user-name>festival_master</user-name>
+      <user-password>dfdedfcfdfd9dfdedffadfebdff9dff9dffddfe5dff8dfee</user-password>
+      <schema-pattern>festival_master.*</schema-pattern>
+      <default-schemas>festival_master.*</default-schemas>
+      <driver-properties>
+        <property name="zeroDateTimeBehavior" value="convertToNull" />
+        <property name="tinyInt1isBit" value="false" />
+      </driver-properties>
+      <libraries />
+    </data-source>
+  </component>
+</project>
+

@@ -1,0 +1,10 @@
+{
+"festival_select" : " <section><p>Select a festival</p></section>",
+"login_create" : " <section> <form class=\"simple-login\" role=\"form\"> <h1>Create FestivalTime Account</h1> <input type=\"username\" autofocus required placeholder=\"Username\" class=\"form-control max-width\"> <input type=\"email\" required placeholder=\"a@xyz.org\" class=\"form-control max-width\"> <button type=\"submit\" class=\"loginbutton max-width\">Create Account</button> <p class=\"login_forgot_password\"><a href=\"\">Already have an account but forgot your password?</a></p> </form> </section>",
+"login_failed_network" : " <section><p>Could not connect to the server</p></section>",
+"login_failed_password" : " <section> <p>That username is incorrect.</p> <button type=\"button\" class=\"login max-width\">Return to login screen</button> <button type=\"button\" class=\"login_forgot_password max-width\">Forgot password</button> <button type=\"button\" class=\"login_create max-width\">Create an account</button> </section>",
+"login_failed_username" : " <section> <p>That username is incorrect.</p> <button type=\"button\" class=\"login max-width\">Return to login screen</button> <button type=\"button\" class=\"login_create max-width\">Create an account</button> </section>",
+"login_forgot_password" : " <section><p>Oh man, you forgot your password? That sucks.</p></section>",
+"login" : " <section> <form class=\"simple-login\" role=\"form\"> <h1>Login to FestivalTime</h1> <input id=\"uname\" type=\"username\" autofocus required placeholder=\"Username\" class=\"form-control max-width\"> <input id=\"passwd\" type=\"password\" required placeholder=\"Password\" class=\"form-control max-width\"> <button type=\"submit\" class=\"login_processing max-width\">Login</button> <p class=\"login_forgot_password\"><a href=\"#\">Forgot password?</a></p> </form> </section>",
+"request_processing" : " <section> <p>Connecting to server...</p> <img src=\"img/loading.gif\"> </section>"
+}
