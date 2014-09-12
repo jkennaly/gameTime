@@ -46,7 +46,7 @@ function userLoggedIn( success, failure){
 }
 
 function appServerReq(data, showProcessing){
-    var serverURL = "http://localhost:8080/?callback=?";
+    var serverURL = "https://festivaltime.us/app?callback=?";
     var networkTimeout = setTimeout(function() { jsonjqXHR.abort(); }, 3000);
     var jsonjqXHR = $.getJSON(serverURL, data, function (response) {
 
