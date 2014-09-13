@@ -64,6 +64,8 @@ public class GameTime {
 
                     jo = evaluateResponse(uname, response);
                     break;
+                case "general_data":
+
                 default:
                     return "Failure";
             }
@@ -76,11 +78,13 @@ public class GameTime {
     }
 
     private static boolean verifyAuth(String mak, String uname){
-        return true;
+        User user = new User(uname);
+        if(mak.equals(user.mobile_auth_key)) return true;
+        return false;
     }
 
     private static JSONObject provideChallenge(String uname) throws JSONException {
-        Users user = new Users(uname);
+        User user = new User(uname);
         JSONObject jo = new JSONObject();
         long challenge = System.currentTimeMillis();
         try {
@@ -95,7 +99,7 @@ public class GameTime {
     }
 
     private static JSONObject evaluateResponse(String uname, String response){
-        Users user = new Users(uname);
+        User user = new User(uname);
         JSONObject jo = new JSONObject();
 
         if(user.all_keys.equals(response)){
