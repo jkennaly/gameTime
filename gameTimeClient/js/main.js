@@ -21,7 +21,8 @@ function mysqlEscape(stringToEscape){
 }
 
 function userLoggedIn( success, failure){
-    if(!getAuth()) {
+    var credPresent = getAuth();
+    if(!credPresent) {
         $( "#content" ).html( localStorage.getItem(failure) );
         return false;
     }
@@ -46,6 +47,27 @@ function userLoggedIn( success, failure){
 }
 
 function appServerReq(data, showProcessing){
+    //Determine if request type is a 'login'-type request
+    var loginRequests = [
+        "login_status", "challenge_req", "challenge_sub"
+    ];
+
+    var cred = getAuth();
+
+    //add check for request type against loginRequests
+
+    if(cred != false){
+        data.mobile_auth_key = cred.mak;
+        data.uname = cred.uname;
+    }
+
+
+    //If there are credentials present, add credentials to submission
+    //(unless request type is login_status, challenge_req, or challenge_sub
+
+    //If there are not credentials present, redirect to login screen without executing request
+    //(unless request type is login_status, challenge_req, or challenge_sub
+
     var serverURL = "https://festivaltime.us/app?callback=?";
     var networkTimeout = setTimeout(function() { jsonjqXHR.abort(); }, 3000);
     var jsonjqXHR = $.getJSON(serverURL, data, function (response) {

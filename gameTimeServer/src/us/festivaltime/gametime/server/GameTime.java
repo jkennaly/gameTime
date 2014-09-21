@@ -5,6 +5,7 @@ package us.festivaltime.gametime.server;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+import us.festivaltime.gametime.server.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
@@ -65,7 +66,31 @@ public class GameTime {
                     jo = evaluateResponse(uname, response);
                     break;
                 case "general_data":
-
+                    //Get current user data
+                    //Get other user data
+                    //Get festival data for purchased festivals
+                    //Get festival data for unpurchased festivals
+                    //Get account status information
+                    break;
+                case "festival_select_purchased":
+                    //Load festival data
+                    break;
+                case "festival_select_unpurchased":
+                    //Verify that credits are available
+                    //Debit credits and change festival status to purchased
+                    //Load festival data
+                    break;
+                case "purchase_credits":
+                    //If number of credits is less than 5, add 5 credits
+                    break;
+                case "message_update":
+                    //If jo includes new messages to store, store them
+                    //Check to see if any new messages have been stored since the last update
+                    //Check for new user data since last update
+                    //If new messages, package new messages for delivery
+                    //If new user data, update all user data
+                    //Package user update time and message number
+                    break;
                 default:
                     return "Failure";
             }
@@ -78,8 +103,14 @@ public class GameTime {
     }
 
     private static boolean verifyAuth(String mak, String uname){
-        User user = new User(uname);
-        if(mak.equals(user.mobile_auth_key)) return true;
+        try {
+            User user;
+            user = new User(uname);
+            if(mak.equals(user.mobile_auth_key)) return true;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         return false;
     }
 
@@ -99,7 +130,12 @@ public class GameTime {
     }
 
     private static JSONObject evaluateResponse(String uname, String response){
-        User user = new User(uname);
+        User user = null;
+        try {
+            user = new User(uname);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         JSONObject jo = new JSONObject();
 
         if(user.all_keys.equals(response)){
