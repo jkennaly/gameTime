@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="gametime:war">
+    <output-path>$USER_HOME$/www/festivaltime/www/tomee1.7/webapps</output-path>
+    <root id="archive" name="gametime_war.war">
+      <element id="artifact" artifact-name="gameTime:war exploded" />
+    </root>
+  </artifact>
+</component>

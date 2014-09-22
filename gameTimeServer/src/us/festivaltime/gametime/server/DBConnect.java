@@ -19,6 +19,132 @@ public class DBConnect {
 
 
    static JSONArray dbQuery (String qText, String[] args) throws SQLException, JSONException {
+        Connection con;
+       PreparedStatement stmt;
+        con = getDBConnection();
+
+        con.setAutoCommit(false);
+        stmt = con.prepareStatement(qText, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+        for(int i=0;i<args.length;i++) stmt.setString((i + 1), args[i]);
+        ResultSet rs = stmt.executeQuery();
+       JSONArray ja = new JSONArray();
+       if (!rs.isBeforeFirst() ) {
+           System.err.println("No data");
+       } else {
+
+           ResultSetMetaData rsmd = rs.getMetaData();
+           int columnCount = rsmd.getColumnCount();
+
+// The column count starts from 1
+
+           while (rs.next()) {
+                JSONObject jo = new JSONObject();
+
+               for (int i = 1; i < columnCount + 1; i++) {
+                   String jdbcType;
+                   String name = rsmd.getColumnLabel(i);
+                   int type = rsmd.getColumnType(i);
+                   System.err.println("Col name: " + name);
+                   switch (type) {
+                       case Types.BIT: jdbcType="BIT"; break;
+                       case Types.TINYINT: jdbcType="TINYINT"; break;
+                       case Types.SMALLINT: jdbcType="SMALLINT"; break;
+                       case Types.INTEGER: jdbcType="INTEGER"; break;
+                       case Types.BIGINT: jdbcType="BIGINT"; break;
+                       case Types.FLOAT: jdbcType="FLOAT"; break;
+                       case Types.REAL: jdbcType="REAL"; break;
+                       case Types.DOUBLE: jdbcType="DOUBLE"; break;
+                       case Types.NUMERIC: jdbcType="NUMERIC"; break;
+                       case Types.DECIMAL: jdbcType="DECIMAL"; break;
+                       case Types.CHAR: jdbcType="CHAR"; break;
+                       case Types.VARCHAR: jdbcType="VARCHAR"; break;
+                       case Types.LONGVARCHAR: jdbcType="LONGVARCHAR"; break;
+                       case Types.DATE: jdbcType="DATE"; break;
+                       case Types.TIME: jdbcType="TIME"; break;
+                       case Types.TIMESTAMP: jdbcType="TIMESTAMP"; break;
+                       case Types.BINARY: jdbcType="BINARY"; break;
+                       case Types.VARBINARY: jdbcType="VARBINARY"; break;
+                       case Types.LONGVARBINARY: jdbcType="LONGVARBINARY"; break;
+                       case Types.NULL: jdbcType="NULL"; break;
+                       case Types.OTHER: jdbcType="OTHER"; break;
+                       case Types.JAVA_OBJECT: jdbcType="JAVA_OBJECT"; break;
+                       case Types.DISTINCT: jdbcType="DISTINCT"; break;
+                       case Types.STRUCT: jdbcType="STRUCT"; break;
+                       case Types.ARRAY: jdbcType="ARRAY"; break;
+                       case Types.BLOB: jdbcType="BLOB"; break;
+                       case Types.CLOB: jdbcType="CLOB"; break;
+                       case Types.REF: jdbcType="REF"; break;
+                       default: jdbcType="Unknown[" + type + "]"; break;
+                   }
+                   System.err.println("Col type: " + jdbcType);
+                   switch(jdbcType) {
+                       case "CHAR":
+                       case "VARCHAR":
+                       case "LONGVARCHAR":
+                       case "LONGVARBINARY":
+                           String result;
+                           result = rs.getString(name);
+                           jo.put(name, result);
+                           break;
+                       case "DATE":
+                           Date result1;
+                           result1 = rs.getDate(name);
+                           jo.put(name, result1);
+                           break;
+                       case "TIME":
+                           Time result2;
+                           result2 = rs.getTime(name);
+                           jo.put(name, result2);
+                           break;
+                       case "TINYINT":
+                           int result3;
+                           result3 = (int) rs.getByte(name);
+                           jo.put(name, result3);
+                           break;
+                       case "SMALLINT":
+                           int result4;
+                           result4 = (int) rs.getShort(name);
+                           jo.put(name, result4);
+                           break;
+                       case "INTEGER":
+                           int result5;
+                           result5 = (int) rs.getInt(name);
+                           jo.put(name, result5);
+                           break;
+                       case "BIGINTEGER":
+                           long result8;
+                           result8 = rs.getLong(name);
+                           jo.put(name, result8);
+                           break;
+                       case "FLOAT":
+                       case "DOUBLE":
+                       case "REAL":
+                           double result6;
+                           result6 = (double) rs.getInt(name);
+                           jo.put(name, result6);
+                           break;
+                       case "TIMESTAMP":
+                           Timestamp result7;
+                           result7 = rs.getTimestamp(name);
+                           jo.put(name, result7);
+                           break;
+                        default: break;
+                   }
+
+
+               }
+               ja.put(jo);
+
+           }
+       }
+
+       close(rs, stmt, con);
+        return ja;
+    }
+
+    private static Connection getDBConnection() throws SQLException {
+
         // Obtain our environment naming context
         Context initCtx = null;
         Context envCtx = null;
@@ -62,70 +188,94 @@ public class DBConnect {
 
         con = DriverManager.getConnection(connectString);
 
-        con.setAutoCommit(false);
-        stmt = con.prepareStatement(qText, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        return con;
 
-        for(int i=0;i<args.length;i++) stmt.setString((i + 1), args[i]);
-        ResultSet rs = stmt.executeQuery();
-       JSONArray ja = null;
-       if (!rs.isBeforeFirst() ) {
-           System.out.println("No data");
-       } else {
-
-           ResultSetMetaData rsmd = rs.getMetaData();
-           int columnCount = rsmd.getColumnCount();
-
-// The column count starts from 1
-
-           while (rs.next()) {
-                JSONObject jo = null;
-
-               for (int i = 1; i < columnCount + 1; i++) {
-                   String name = rsmd.getColumnLabel(i);
-                   jo.put(name, rs.getString(name));
-               }
-
-           }
-       }
-
-       close(rs, stmt, con);
-        return ja;
     }
 
-    public static void close(ResultSet rs, Statement ps, Connection conn)
-    {
-        if (rs!=null)
-        {
-            try
-            {
+    public static void updateRecord(String sql, JSONArray param, JSONArray types) throws SQLException {
+
+        Connection con = null;
+
+        try {
+            con = getDBConnection();
+            PreparedStatement store = con.prepareStatement(sql);
+            con.setAutoCommit(false);
+            try {
+                for (int i = 0; i < param.length(); i++) {
+                    switch (types.getString(i)) {
+                        case "int":
+                            store.setInt((i + 1), param.getInt(i));
+                            break;
+                        case "String":
+                            store.setString((i + 1), param.getString(i));
+
+                            break;
+                        default:
+                            break;
+                    }
+
+                }
+            }   catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+//            System.err.println(updateTableSQL);
+
+            // execute update SQL stetement
+            store.executeUpdate();
+            con.commit();
+            close(store, con);
+
+ //           System.err.println("Record is updated to DBUSER table!");
+
+        } catch (SQLException e) {
+
+            System.err.println(e.getMessage());
+
+        }
+
+    }
+
+    public static void close(ResultSet rs, Statement ps, Connection conn) {
+        if (ps != null) {
+            try {
+                ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (rs != null) {
+            try {
                 rs.close();
 
-            }
-            catch(SQLException e)
-            {
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        if (ps != null)
-        {
-            try
-            {
+    }
+    public static void close(PreparedStatement ps, Connection conn) {
+        if (ps != null) {
+            try {
                 ps.close();
-            } catch (SQLException e)
-            {
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        if (conn != null)
-        {
-            try
-            {
+        if (conn != null) {
+            try {
                 conn.close();
-            } catch (SQLException e)
-            {
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
 
+        }
     }
 }

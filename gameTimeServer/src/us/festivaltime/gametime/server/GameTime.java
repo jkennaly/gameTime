@@ -37,17 +37,22 @@ public class GameTime {
     }
 
     public static String parseRequest( HttpServletRequest request) {
+        JSONObject jo = new JSONObject();
+
         String cb = request.getParameter("callback");
         String reqType = request.getParameter("reqType");
         String login_auth = request.getParameter("mobile_auth_key");
         String uname = request.getParameter("uname");
-        System.out.println("Request jo cb: " + cb);
-        System.out.println("Request jo reqType: " + reqType);
-        System.out.println("Request jo auth_key: " + login_auth);
-        System.out.println("Request jo uname: " + uname);
         String jsonCallbackParam = sanitizeJsonpParam( cb );
-        if(jsonCallbackParam == null || jsonCallbackParam.isEmpty()) return "Failure";
-        JSONObject jo = new JSONObject();
+        try {
+            jo.put("response", "Failed");
+            String messageJSON = jsonCallbackParam + "(" + jo.toString() + ");";
+            if(jsonCallbackParam == null || jsonCallbackParam.isEmpty()) return messageJSON;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
         try {
             switch ( reqType ) {
                 case "login_status":
@@ -61,9 +66,10 @@ public class GameTime {
                 case "challenge_sub":
                     // retrieve salt, challenge for username
                     String response = request.getParameter("response");
-                    System.out.println("Challenge response: " + response);
+ //                   System.err.println("Challenge response: " + response);
 
                     jo = evaluateResponse(uname, response);
+                    
                     break;
                 case "general_data":
                     //Get current user data
@@ -137,9 +143,10 @@ public class GameTime {
             e.printStackTrace();
         }
         JSONObject jo = new JSONObject();
+//        System.err.println("uname/response/all_keys: " + uname + " / " + response + " / " + user.all_keys);
 
         if(user.all_keys.equals(response)){
-            System.out.println("User key: " + user.all_keys);
+//            System.err.println("User key: " + user.all_keys);
             try {
                 jo.put("auth_key", user.generateAuthKey());
                 jo.put("uname", user.username);

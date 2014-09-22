@@ -21,7 +21,8 @@ function mysqlEscape(stringToEscape){
 }
 
 function userLoggedIn( success, failure){
-    var credPresent = getAuth();
+    var credPresent = true;
+    if(!getAuth()) credPresent = false;
     if(!credPresent) {
         $( "#content" ).html( localStorage.getItem(failure) );
         return false;
@@ -68,8 +69,9 @@ function appServerReq(data, showProcessing){
     //If there are not credentials present, redirect to login screen without executing request
     //(unless request type is login_status, challenge_req, or challenge_sub
 
-    var serverURL = "https://festivaltime.us/app?callback=?";
-    var networkTimeout = setTimeout(function() { jsonjqXHR.abort(); }, 3000);
+    var serverURL = "https://www.festivaltime.us/app/gametime_war/?callback=?";
+    var networkTimeout = setTimeout(function() { jsonjqXHR.abort(); }, 30000);
+//    alert("Request sent to: " + serverURL);
     var jsonjqXHR = $.getJSON(serverURL, data, function (response) {
 
     }).always(function(d) {
@@ -105,12 +107,12 @@ $(function () {
     $( document ).ajaxError(function( event, jqxhr, settings, thrownError ) {
 
         alert("No network");
-        /*
+
             alert(jqxhr.data.reqType);
 
 
         alert ( "Failed to connect to: " + settings.url);
-*/
+
     });
 
     $("#content").on( 'click', ".login_processing", function(){

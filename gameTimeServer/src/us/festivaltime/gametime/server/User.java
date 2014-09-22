@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
 
+import static us.festivaltime.gametime.server.DBConnect.updateRecord;
+
 /**
  * Created by jbk on 8/31/14.
  */
@@ -30,12 +32,14 @@ public class User extends HttpServlet {
 
         String[] args = {unameOrEmail, unameOrEmail};
         JSONArray resultArray = null;
+
         try {
             resultArray = DBConnect.dbQuery(qText, args);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+/*
         if (resultArray.length() != 1) {
             try {
                 throw new InstantiationException("The username or email address was not valid");
@@ -43,6 +47,7 @@ public class User extends HttpServlet {
                 e.printStackTrace();
             }
         } else {
+        */
             String followString, blockString;
             JSONObject rs;
             rs = resultArray.getJSONObject(0);
@@ -54,21 +59,29 @@ public class User extends HttpServlet {
             all_keys = rs.getString("all_keys");
             mobile_auth_key = rs.getString("mobile_auth_key");
             followString = rs.getString("follows");
-            blockString = rs.getString("blocks");
-            String idS = rs.getString("id");
-            id = Integer.parseInt(idS);
+            blockString = rs.getString("blocks");;
+            id = rs.getInt("id");
 
             String[] fs = followString.split("--");
             String[] bs = blockString.split("--");
+            follows = new int[fs.length];
+            blocks = new int[bs.length];
 
             for (int i = 0; i < fs.length; i++) {
-                follows[i] = Integer.parseInt(fs[i]);
+                try {
+                    follows[i] = Integer.parseInt(fs[i]);
+                } catch (NumberFormatException e) {
+                }
             }
 
             for (int i = 0; i < bs.length; i++) {
-                blocks[i] = Integer.parseInt(bs[i]);
+                try {
+                    blocks[i] = Integer.parseInt(bs[i]);
+                } catch (NumberFormatException e){
+
+                }
             }
-        }
+  //      }
 
     }
 
@@ -81,21 +94,22 @@ public class User extends HttpServlet {
                 .hashString(challPW, Charsets.UTF_8)
                 .toString();
 
-//        System.out.println("Expected response: " + hashed);
-
+        System.err.println("Expected response: " + hashed);
+        /*
         con = DriverManager.getConnection("jdbc:mysql://localhost/festival_master?" + "user=festival_master&password=testPASSWORD");
 
         con.setAutoCommit(false);
+        */
         String qText = "UPDATE `Users` SET `all_keys`=? WHERE `id`=?";
+        JSONArray param =new JSONArray();
 
-        store = con.prepareStatement(qText);
-
-        store.setString(1, hashed);
-        store.setInt(2, id);
-        store.executeUpdate();
-        con.commit();
-        con.close();
-
+        JSONArray type =new JSONArray();
+        type.put("String");
+        param.put(hashed);
+        type.put("int");
+        param.put(id);
+        System.err.println("User: " + id);
+        updateRecord(qText, param, type);
     }
 
     public String generateAuthKey() throws SQLException {
@@ -108,18 +122,16 @@ public class User extends HttpServlet {
                 .hashLong(time)
                 .toString();
 
-        con = DriverManager.getConnection("jdbc:mysql://localhost/festival_master?" + "user=festival_master&password=testPASSWORD");
-
-        con.setAutoCommit(false);
         String qText = "UPDATE `Users` SET `mobile_auth_key`=? WHERE `id`=?";
+        JSONArray param =new JSONArray();
 
-        store = con.prepareStatement(qText);
-
-        store.setString(1, hashed);
-        store.setInt(2, id);
-        store.executeUpdate();
-        con.commit();
-        con.close();
+        JSONArray type =new JSONArray();
+        type.put("String");
+        param.put(hashed);
+        type.put("int");
+        param.put(id);
+        System.err.println("User: " + id);
+        updateRecord(qText, param, type);
 
         return hashed;
     }
