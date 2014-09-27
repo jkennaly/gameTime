@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" serverName="Local" uploadOnCheckin="3a6b8598-67aa-46aa-9940-b155f9b0ec60" autoUploadExternalChanges="true">
+    <serverData>
+      <paths name="Festival Time">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/www/html/gametime" local="$PROJECT_DIR$" web="/gametime" />
+            <mapping deploy="/www/gametimeServer" local="$PROJECT_DIR$/gameTimeServer" web="/app/gametime_war/" />
+            <mapping deploy="/www/html/gametime" local="$PROJECT_DIR$/gameTimeClient" web="/gametime" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath local="true" path="$PROJECT_DIR$/gameTimeClient/php/var.php" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
+      <paths name="Local">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/gameTime/gameTimeClient/" />
+            <mapping local="$PROJECT_DIR$/gameTimeServer" web="http://localhost:8080" />
+            <mapping local="$PROJECT_DIR$/gameTimeClient" web="/gameTime/gameTimeClient/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myUploadOnCheckinName" value="Festival Time" />
+  </component>
+</project>
+

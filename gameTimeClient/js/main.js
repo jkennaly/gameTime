@@ -1,3 +1,12 @@
+var v = [
+    "selfData",
+    "othersData",
+    "purchasedFestivals",
+    "unpurchasedFestivals",
+    "userFestivalData",
+    "currentFestivalData"
+];
+
 function getAuth(){
     var credentials = {
         mak:    localStorage.getItem( "mobile_auth_key" ),
@@ -24,7 +33,7 @@ function userLoggedIn( success, failure){
     var credPresent = true;
     if(!getAuth()) credPresent = false;
     if(!credPresent) {
-        $( "#content" ).html( localStorage.getItem(failure) );
+        callScreen(failure);
         return false;
     }
     var data = {
@@ -35,16 +44,54 @@ function userLoggedIn( success, failure){
     var logcheck = appServerReq(data, true);
     logcheck.done(function(d) {
         if(d.loginValid) {
-            $( "#content" ).html( localStorage.getItem(success) );
+            callScreen(success);
             return true;
         } else{
-            $( "#content" ).html( localStorage.getItem(failure) );
+            callScreen(failure);
             return false;
         }
     }).fail(function(d) {
-        $( "#content" ).html( localStorage.getItem(success) );
+        callScreen(success);
         return true;
     });
+}
+
+function objectify(lsObject) {
+    return JSON.parse(localStorage.getItem(lsObject));
+}
+
+function drawFestHome() {
+    var curFest = objectify("currentFestivalData");
+//            alert(purFests);
+    $("#footer-text").html(curFest.sitename);
+
+}
+
+function drawFestSelect() {
+    var purFests = JSON.parse(localStorage.getItem("purchasedFestivals"));
+//            alert(purFests);
+    var $el = $("#select-purchased");
+    $el.empty(); // remove old options
+    purFests.forEach(function (element) {
+//        alert(element.sitename);
+        $el.append($("<option></option>")
+            .attr("value", element.id).text(element.sitename));
+    });
+}
+
+function callScreen(screen) {
+    $("#content").html(localStorage.getItem(screen));
+    switch (screen) {
+        case "festival_select":
+            drawFestSelect();
+            break;
+        case "festival_home":
+            drawFestHome();
+            break;
+        default:
+            break;
+    }
+    return false;
 }
 
 function appServerReq(data, showProcessing){
@@ -62,32 +109,35 @@ function appServerReq(data, showProcessing){
         data.uname = cred.uname;
     }
 
-
     //If there are credentials present, add credentials to submission
     //(unless request type is login_status, challenge_req, or challenge_sub
 
     //If there are not credentials present, redirect to login screen without executing request
     //(unless request type is login_status, challenge_req, or challenge_sub
 
-    var serverURL = "https://www.festivaltime.us/app/gametime_war/?callback=?";
+//    var serverURL = "https://www.festivaltime.us/app/gametime_war/?callback=?";
     var networkTimeout = setTimeout(function() { jsonjqXHR.abort(); }, 30000);
 //    alert("Request sent to: " + serverURL);
     var jsonjqXHR = $.getJSON(serverURL, data, function (response) {
-
+        v.forEach(function (element) {
+            if (response.hasOwnProperty(element)) localStorage.setItem(element, JSON.stringify(response[element]));
+        });
     }).always(function(d) {
         clearTimeout(networkTimeout);
     });
 
     if(showProcessing) {
-        $( "#content" ).html( localStorage.getItem( "request_processing" ));
+        callScreen("request_processing");
     }
     return jsonjqXHR;
 }
 
-
-
 $(function () {
-    var pageLoaded;
+    var curFest = objectify("currentFestivalData");
+    if (curFest) {
+        $("#footer-text").html(curFest.sitename);
+    }
+
 
     $.get('html.json', function (response) {
         localStorage.setItem("reloadRequired", "false");
@@ -98,7 +148,8 @@ $(function () {
             }
         }
     }).always(function(d) {
-        if(!pageLoaded) userLoggedIn("festival_select", "login");
+        if (!curFest) userLoggedIn("festival_select", "login");
+        else userLoggedIn("festival_home", "login");
     });
 
     if(!localStorage.setItem("reloadRequired", "false")) userLoggedIn("festival_select", "login");
@@ -158,53 +209,71 @@ $(function () {
                     if(da.pwValid){
                         localStorage.setItem( "mobile_auth_key", da.auth_key );
                         localStorage.setItem( "uname", da.uname );
+                        callScreen("festival_select");
 
-                        $( "#content" ).html( localStorage.getItem( "festival_select") );
                         return true;
                     } else {
                         // if password is incorrect, suggest forgot password link or allow retry
-                        $( "#content" ).html( localStorage.getItem( "login_failed_password") );
+                        callScreen("login_failed_password");
                         return true;
                     }
-
-
-
-
-
                 }).fail(function(da){
-                    $( "#content" ).html( localStorage.getItem( "login_failed_network") );
+                    callScreen("login_failed_network");
                     return false;
                 });
-
             } else{
                 // if DNE, suggest creating an account or allow retry
-                $( "#content" ).html( localStorage.getItem("login_failed_username") );
+                callScreen("login_failed_username");
                 return false;
             }
         }).fail(function(d) {
-            $( "#content" ).html( localStorage.getItem( "login_failed_network") );
+            callScreen("login_failed_network");
+            return false;
+        });
+        return false;
+    });
+
+    $("#content").on('click', ".select_purchased_festival", function () {
+
+        var form = {
+            select_purchased: $("#select-purchased").val()
+        };
+
+//        alert("Select Purchased Festival: " + form.select_purchased);
+
+        // submit a festival to receive the gametime data
+        data = {
+            reqType: "select_purchased",
+            selectedFestival: form.select_purchased
+        };
+        var reqChallenge = appServerReq(data, true);
+
+        reqChallenge.done(function (d) {
+            callScreen("festival_home");
+        }).fail(function (d) {
+            callScreen("login_failed_network");
             return false;
         });
         return false;
     });
 
     $("#content").on( 'click', ".login", function(){
-        $( "#content" ).html( localStorage.getItem( "login" ));
+        callScreen("login");
         return false;
     });
 
     $("#content").on( 'click', ".login_failed_network", function(){
-        $( "#content" ).html( localStorage.getItem( "login_failed_network" ));
+        callScreen("login_failed_network");
         return false;
     });
 
     $("#content").on( 'click', ".login_create", function(){
-        $( "#content" ).html( localStorage.getItem( "login_create" ));
+        callScreen("login_failed_create");
         return false;
     });
 
     $("#content").on( 'click', ".login_forgot_password", function(){
-        $( "#content" ).html( localStorage.getItem( "login_forgot_password" ));
+        callScreen("login_forgot_password");
         return false;
     });
 

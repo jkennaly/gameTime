@@ -1,7 +1,21 @@
 <component name="ProjectDictionaryState">
   <dictionary name="jbk">
     <words>
+      <w>basedate</w>
+      <w>biginteger</w>
+      <w>dbconnect</w>
+      <w>dbname</w>
+      <w>dbuser</w>
       <w>hashedpw</w>
+      <w>jdbc</w>
+      <w>jsonp</w>
+      <w>longvarbinary</w>
+      <w>longvarchar</w>
+      <w>rsmd</w>
+      <w>sitename</w>
+      <w>struct</w>
+      <w>uname</w>
+      <w>unpurchased</w>
     </words>
   </dictionary>
 </component>

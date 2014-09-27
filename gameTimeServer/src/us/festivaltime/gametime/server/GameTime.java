@@ -5,7 +5,6 @@ package us.festivaltime.gametime.server;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
-import us.festivaltime.gametime.server.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
@@ -32,12 +31,12 @@ public class GameTime {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String messageJSON = jsonCallbackParam + "(" + jo.toString() + ");";
-        return messageJSON;
+        return jsonCallbackParam + "(" + jo.toString() + ");";
     }
 
     public static String parseRequest( HttpServletRequest request) {
         JSONObject jo = new JSONObject();
+        User self;
 
         String cb = request.getParameter("callback");
         String reqType = request.getParameter("reqType");
@@ -52,7 +51,6 @@ public class GameTime {
             e.printStackTrace();
         }
 
-
         try {
             switch ( reqType ) {
                 case "login_status":
@@ -61,25 +59,74 @@ public class GameTime {
                 case "challenge_req":
                     // retrieve salt, challenge for username
                     jo = provideChallenge(uname);
-                    String[] args = {};
                     break;
                 case "challenge_sub":
                     // retrieve salt, challenge for username
                     String response = request.getParameter("response");
- //                   System.err.println("Challenge response: " + response);
+//                   System.err.println("Challenge response: " + response);
 
                     jo = evaluateResponse(uname, response);
-                    
+                    if (!jo.getBoolean("pwValid")) break;
+
+                    self = new User(uname);
+                    //Get current user data
+//                    System.err.println("User instantiated: " + self.id);
+                    jo.put("selfData", self.getUserData());
+//                    System.err.println("User data got: " + self.id);
+
+                    //Get selfProfile
+
+                    //Get other user data
+                    jo.put("othersData", self.getOthersData());
+
+
+                    //Get festival data for purchased festivals
+                    jo.put("purchasedFestivals", Festival.getPurchasedFestivalData(self));
+
+                    //Get festival data for unpurchased festivals
+                    jo.put("unpurchasedFestivals", Festival.getUnpurchasedFestivalData(self));
+
                     break;
                 case "general_data":
+                    //Verify request is valid
+                    if (!verifyAuth(login_auth, uname)) {
+                        jo.put("loginValid", false);
+                        break;
+                    }
+                    self = new User(uname);
                     //Get current user data
+                    jo.put("selfData", self.getUserData());
+
+                    //Get selfProfile
+
                     //Get other user data
+                    jo.put("othersData", self.getOthersData());
+
                     //Get festival data for purchased festivals
+                    jo.put("purchasedFestivals", Festival.getPurchasedFestivalData(self));
+
                     //Get festival data for unpurchased festivals
-                    //Get account status information
+                    jo.put("unpurchasedFestivals", Festival.getUnpurchasedFestivalData(self));
+
                     break;
-                case "festival_select_purchased":
-                    //Load festival data
+                case "select_purchased":
+                    //Verify request is valid
+                    if (!verifyAuth(login_auth, uname)) {
+                        jo.put("loginValid", false);
+                        break;
+                    }
+                    //Verify festival is purchased
+                    int festID = Integer.parseInt(request.getParameter("selectedFestival"));
+                    self = new User(uname);
+                    System.out.println("Request: " + request.getParameter("selectedFestival"));
+                    if (!self.checkUserPurchasedFestival(festID)) {
+                        jo.put("loginValid", false);
+                        break;
+                    }
+                    Festival curFest = new Festival(festID);
+
+                    //Return data on current festival
+                    jo = getAppData(self, curFest, jo);
                     break;
                 case "festival_select_unpurchased":
                     //Verify that credits are available
@@ -104,8 +151,14 @@ public class GameTime {
             e.printStackTrace();
         }
         System.out.println("Reply: " + jo.toString());
-        String messageJSON = jsonCallbackParam + "(" + jo.toString() + ");";
-        return messageJSON;
+        return jsonCallbackParam + "(" + jo.toString() + ");";
+    }
+
+    private static JSONObject getAppData(User self, Festival curFest, JSONObject jo) throws JSONException {
+        jo.put("currentFestivalData", curFest.getAppData(self, curFest));
+        //Return User festival data
+        jo.put("getAppData", self.getAppData(self, curFest));
+        return jo;
     }
 
     private static boolean verifyAuth(String mak, String uname){
@@ -145,15 +198,15 @@ public class GameTime {
         JSONObject jo = new JSONObject();
 //        System.err.println("uname/response/all_keys: " + uname + " / " + response + " / " + user.all_keys);
 
+        //       System.err.println("User instantiated: " + user.id);
+        assert user != null;
         if(user.all_keys.equals(response)){
 //            System.err.println("User key: " + user.all_keys);
             try {
                 jo.put("auth_key", user.generateAuthKey());
                 jo.put("uname", user.username);
                 jo.put("pwValid", true);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } catch (SQLException e) {
+            } catch (JSONException | SQLException e) {
                 e.printStackTrace();
             }
         } else {

@@ -7,7 +7,6 @@ import org.json.JSONObject;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
@@ -45,7 +44,7 @@ public class DBConnect {
                    String jdbcType;
                    String name = rsmd.getColumnLabel(i);
                    int type = rsmd.getColumnType(i);
-                   System.err.println("Col name: " + name);
+//                   System.err.println("Col name: " + name);
                    switch (type) {
                        case Types.BIT: jdbcType="BIT"; break;
                        case Types.TINYINT: jdbcType="TINYINT"; break;
@@ -77,7 +76,7 @@ public class DBConnect {
                        case Types.REF: jdbcType="REF"; break;
                        default: jdbcType="Unknown[" + type + "]"; break;
                    }
-                   System.err.println("Col type: " + jdbcType);
+//                   System.err.println("Col type: " + jdbcType);
                    switch(jdbcType) {
                        case "CHAR":
                        case "VARCHAR":
@@ -109,7 +108,7 @@ public class DBConnect {
                            break;
                        case "INTEGER":
                            int result5;
-                           result5 = (int) rs.getInt(name);
+                           result5 = rs.getInt(name);
                            jo.put(name, result5);
                            break;
                        case "BIGINTEGER":
@@ -146,9 +145,8 @@ public class DBConnect {
     private static Connection getDBConnection() throws SQLException {
 
         // Obtain our environment naming context
-        Context initCtx = null;
-        Context envCtx = null;
-        DataSource ds = null;
+        Context initCtx;
+        Context envCtx;
         try {
             initCtx = new InitialContext();
             envCtx = (Context) initCtx.lookup("java:comp/env");
@@ -156,25 +154,19 @@ public class DBConnect {
 // Look up our data source
 
             assert envCtx != null;
-            ds = (DataSource)
-                    envCtx.lookup("jdbc/festival_master");
         } catch (NamingException e) {
             e.printStackTrace();
         }
 
 // Allocate and use a connection from the pool
-        Connection con = null;
-        PreparedStatement stmt = null;
+        Connection con;
 
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+
 
         Properties dbConnect = new Properties();
         try {
@@ -194,7 +186,7 @@ public class DBConnect {
 
     public static void updateRecord(String sql, JSONArray param, JSONArray types) throws SQLException {
 
-        Connection con = null;
+        Connection con;
 
         try {
             con = getDBConnection();
@@ -222,7 +214,7 @@ public class DBConnect {
 
 //            System.err.println(updateTableSQL);
 
-            // execute update SQL stetement
+            // execute update SQL statement
             store.executeUpdate();
             con.commit();
             close(store, con);
