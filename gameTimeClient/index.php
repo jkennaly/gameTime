@@ -22,6 +22,7 @@ include_once("php/var.php");
             <link rel="stylesheet" href="css/main.css">
     -->
     <link rel="stylesheet" href="css/jquery.mobile-1.4.4.min.css">
+    <link rel="stylesheet" href="css/style.css">
     <script src="js/vendor/jquery-1.11.0.min.js"></script>
     <script src="js/vendor/jquery.mobile-1.4.4.js"></script>
     <script src="js/plugins.js"></script>
@@ -30,24 +31,28 @@ include_once("php/var.php");
     <script src="js/vendor/sjcl.js"></script>
 </head>
 <body>
+
 <!--[if lt IE 7]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
     your browser</a> to improve your experience.</p>
 <![endif]-->
 
-<div data-role="page">
 
-    <div data-role="header">
-        <header class="wrapper clearfix">
-            <p class="header-text">Network Status: Good
+<div data-role="content">
+    <div class="main wrapper clearfix">
+        <div id="content">
 
-            <p class="header-text">matt rated Lionel Ritchie 5 stars</p>
-        </header>
-    </div>
+            <?php require_once "php/header.php"; ?>
+            <div data-role="page" id="default">
 
-    <div data-role="content">
-        <div class="main wrapper clearfix">
-            <div id="content">
+                <a href="index.php#login" data-role="button" data-rel="dialog" data-transition="pop"
+                   data-inline="true" data-corners="true" data-shadow="true" data-iconshadow="true"
+                   data-wrapperels="span"
+                   data-theme="c" class="ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-up-c">
+        <span class="ui-btn-inner ui-btn-corner-all">
+            <span class="ui-btn-text">Log In</span>
+        </span>
+                </a>
                 <nav>
                     <ul>
                         <li><a href="#">nav ul li a</a></li>
@@ -58,7 +63,7 @@ include_once("php/var.php");
                 <article>
                     <header>
                         <h1>article header h1</h1>
-                        <button type="button" class="max-width login">Login Screen</button>
+
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio
                             egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl
                             pharetra in. In semper consequat est, eu porta velit mollis nec.</p>
@@ -100,20 +105,18 @@ include_once("php/var.php");
                         In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat
                         tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
                 </aside>
-            </div>
-            <!-- #content -->
-        </div>
-        <!-- #main -->
-    </div>
-    <!-- #main-container -->
 
-    <div data-role="footer">
-        <footer class="wrapper">
-            <h3 id="footer-text">footer</h3>
-        </footer>
+
+            </div>
+            <!-- /page -->
+            <?php require_once "php/pages.php"; ?>
+            <?php require_once "php/footer.php"; ?>
+        </div>
+        <!-- #content -->
     </div>
+    <!-- #main -->
 </div>
-<!-- /page -->
+<!-- #main-container -->
 
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->

@@ -33,9 +33,9 @@ public class Festival extends FestivalTimeObject {
         JSONArray purchased = new JSONArray();
         JSONArray festIDs = getPurchasedFestivals(user);
         for (int i = 0; i < festIDs.length(); i++) {
-            System.out.println("Fest instantiation begins");
+            //System.out.println("Fest instantiation begins");
             Festival fest = new Festival(festIDs.getInt(i));
-            System.err.println("Fest instantiated: " + fest.id);
+//            System.err.println("Fest instantiated: " + fest.id);
             purchased.put(fest.getAppData(user, fest));
         }
         return purchased;
@@ -129,21 +129,23 @@ public class Festival extends FestivalTimeObject {
         cost = rs.getInt("cost");
         num_days = rs.getInt("num_days");
         num_dates = rs.getInt("num_dates");
-        System.err.println("Fest instantiation: setting fields");
+//        System.err.println("Fest instantiation: setting fields");
 
         JSONArray dateIDs = getFestivalDates();
         dates = new ArrayList<>();
-        System.err.println("Fest instantiation: date IDs gotten: " + dateIDs.toString());
+//        System.err.println("Fest instantiation: date IDs gotten: " + dateIDs.toString());
         for (int i = 0; i < dateIDs.length(); i++) dates.add(new FestivalDate(dateIDs.getInt(i)));
 
-        System.err.println("Fest instantiation: still setting fields");
+//        System.err.println("Fest instantiation: still setting fields");
 
 
     }
 
     public JSONObject getAppData(User self, Festival fest) throws JSONException {
-        System.out.println("Starting data creation");
+//        System.out.println("Starting data creation");
         JSONObject appData = new JSONObject();
+        long time = System.currentTimeMillis();
+        appData.put("appDataTime", time);
         appData.put("sitename", fest.sitename);
         appData.put("name", fest.name);
         appData.put("dbname", fest.dbname);
@@ -158,16 +160,16 @@ public class Festival extends FestivalTimeObject {
         appData.put("start_time", fest.start_time);
         appData.put("length", fest.length);
         appData.put("cost", fest.cost);
-        System.out.println("Cost data created");
+//        System.out.println("Cost data created");
         appData.put("seriesData", fest.series.getAppData(self, fest));
-        System.out.println("Series data created");
+//        System.out.println("Series data created");
         JSONArray dateData = new JSONArray();
         for (FestivalDate date : fest.dates) {
             JSONObject tempDate = date.getAppData(self, fest);
-            System.out.println("Date created: " + tempDate.getInt("id"));
+//            System.out.println("Date created: " + tempDate.getInt("id"));
             dateData.put(tempDate);
         }
-        System.out.println("Date data created");
+//        System.out.println("Date data created");
         appData.put("dateData", dateData);
         return appData;
     }
@@ -234,7 +236,7 @@ public class Festival extends FestivalTimeObject {
             rs = resultArray.getJSONObject(0);
             name = rs.getString("name");
             id = rs.getInt("id");
-            System.err.println("Fest instantiation: about to get venue ");
+//            System.err.println("Fest instantiation: about to get venue ");
             venue = new Venue(rs.getInt("venue"));
             Date tempDate = (Date) rs.get("basedate");
             LocalDate localDate = LocalDate.fromDateFields(tempDate);
@@ -255,10 +257,10 @@ public class Festival extends FestivalTimeObject {
             JSONObject appData = new JSONObject();
             appData.put("id", id);
             appData.put("name", name);
-            System.err.println("Collecting data: venue not yet set for date: " + Integer.toString(id));
+//            System.err.println("Collecting data: venue not yet set for date: " + Integer.toString(id));
             appData.put("venueData", venue.getAppData(self, fest));
             JSONArray dayData = new JSONArray();
-            System.err.println("Collecting data: field set for date: " + Integer.toString(id));
+//            System.err.println("Collecting data: field set for date: " + Integer.toString(id));
             for (Day day : days) dayData.put(day.getAppData(self, fest));
             appData.put("dayData", dayData);
             return appData;
@@ -283,7 +285,7 @@ public class Festival extends FestivalTimeObject {
             name = rs.getString("name");
             id = rs.getInt("id");
             offset = rs.getInt("days_offset");
-            System.err.println("Fest instantiation: setting fields for day: " + Integer.toString(id));
+//            System.err.println("Fest instantiation: setting fields for day: " + Integer.toString(id));
 
 
         }

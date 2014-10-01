@@ -43,6 +43,7 @@
     <orderEntry type="library" exported="" name="httpclient-4.3.5" level="project" />
     <orderEntry type="library" exported="" name="Maven: org.apache.httpcomponents:httpcore:4.0-alpha6" level="project" />
     <orderEntry type="library" name="joda-time-2.4" level="project" />
+    <orderEntry type="library" name="commons-codec-1.9" level="project" />
   </component>
 </module>
 

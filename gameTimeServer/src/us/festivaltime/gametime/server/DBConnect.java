@@ -1,5 +1,6 @@
 package us.festivaltime.gametime.server;
 
+import org.apache.commons.codec.binary.Base64;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,9 +29,7 @@ public class DBConnect {
         for(int i=0;i<args.length;i++) stmt.setString((i + 1), args[i]);
         ResultSet rs = stmt.executeQuery();
        JSONArray ja = new JSONArray();
-       if (!rs.isBeforeFirst() ) {
-           System.err.println("No data");
-       } else {
+       if (rs.isBeforeFirst()) {
 
            ResultSetMetaData rsmd = rs.getMetaData();
            int columnCount = rsmd.getColumnCount();
@@ -128,6 +127,13 @@ public class DBConnect {
                            result7 = rs.getTimestamp(name);
                            jo.put(name, result7);
                            break;
+                       case "BLOB":
+                           String result9;
+                           byte[] bytes = rs.getBytes(name);
+                           // result9 = new String(bytes);
+                           result9 = Base64.encodeBase64URLSafeString(bytes);
+                           jo.put(name, result9);
+                           break;
                         default: break;
                    }
 
@@ -136,6 +142,8 @@ public class DBConnect {
                ja.put(jo);
 
            }
+       } else {
+//           System.err.println("No data");
        }
 
        close(rs, stmt, con);
@@ -184,14 +192,15 @@ public class DBConnect {
 
     }
 
-    public static void updateRecord(String sql, JSONArray param, JSONArray types) throws SQLException {
+    public static void updateRecord(String sql, JSONArray param, JSONArray types, String[] trackers, int[] trackerParams) throws SQLException {
 
         Connection con;
 
         try {
             con = getDBConnection();
-            PreparedStatement store = con.prepareStatement(sql);
             con.setAutoCommit(false);
+
+            PreparedStatement store = con.prepareStatement(sql);
             try {
                 for (int i = 0; i < param.length(); i++) {
                     switch (types.getString(i)) {
@@ -216,6 +225,17 @@ public class DBConnect {
 
             // execute update SQL statement
             store.executeUpdate();
+            long javaTime = System.currentTimeMillis();
+            for (int j = 0; j < trackers.length; j++) {
+                String tracker = trackers[j];
+                tracker = "tracker_" + tracker;
+                String updT = "INSERT INTO " + tracker + " (item, javaTime) VALUES " +
+                        "( ?, ? );";
+                PreparedStatement tracking = con.prepareStatement(updT);
+                tracking.setInt(1, trackerParams[j]);
+                tracking.setLong(2, javaTime);
+                tracking.executeUpdate();
+            }
             con.commit();
             close(store, con);
 

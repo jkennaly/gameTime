@@ -1,9 +1,14 @@
-<section>
-    <form class="simple-login" role="form">
-        <h1>Login to FestivalTime</h1>
-        <input id="uname" type="username" autofocus required placeholder="Username" class="form-control max-width">
-        <input id="passwd" type="password" required placeholder="Password" class="form-control max-width">
-        <button type="submit" class="login_processing max-width">Login</button>
-        <p class="login_forgot_password"><a href="#">Forgot password?</a></p>
-    </form>
-</section>
+<div data-role="page" id="login">
+    <section>
+        <form class="simple-login" role="form" target="#festival_select">
+            <h1>Login to FestivalTime</h1>
+            <input id="uname" type="username" autofocus required placeholder="Username" class="form-control max-width">
+            <input id="passwd" type="password" required placeholder="Password" class="form-control max-width">
+            <a href="#festival_select">
+                <button type="submit" class="login_processing">Login</button>
+            </a>
+
+            <p class="login_forgot_password"><a href="#">Forgot password?</a></p>
+        </form>
+    </section>
+</div>

@@ -102,7 +102,6 @@ public class User extends FestivalTimeObject {
         //      }
     }
 
-
     public void storeResponse(long challenge) throws SQLException {
 //        Connection con = null;
 //        PreparedStatement store = null;
@@ -127,7 +126,9 @@ public class User extends FestivalTimeObject {
         type.put("int");
         param.put(id);
 //        System.err.println("User: " + id);
-        updateRecord(qText, param, type);
+        String[] args = {};
+        int[] argP = {};
+        updateRecord(qText, param, type, args, argP);
     }
 
     public String generateAuthKey() throws SQLException {
@@ -145,8 +146,11 @@ public class User extends FestivalTimeObject {
         param.put(hashed);
         type.put("int");
         param.put(id);
-        System.err.println("User: " + id);
-        updateRecord(qText, param, type);
+//        System.err.println("User: " + id);
+        String[] args = {};
+        int[] argP = {};
+
+        updateRecord(qText, param, type, args, argP);
 
         return hashed;
     }
@@ -181,10 +185,22 @@ public class User extends FestivalTimeObject {
     public JSONObject getAppData(User self, Festival fest) throws JSONException {
         JSONArray others = self.getVisibleUsers();
         JSONObject jo = new JSONObject();
+        long time = System.currentTimeMillis();
+        jo.put("appDataTime", time);
+
         for (int i = 0; i < others.length(); i++) {
+            //collect app data
             JSONObject userData = new JSONObject();
-            userData.put("purchased", self.checkUserPurchasedFestival(fest.id));
-            jo.put(String.valueOf(self.id), userData);
+            User other = new User(others.getInt(i));
+            userData.put("img", other.getImageString());
+            userData.put("recentFests", other.getRecentFestivals());
+            userData.put("purchased", other.checkUserPurchasedFestival(fest.id));
+            userData.put("atFav", other.getAllTimeFavorites());
+            userData.put("atWorst", other.getAllTimeWorstDisappointment());
+            userData.put("gtFav", other.getGametimeFavorites(fest));
+            userData.put("pgFav", other.getPregameFavorites(fest));
+            userData.put("generalData", other.getUserData());
+            jo.put(String.valueOf(other.id), userData);
         }
         return jo;
     }
@@ -199,6 +215,144 @@ public class User extends FestivalTimeObject {
             e.printStackTrace();
         }
         return false;
+    }
+
+    private JSONArray getPregameFavorites(Festival fest) {
+        JSONArray ja = new JSONArray();
+        String sql = "select band, bands.name from messages, bands where messages.band=bands.id AND fromuser=? "
+                + "and remark='2' and festival=? and `mode`='1' and content>'4' order by rand() limit 5;";
+
+        String idS = Integer.toString(id);
+        String idF = Integer.toString(fest.id);
+        String[] args = {idS, idF};
+        try {
+            JSONArray qResult = DBConnect.dbQuery(sql, args);
+            for (int i = 0; i < qResult.length(); i++) {
+                ja.put(qResult.getJSONObject(i).getString("name"));
+            }
+        } catch (SQLException | JSONException e) {
+            e.printStackTrace();
+        }
+        return ja;
+    }
+
+    private String getAllTimeWorstDisappointment() {
+        String band = "";
+        String sqlP = "select band, festival, content from messages, bands "
+                + "where content = (select min(content) from messages where fromuser=? and remark='2' and "
+                + "`mode`='2') and messages.band=bands.id AND fromuser=? and remark='2' and `mode`='2';";
+
+        String idS = Integer.toString(id);
+        String[] args = {idS, idS};
+        Integer diff = 0;
+        String worstBand = "";
+        String worstFestival = "";
+        try {
+            JSONArray qResult = DBConnect.dbQuery(sqlP, args);
+            for (int i = 0; i < qResult.length(); i++) {
+                String bandP = Integer.toString(qResult.getJSONObject(i).getInt("band"));
+                String festival = Integer.toString(qResult.getJSONObject(i).getInt("festival"));
+                Integer gameTimeRating = Integer.parseInt(qResult.getJSONObject(i).getString("content"));
+                String sqlG = "select messages.band, messages.festival, messages.content, bands.name as bandName, festivals.sitename as festName from messages, bands, festivals "
+                        + "where messages.band=bands.id AND messages.festival=festivals.id AND messages.fromuser=? and messages.remark='2' and messages.`mode`='1' and "
+                        + "messages.`band`='" + bandP + "' and messages.`festival`='" + festival + "';";
+                String[] argsG = {idS};
+//                System.out.println(sqlG);
+                JSONArray qResultG = DBConnect.dbQuery(sqlG, argsG);
+                for (int j = 0; j < qResultG.length(); j++) {
+//                    System.out.println("Result for user " + idS + ": " + qResultG.toString());
+                    String bandG = qResultG.getJSONObject(j).getString("bandName");
+                    String festivalG = qResultG.getJSONObject(j).getString("festName");
+                    Integer pregameRating = Integer.parseInt(qResultG.getJSONObject(j).getString("content"));
+                    Integer testDiff = pregameRating - gameTimeRating;
+                    if (pregameRating > 0 && testDiff > diff) {
+                        worstBand = bandG;
+                        worstFestival = festivalG;
+                        diff = testDiff;
+                    }
+                }
+                if (diff > 0) band = worstBand + " at " + worstFestival;
+
+            }
+        } catch (SQLException | JSONException e) {
+            e.printStackTrace();
+        }
+
+        return band;
+    }
+
+    private JSONArray getGametimeFavorites(Festival fest) {
+        JSONArray ja = new JSONArray();
+        String sql = "select band, bands.name from messages, bands where messages.band=bands.id AND fromuser=? "
+                + "and remark='2' and festival=? and `mode`='2' and content>'4' order by rand() limit 5;";
+
+        String idS = Integer.toString(id);
+        String idF = Integer.toString(fest.id);
+        String[] args = {idS, idF};
+        try {
+            JSONArray qResult = DBConnect.dbQuery(sql, args);
+            for (int i = 0; i < qResult.length(); i++) {
+                ja.put(qResult.getJSONObject(i).getString("name"));
+            }
+        } catch (SQLException | JSONException e) {
+            e.printStackTrace();
+        }
+        return ja;
+    }
+
+    private JSONArray getAllTimeFavorites() {
+        JSONArray ja = new JSONArray();
+        String sql = "select band, (1+count(*)*0.01)*avg(content) as factor, bands.name from messages, "
+                + "bands where messages.band=bands.id AND fromuser = ? and remark = 2 group by band "
+                + "order by factor desc limit 5;";
+        String idS = Integer.toString(id);
+        String[] args = {idS};
+        try {
+            JSONArray qResult = DBConnect.dbQuery(sql, args);
+            for (int i = 0; i < qResult.length(); i++) {
+                ja.put(qResult.getJSONObject(i).getString("name"));
+            }
+        } catch (SQLException | JSONException e) {
+            e.printStackTrace();
+        }
+        return ja;
+    }
+
+    private JSONArray getRecentFestivals() {
+        JSONArray ja = new JSONArray();
+        String sql = "select sitename as name from messages, festivals " +
+                "where messages.festival=festivals.id and fromuser=? and messages.`mode`='2' group by festival;";
+        String idS = Integer.toString(id);
+        String[] args = {idS};
+        try {
+            JSONArray qResult = DBConnect.dbQuery(sql, args);
+            for (int i = 0; i < qResult.length(); i++) {
+                ja.put(qResult.getJSONObject(i).getString("name"));
+            }
+        } catch (SQLException | JSONException e) {
+            e.printStackTrace();
+        }
+        return ja;
+    }
+
+    private JSONObject getImageString() {
+        String sql = "SELECT `scaled_pic`, `type` FROM `pics_users` WHERE `user` = ? order by `id` DESC limit 1";
+        String idS = Integer.toString(id);
+        String[] args = {idS};
+        String imageUrl = "https://www.festivaltime.us/includes/content/blocks/getSUserPicture.php?user=" + idS;
+        idS = "userImage-" + idS;
+        JSONObject jo = new JSONObject();
+        try {
+            JSONArray qResult = DBConnect.dbQuery(sql, args);
+            if (qResult.length() > 0) {
+                // String finalImage = "data:" + qResult.getJSONObject(0).getString("type") + ";base64, " + qResult.getJSONObject(0).getString("scaled_pic");
+                jo.put(idS, imageUrl);
+                jo.put("userImage", true);
+            } else jo.put("userImage", false);
+        } catch (SQLException | JSONException e) {
+            e.printStackTrace();
+        }
+        return jo;
     }
 
     private JSONArray getVisibleUsers() {

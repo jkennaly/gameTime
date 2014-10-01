@@ -118,7 +118,7 @@ public class GameTime {
                     //Verify festival is purchased
                     int festID = Integer.parseInt(request.getParameter("selectedFestival"));
                     self = new User(uname);
-                    System.out.println("Request: " + request.getParameter("selectedFestival"));
+//                    System.out.println("Request: " + request.getParameter("selectedFestival"));
                     if (!self.checkUserPurchasedFestival(festID)) {
                         jo.put("loginValid", false);
                         break;
@@ -150,14 +150,14 @@ public class GameTime {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        System.out.println("Reply: " + jo.toString());
+//        System.out.println("Reply: " + jo.toString());
         return jsonCallbackParam + "(" + jo.toString() + ");";
     }
 
     private static JSONObject getAppData(User self, Festival curFest, JSONObject jo) throws JSONException {
         jo.put("currentFestivalData", curFest.getAppData(self, curFest));
         //Return User festival data
-        jo.put("getAppData", self.getAppData(self, curFest));
+        jo.put("userFestivalData", self.getAppData(self, curFest));
         return jo;
     }
 

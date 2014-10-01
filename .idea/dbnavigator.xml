@@ -14,7 +14,7 @@
           <user value="festival_master" />
           <password value="dGVzdFBBU1NXT1JE" />
           <driver-library value="$USER_HOME$/apache-tomee-webprofile-1.7.0/lib/mysql-connector-java-5.1.32-bin.jar" />
-          <driver value="com.mysql.fabric.jdbc.FabricMySQLDriver" />
+          <driver value="com.mysql.jdbc.Driver" />
           <url value="jdbc:mysql://localhost:3306/festival_master" />
         </database>
         <details>

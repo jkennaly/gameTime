@@ -3,19 +3,32 @@
     <words>
       <w>basedate</w>
       <w>biginteger</w>
+      <w>chall</w>
+      <w>checkin</w>
       <w>dbconnect</w>
       <w>dbname</w>
       <w>dbuser</w>
+      <w>fromuser</w>
+      <w>gametime</w>
       <w>hashedpw</w>
+      <w>iconpos</w>
+      <w>iconshadow</w>
       <w>jdbc</w>
+      <w>jsonjq</w>
       <w>jsonp</w>
+      <w>logcheck</w>
       <w>longvarbinary</w>
       <w>longvarchar</w>
+      <w>pagecreate</w>
+      <w>pageinit</w>
+      <w>pageshow</w>
       <w>rsmd</w>
       <w>sitename</w>
       <w>struct</w>
       <w>uname</w>
+      <w>unfollowed</w>
       <w>unpurchased</w>
+      <w>wrapperels</w>
     </words>
   </dictionary>
 </component>

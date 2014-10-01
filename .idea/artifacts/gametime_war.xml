@@ -9,6 +9,7 @@
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="joda-time-2.4" />
+          <element id="library" level="project" name="commons-codec-1.9" />
         </element>
       </element>
     </root>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="4105711942">
+  <component name="DataSourceManagerImpl" format="xml" hash="1265050607">
     <data-source source="LOCAL" name="MySQL - festival_master@localhost" uuid="16423534-dbd9-4344-9f5e-c81c5ea6742f">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
