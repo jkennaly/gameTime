@@ -8,6 +8,7 @@
       <w>dbconnect</w>
       <w>dbname</w>
       <w>dbuser</w>
+      <w>festivaltime</w>
       <w>fromuser</w>
       <w>gametime</w>
       <w>hashedpw</w>

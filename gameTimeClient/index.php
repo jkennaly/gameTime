@@ -26,9 +26,11 @@ include_once("php/var.php");
     <script src="js/vendor/jquery-1.11.0.min.js"></script>
     <script src="js/vendor/jquery.mobile-1.4.4.js"></script>
     <script src="js/plugins.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/src/main.js"></script>
     <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     <script src="js/vendor/sjcl.js"></script>
+    <!-- Load the script "js/main.js" as our entry point -->
+    <script data-main="js/main" src="js/vendor/require.js"></script>
 </head>
 <body>
 

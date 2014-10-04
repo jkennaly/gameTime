@@ -53,17 +53,17 @@ FESTIVALTIME.MODEL.USERS.user = function (userid) {
         userDataTemp = userDataAll ? userDataAll[userid] : false;
 
         /** @namespace userDataTemp.generalData */
-        username = userDataTemp.generalData.username;
-        follows = userDataTemp.generalData.follows;
-        blocks = userDataTemp.generalData.blocks;
-        imageSRC = userDataTemp.img["userImage-" + userid];
-        recentFests = userDataTemp.recentFests;
-        purchased = userDataTemp.purchased;
-        atFav = userDataTemp.atFav;
-        atWorst = userDataTemp.atWorst;
-        gtFav = userDataTemp.gtFav;
-        pgFav = userDataTemp.pgFav;
-        id = userid;
+        this.username = userDataTemp.generalData.username;
+        this.follows = userDataTemp.generalData.follows;
+        this.blocks = userDataTemp.generalData.blocks;
+        this.imageSRC = userDataTemp.img["userImage-" + userid];
+        this.recentFests = userDataTemp.recentFests;
+        this.purchased = userDataTemp.purchased;
+        this.atFav = userDataTemp.atFav;
+        this.atWorst = userDataTemp.atWorst;
+        this.gtFav = userDataTemp.gtFav;
+        this.pgFav = userDataTemp.pgFav;
+        this.id = userid;
     };
     setFields(this.id);
 
@@ -83,4 +83,72 @@ FESTIVALTIME.LOGIC.GAMETIME.createAndAlertUser = function () {
 
 FESTIVALTIME.LOGIC.GAMETIME.objectify = function (key) {
     return JSON.parse(localStorage.getItem(key));
+};
+
+FESTIVALTIME.LOGIC.GAMETIME.sortUsers = function (sortOrder) {
+    sortType = sortType || "default";
+    var userData = objectify("userFestivalData");
+    var returnArray = [];
+
+//    alert("sorting users by: " + sortType);
+
+    if (sortType == "default") {
+        var selfData = objectify("selfData");
+        //Create arrays to use:
+        var self = [], followedCheckin = [], followedPurchased = [], followed = [];
+        var followerCheckin = [], followerPurchased = [], follower = [];
+        var unknownCheckin = [], unknownPurchased = [], unknown = [];
+
+        $.each(userData, function (i, val) {
+            //self first
+            if (i == selfData.id) {
+                self.push(i);
+                return;
+            }
+            //followed users who have a check in at  the current festival
+            //followed users who have purchased the festival
+            if (val.purchased === true && $.inArray(i, selfData.follows)) {
+                followedPurchased.push(i);
+                return;
+            }
+            //followed users who have not purchased the festival
+            if ($.inArray(i, selfData.follows)) {
+                followed.push(i);
+                return;
+            }
+
+            //unfollowed users who follow self who have a check in at the current festival
+            //unfollowed users who follow self who have purchased the current festival
+            if (val.purchased === true && $.inArray(selfData.id, val.follows)) {
+                followerPurchased.push(i);
+                return;
+            }
+            //unfollowed users who follow self who have not purchased the current festival
+            if ($.inArray(selfData.id, val.follows)) {
+                follower.push(i);
+                return;
+            }
+            //unfollowed users who do not follow self who have a check in at the current festival
+            //unfollowed users who do not follow self who have purchased the current festival
+            if (val.purchased === true) {
+                unknownPurchased.push(i);
+                return;
+            }
+            //unfollowed users who do not follow self who have not purchased the current festival
+            unknown.push(i);
+
+        });
+        if (self) returnArray = returnArray.concat(self);
+        if (followedCheckin) returnArray = returnArray.concat(followedCheckin);
+        if (followedPurchased) returnArray = returnArray.concat(followedPurchased);
+        if (followed) returnArray = returnArray.concat(followed);
+        if (followerCheckin) returnArray = returnArray.concat(followerCheckin);
+        if (followerPurchased) returnArray = returnArray.concat(followerPurchased);
+        if (follower) returnArray = returnArray.concat(follower);
+        if (unknownCheckin) returnArray = returnArray.concat(unknownCheckin);
+        if (unknownPurchased) returnArray = returnArray.concat(unknownPurchased);
+        if (unknown) returnArray = returnArray.concat(unknown);
+    }
+    localStorage.setItem("userSortOrder", JSON.stringify(returnArray));
+
 };

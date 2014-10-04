@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
+    <file url="file://$PROJECT_DIR$/gameTimeClient" libraries="{Node.js v0.10.25 Core Modules}" />
     <file url="PROJECT" libraries="{Modernizr-2.6.2, jQuery-2.0.0}" />
   </component>
 </project>
