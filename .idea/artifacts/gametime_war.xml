@@ -2,16 +2,27 @@
   <artifact type="war" name="gametime:war">
     <output-path>$USER_HOME$/www/festivaltime/www/tomee1.7/webapps</output-path>
     <root id="archive" name="gametime_war.war">
-      <element id="artifact" artifact-name="gameTime:war exploded" />
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
-          <element id="dir-copy" path="$PROJECT_DIR$/gameTimeServer/src/props" />
+          <element id="module-output" name="gameTimeServer" />
+          <element id="module-output" name="gameTime" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="joda-time-2.4" />
           <element id="library" level="project" name="commons-codec-1.9" />
+          <element id="library" level="project" name="mail-1.4" />
+          <element id="library" level="project" name="guava-18.0" />
+          <element id="library" level="project" name="httpclient-4.3.5" />
+          <element id="library" level="project" name="commons-lang3-3.3.2" />
+          <element id="library" level="project" name="org.json-20120521" />
+          <element id="library" level="project" name="jersey-server-1.2" />
+          <element id="library" level="project" name="javax.json.processing-1.0" />
+          <element id="library" level="project" name="Jersey-2.2" />
         </element>
+        <element id="file-copy" path="$PROJECT_DIR$/web/WEB-INF/context.xml" />
+        <element id="file-copy" path="$PROJECT_DIR$/web/WEB-INF/web.xml" />
       </element>
+      <element id="dir-copy" path="$PROJECT_DIR$/web" />
     </root>
   </artifact>
 </component>

@@ -178,7 +178,7 @@ $(document).on("pageinit", "#festival_select", function () {
 //   alert("Festival select has been created");
     var purFests = JSON.parse(localStorage.getItem("purchasedFestivals"));
 //            alert(purFests);
-    if (purFests == null) {
+    if (purFests === null) {
         return false;
     }
     var $el = $("#select-purchased");
@@ -188,6 +188,29 @@ $(document).on("pageinit", "#festival_select", function () {
         $el.append($("<option></option>")
             .attr("value", element.id).text(element.sitename));
     });
+    if (purFests.length == 0) {
+        $el.append($("<option></option>")
+            .attr("value", 0).text("You have no purchased festivals."));
+    }
+    // jQM refresh
+    $el.selectmenu("refresh", true);
+
+    var unpurFests = JSON.parse(localStorage.getItem("unpurchasedFestivals"));
+//            alert(purFests);
+    if (unpurFests === null) {
+        return false;
+    }
+    var $el = $("#select-unpurchased");
+    $el.empty(); // remove old options
+    unpurFests.forEach(function (element) {
+//        alert(element.sitename);
+        $el.append($("<option></option>")
+            .attr("value", element.id).text(element.sitename));
+    });
+    if (unpurFests.length == 0) {
+        $el.append($("<option></option>")
+            .attr("value", 0).text("You have no unpurchased festivals."));
+    }
     // jQM refresh
     $el.selectmenu("refresh", true);
 });
@@ -236,7 +259,7 @@ $(document).on("swiperight", "#user_detail", function (event) {
     $(":mobile-pagecontainer").pagecontainer("change", "#user_detail", { allowSamePageTransition: true, transition: "slide", reverse: true });
 });
 
-$(document).on("pageshow", "#user_detail", function () {
+$(document).on("pagebeforeshow", "#user_detail", function () {
 
     //Collect data/ assign variables
     curFest = objectify("currentFestivalData");
@@ -369,10 +392,9 @@ $(document).on("pageshow", "#user_overview", function () {
 
 });
 
-$(document).delegate("#login", "pagebeforecreate", function () {
+$(document).on("pageshow", "#login", function () {
     localStorage.clear();
 });
-
 
 function callScreen(screen) {
 
@@ -483,48 +505,48 @@ $(function () {
         reqChallenge.done(function (d) {
             // receive salt and challenge, or that the username does not exist
             var data2;
-            if (d.uname) {
-                // if exists, concatenate submitted password with salt
-                var escapedPW = mysqlEscape(form.passwd);
-                var saltedPW = escapedPW + d.salt;
-                // perform sha256 on salted password
-                var hashedPW = sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(saltedPW));
-
-                // concatenate hashed password with challenge
-                var challPW = hashedPW + d.challenge;
-                // hash challenged password
-                var hashChallPW = sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(challPW));
-                //        alert(hashChallPW);
-                // send response
-                data2 = {
-                    reqType: "challenge_sub",
-                    uname: d.uname,
-                    response: hashChallPW
-                };
-                var reqResponse = appServerReq(data2);
-                reqResponse.done(function (da) {
-                    // receive either an auth token, or that the password is incorrect
-                    if (da.pwValid) {
-                        localStorage.setItem("mobile_auth_key", da.auth_key);
-                        localStorage.setItem("uname", da.uname);
-                        //                       alert("about to call festival_select");
-                        callScreen("festival_select");
-
-                        return true;
-                    } else {
-                        // if password is incorrect, suggest forgot password link or allow retry
-                        callScreen("login_failed_password");
-                        return true;
-                    }
-                }).fail(function (da) {
-                    callScreen("login_failed_network");
-                    return false;
-                });
-            } else {
+            if (!d.uname) {
                 // if DNE, suggest creating an account or allow retry
                 callScreen("login_failed_username");
                 return false;
             }
+            // if exists, concatenate submitted password with salt
+            var escapedPW = mysqlEscape(form.passwd);
+            var saltedPW = escapedPW + d.salt;
+            // perform sha256 on salted password
+            var hashedPW = sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(saltedPW));
+
+            // concatenate hashed password with challenge
+            var challPW = hashedPW + d.challenge;
+            // hash challenged password
+            var hashChallPW = sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(challPW));
+            //        alert(hashChallPW);
+            // send response
+            data2 = {
+                reqType: "challenge_sub",
+                uname: d.uname,
+                response: hashChallPW
+            };
+            var reqResponse = appServerReq(data2);
+            reqResponse.done(function (da) {
+                // receive either an auth token, or that the password is incorrect
+                if (da.pwValid) {
+                    localStorage.setItem("mobile_auth_key", da.auth_key);
+                    localStorage.setItem("uname", da.uname);
+                    //                       alert("about to call festival_select");
+                    callScreen("festival_select");
+
+                    return true;
+                } else {
+                    // if password is incorrect, suggest forgot password link or allow retry
+                    callScreen("login_failed_password");
+                    return true;
+                }
+            }).fail(function (da) {
+                callScreen("login_failed_network");
+                return false;
+            });
+
         }).fail(function (d) {
             callScreen("login_failed_network");
             return false;
@@ -556,39 +578,33 @@ $(function () {
         return false;
     });
 
-    $("#content").on('click', ".login", function () {
-        callScreen("login");
-        return false;
-    });
+    $("#content").on('click', ".select_unpurchased_festival", function () {
 
-    $("#content").on('click', ".login_failed_network", function () {
-        callScreen("login_failed_network");
-        return false;
-    });
+        var form = {
+            select_unpurchased: $("#select-unpurchased").val()
+        };
 
-    $("#content").on('click', ".login_create", function () {
-        callScreen("login_failed_create");
-        return false;
-    });
+//        alert("Select unPurchased Festival: " + form.select_unpurchased);
 
-    $("#content").on('click', ".login_forgot_password", function () {
-        callScreen("login_forgot_password");
+        // submit a festival to receive the gametime data
+        var data = {
+            reqType: "select_unpurchased",
+            selectedFestival: form.select_unpurchased
+        };
+        var reqChallenge = appServerReq(data);
+
+        reqChallenge.done(function (d) {
+            callScreen("festival_home");
+        }).fail(function (d) {
+            callScreen("login_failed_network");
+            return false;
+        });
         return false;
     });
 
     $("#user-overview-list").on('click', ".detail_button", function () {
         localStorage.setItem("currentUserDetail", $(this).data("user-id"));
 
-    });
-
-    $("#popupPanel").on('click', ".login", function () {
-        callScreen("login");
-        return false;
-    });
-
-    $("#popupPanel").on('click', ".festival_select", function () {
-        callScreen("festival_select");
-        return false;
     });
 
 
@@ -602,5 +618,91 @@ $(function () {
 });
 
 
+/**
+ * Created by jbk on 10/3/14.
+ */
+
+// create the root namespace and making sure we're not overwriting it
+var FESTIVALTIME = FESTIVALTIME || {};
+
+// create a general purpose namespace method
+// this will allow us to create namespace a bit easier
+FESTIVALTIME.createNS = function (namespace) {
+    var nsparts = namespace.split(".");
+    var parent = FESTIVALTIME;
+
+    // we want to be able to include or exclude the root namespace
+    // So we strip it if it's in the namespace
+    if (nsparts[0] === "FESTIVALTIME") {
+        nsparts = nsparts.slice(1);
+    }
+
+    // loop through the parts and create
+    // a nested namespace if necessary
+    for (var i = 0; i < nsparts.length; i++) {
+        var partname = nsparts[i];
+        // check if the current parent already has
+        // the namespace declared, if not create it
+        if (typeof parent[partname] === "undefined") {
+            parent[partname] = {};
+        }
+        // get a reference to the deepest element
+        // in the hierarchy so far
+        parent = parent[partname];
+    }
+    // the parent is now completely constructed
+    // with empty namespaces and can be used.
+    return parent;
+};
+
+// Create the namespace for users
+/** @namespace FESTIVALTIME.MODEL.USERS */
+/** @namespace FESTIVALTIME.MODEL */
+FESTIVALTIME.createNS("FESTIVALTIME.MODEL.USERS");
+
+FESTIVALTIME.MODEL.USERS.user = function (userid) {
+    // private variables
+    var username, follows, blocks, imageSRC, recentFests, purchased, atFav;
+    var atWorst, gtFav, pgFav, id;
+    // private methods
+    // creating getWidth and getHeight
+    // to prevent access by reference to dimension
+    var setFields = function (userid) {
+        var userDataTemp;
+        var userDataAll = FESTIVALTIME.LOGIC.GAMETIME.objectify("userFestivalData");
+        userDataTemp = userDataAll ? userDataAll[userid] : false;
+
+        /** @namespace userDataTemp.generalData */
+        username = userDataTemp.generalData.username;
+        follows = userDataTemp.generalData.follows;
+        blocks = userDataTemp.generalData.blocks;
+        imageSRC = userDataTemp.img["userImage-" + userid];
+        recentFests = userDataTemp.recentFests;
+        purchased = userDataTemp.purchased;
+        atFav = userDataTemp.atFav;
+        atWorst = userDataTemp.atWorst;
+        gtFav = userDataTemp.gtFav;
+        pgFav = userDataTemp.pgFav;
+        id = userid;
+    };
+    setFields(this.id);
+
+};
+
+// Create the namespace for the logic
+/** @namespace FESTIVALTIME.LOGIC.GAMETIME */
+/** @namespace FESTIVALTIME.LOGIC */
+FESTIVALTIME.createNS("FESTIVALTIME.LOGIC.GAMETIME");
+
+
+FESTIVALTIME.LOGIC.GAMETIME.createAndAlertUser = function () {
+    var model = FESTIVALTIME.MODEL.USERS;
+    var p = new model.user(2);
+    alert(p.getWidth() + " " + p.getHeight());
+};
+
+FESTIVALTIME.LOGIC.GAMETIME.objectify = function (key) {
+    return JSON.parse(localStorage.getItem(key));
+};
 
 

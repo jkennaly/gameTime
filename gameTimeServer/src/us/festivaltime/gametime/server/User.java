@@ -155,6 +155,7 @@ public class User extends FestivalTimeObject {
         return hashed;
     }
 
+
     private JSONArray getAllUsers() {
         JSONArray tempUsers = new JSONArray();
         String sql = "select `id` from `Users` where `deleted`!='1'";
@@ -389,5 +390,53 @@ public class User extends FestivalTimeObject {
         selfData.put("follows", followsArray);
         selfData.put("blocks", blocksArray);
         return selfData;
+    }
+
+    public void purchaseCredits() {
+        if (credits < 5) {
+            credits = credits + 5;
+
+        }
+    }
+
+    public void purchaseFestival(Festival curFest) {
+        //festival monitor query
+        long systemTime = System.currentTimeMillis() / 1000;
+        String qText = "INSERT INTO `festival_monitor` (`user`, `festival`, `phptime`, `deleted`) VALUES (?, ?, ?, '0');";
+        JSONArray param = new JSONArray();
+        JSONArray type = new JSONArray();
+        type.put("int");
+        param.put(id);
+        type.put("int");
+        param.put(curFest.id);
+        type.put("long");
+        param.put(systemTime);
+//        System.err.println("User: " + id);
+        String[] args = {"users"};
+        int[] argP = {id};
+
+        try {
+            updateRecord(qText, param, type, args, argP);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        //Debit credits
+        qText = "UPDATE `Users` SET `credits`=? WHERE `id`=?;";
+        param = new JSONArray();
+        type = new JSONArray();
+        type.put("int");
+        int afterPurchase = credits - curFest.cost;
+        param.put(afterPurchase);
+        type.put("int");
+        param.put(id);
+//        System.err.println("User: " + id);
+        args = new String[0];
+        argP = new int[0];
+
+        try {
+            updateRecord(qText, param, type, args, argP);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

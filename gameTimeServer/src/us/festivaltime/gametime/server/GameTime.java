@@ -1,7 +1,6 @@
 package us.festivaltime.gametime.server;
 
 
-
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,16 +14,16 @@ import java.sql.SQLException;
 public class GameTime {
 
     public static String sanitizeJsonpParam(String s) {
-        if ( StringUtils.isEmpty(s)) return null;
-        if ( !StringUtils.startsWithIgnoreCase(s,"jquery")) return null;
-        if ( StringUtils.length(s) > 128 ) return null;
+        if (StringUtils.isEmpty(s)) return null;
+        if (!StringUtils.startsWithIgnoreCase(s, "jquery")) return null;
+        if (StringUtils.length(s) > 128) return null;
         return s;
     }
 
     @Deprecated
     public static String getMessage(String cb) {
-        String jsonCallbackParam = sanitizeJsonpParam( cb );
-        if(jsonCallbackParam == null || jsonCallbackParam.isEmpty()) return "Failure";
+        String jsonCallbackParam = sanitizeJsonpParam(cb);
+        if (jsonCallbackParam == null || jsonCallbackParam.isEmpty()) return "Failure";
         JSONObject jo = new JSONObject();
         try {
             jo.put("greeting", "Hello, World!");
@@ -34,25 +33,27 @@ public class GameTime {
         return jsonCallbackParam + "(" + jo.toString() + ");";
     }
 
-    public static String parseRequest( HttpServletRequest request) {
+    public static String parseRequest(HttpServletRequest request) {
         JSONObject jo = new JSONObject();
         User self;
+        int festID;
+        Festival curFest;
 
         String cb = request.getParameter("callback");
         String reqType = request.getParameter("reqType");
         String login_auth = request.getParameter("mobile_auth_key");
         String uname = request.getParameter("uname");
-        String jsonCallbackParam = sanitizeJsonpParam( cb );
+        String jsonCallbackParam = sanitizeJsonpParam(cb);
         try {
             jo.put("response", "Failed");
             String messageJSON = jsonCallbackParam + "(" + jo.toString() + ");";
-            if(jsonCallbackParam == null || jsonCallbackParam.isEmpty()) return messageJSON;
+            if (jsonCallbackParam == null || jsonCallbackParam.isEmpty()) return messageJSON;
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         try {
-            switch ( reqType ) {
+            switch (reqType) {
                 case "login_status":
                     jo.put("loginValid", verifyAuth(login_auth, uname));
                     break;
@@ -116,22 +117,39 @@ public class GameTime {
                         break;
                     }
                     //Verify festival is purchased
-                    int festID = Integer.parseInt(request.getParameter("selectedFestival"));
+                    festID = Integer.parseInt(request.getParameter("selectedFestival"));
                     self = new User(uname);
 //                    System.out.println("Request: " + request.getParameter("selectedFestival"));
                     if (!self.checkUserPurchasedFestival(festID)) {
                         jo.put("loginValid", false);
                         break;
                     }
-                    Festival curFest = new Festival(festID);
+                    curFest = new Festival(festID);
 
                     //Return data on current festival
                     jo = getAppData(self, curFest, jo);
                     break;
-                case "festival_select_unpurchased":
-                    //Verify that credits are available
-                    //Debit credits and change festival status to purchased
-                    //Load festival data
+                case "select_unpurchased":
+                    //Verify request is valid
+                    if (!verifyAuth(login_auth, uname)) {
+                        jo.put("loginValid", false);
+                        break;
+                    }
+                    //Verify festival is purchased
+                    festID = Integer.parseInt(request.getParameter("selectedFestival"));
+                    self = new User(uname);
+//                    System.out.println("Request: " + request.getParameter("selectedFestival"));
+                    if (self.checkUserPurchasedFestival(festID)) {
+                        jo.put("loginValid", false);
+                        break;
+                    }
+                    curFest = new Festival(festID);
+                    if (self.credits < curFest.cost) {
+                        self.purchaseCredits();
+                    }
+                    self.purchaseFestival(curFest);
+                    //Return data on current festival
+                    jo = getAppData(self, curFest, jo);
                     break;
                 case "purchase_credits":
                     //If number of credits is less than 5, add 5 credits
@@ -161,11 +179,11 @@ public class GameTime {
         return jo;
     }
 
-    private static boolean verifyAuth(String mak, String uname){
+    private static boolean verifyAuth(String mak, String uname) {
         try {
             User user;
             user = new User(uname);
-            if(mak.equals(user.mobile_auth_key)) return true;
+            if (mak.equals(user.mobile_auth_key)) return true;
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -188,7 +206,7 @@ public class GameTime {
         return jo;
     }
 
-    private static JSONObject evaluateResponse(String uname, String response){
+    private static JSONObject evaluateResponse(String uname, String response) {
         User user = null;
         try {
             user = new User(uname);
@@ -200,7 +218,7 @@ public class GameTime {
 
         //       System.err.println("User instantiated: " + user.id);
         assert user != null;
-        if(user.all_keys.equals(response)){
+        if (user.all_keys.equals(response)) {
 //            System.err.println("User key: " + user.all_keys);
             try {
                 jo.put("auth_key", user.generateAuthKey());

@@ -1,16 +1,21 @@
 <div data-role="footer" data-position="fixed" data-theme="b" class="hf-container">
     <footer class="wrapper">
         <h3 id="footer-text">footer</h3>
-        <a href="#popupPanel" data-rel="popup" data-transition="slide" data-position-to="window" data-role="button">Open
-            panel</a>
+        <a href="#popupPanel" data-rel="popup" data-transition="slide" data-position-to="window" data-role="button"
+           data-icon="grid" class="ui-btn-right"></a>
 
         <div data-role="popup" id="popupPanel" data-corners="false" data-theme="none" data-shadow="false"
              data-tolerance="0,0">
 
-            <button data-theme="a" data-icon="back" data-mini="true">Back</button>
-            <button class="festival_select" data-theme="a" data-icon="grid" data-mini="true">Festival Select</button>
-            <button data-theme="a" data-icon="search" data-mini="true">Search</button>
-            <button class="login" data-theme="a" data-icon="delete" data-mini="true">Log out</button>
+            <a href="#festival_select">
+                <button data-theme="a" data-icon="grid" data-mini="true">Festival Select</button>
+            </a>
+            <a href="#festival_home">
+                <button data-transition="pop" data-icon="grid" data-theme="a" data-mini="true">Festival Home</button>
+            </a>
+            <a href="#login">
+                <button data-theme="a" data-icon="delete" data-mini="true">Log out</button>
+            </a>
 
         </div>
     </footer>

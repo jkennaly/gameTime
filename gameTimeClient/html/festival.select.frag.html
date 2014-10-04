@@ -17,7 +17,7 @@
 
                 <button type="submit" data-theme="b" name="submit" value="submit-value"
                         class="select_purchased_festival">
-                    Submit
+                    Choose this festival
                 </button>
             </fieldset>
         </form>
@@ -25,17 +25,22 @@
     </section>
 
     <section>
-        <form class="ui-body ui-body-a ui-corner-all">
+        <form>
             <fieldset>
                 <div data-role="fieldcontain">
                     <label for="select-unpurchased" class="select">Select an unpurchased festival:</label>
-                    <select name="select-unpurchased" id="select-unpurchased">
+                    <select data-theme="b" name="select-unpurchased" id="select-unpurchased">
                         <option value="standard">Standard: 7 day</option>
                         <option value="rush">Rush: 3 days</option>
                         <option value="express">Express: next day</option>
                         <option value="overnight">Overnight</option>
                     </select>
                 </div>
+
+                <button type="submit" data-theme="d" name="submit" value="submit-value"
+                        class="select_unpurchased_festival">
+                    Purchase this festival
+                </button>
             </fieldset>
         </form>
 
