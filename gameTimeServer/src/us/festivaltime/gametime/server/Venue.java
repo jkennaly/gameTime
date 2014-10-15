@@ -38,7 +38,6 @@ public class Venue extends FestivalTimeObject {
 
     }
 
-    @Override
     JSONObject getAppData(User self, Festival fest) throws JSONException {
         JSONObject appData = new JSONObject();
         appData.put("id", id);

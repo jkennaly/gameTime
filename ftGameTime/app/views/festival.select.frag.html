@@ -1,0 +1,35 @@
+<ion-view title="Select Festival"> <!-- title of nav bar -->
+    <ion-content padding="true"> <!-- Adds default padding. Must add manually. -->
+
+        <section>
+
+
+            <form ng-submit="festivals.chooseFest()">
+                <fieldset>
+                    <div class="list">
+                        <label for="select-purchased" class="item item-input item-select">Select a purchased
+                            festival:</label>
+                        <select id="select-purchased" ng-model="festivals.selected"
+                                ng-options="fest.sitename for fest in festivals.purchased track by fest.id"></select>
+                    </div>
+                    <button type="submit" name="submit" value="submitPurchased">Choose this festival</button>
+                </fieldset>
+            </form>
+        </section>
+
+        <section>
+            <form ng-submit="festivals.chooseFest()">
+                <fieldset>
+                    <div class="list">
+                        <label for="select-unpurchased" class="item item-input item-select">Select an unpurchased
+                            festival:</label>
+                        <select id="select-unpurchased" ng-model="festivals.selected"
+                                ng-options="fest.sitename for fest in festivals.unpurchased track by fest.id"></select>
+                    </div>
+                    <button type="submit" name="submit" value="submitUnpurchased">Purchase this festival</button>
+                </fieldset>
+            </form>
+
+        </section>
+    </ion-content>
+</ion-view>

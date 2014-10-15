@@ -2,7 +2,6 @@ package us.festivaltime.gametime.server;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.sql.SQLException;
 
@@ -42,8 +41,6 @@ public abstract class FestivalTimeObject {
     }
 
     abstract void setFields(JSONArray resultArray) throws JSONException;
-
-    abstract JSONObject getAppData(User self, Festival fest) throws JSONException;
 
 
 }

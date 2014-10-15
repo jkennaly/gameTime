@@ -1,0 +1,15 @@
+<ion-view title="Bands"> <!-- title of nav bar -->
+    <ion-content padding="true"> <!-- Adds default padding. Must add manually. -->
+        <section>
+            <ion-list>
+                <a ng-repeat="band in bandArray | orderBy: 'name'" class="item item-avatar"
+                   ng-href="#/band/detail/{{band.id}}">
+                    <!--  <img ng-src="{{bandImage[bandID]}}"> -->
+
+                    <h2>{{band.name}}</h2>
+                </a>
+            </ion-list>
+        </section>
+        </div>
+    </ion-content>
+</ion-view>

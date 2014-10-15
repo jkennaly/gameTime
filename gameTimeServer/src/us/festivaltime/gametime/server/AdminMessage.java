@@ -1,0 +1,21 @@
+package us.festivaltime.gametime.server;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+/**
+ * Created by jbk on 10/10/14.
+ */
+
+public class AdminMessage extends Message {
+    @Override
+    void setFields(JSONArray resultArray) throws JSONException {
+
+    }
+
+    @Override
+    JSONObject getAppData(User self, Festival fest) throws JSONException {
+        return null;
+    }
+}

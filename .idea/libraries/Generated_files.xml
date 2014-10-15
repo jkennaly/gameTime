@@ -1,0 +1,24 @@
+<component name="libraryTable">
+  <library name="Generated files" type="javaScript">
+    <properties>
+      <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/ftGameTime/bower_components/moment-timezone/builds/moment-timezone-with-data.min.js" />
+        <item url="file://$PROJECT_DIR$/ftGameTime/bower_components/moment-timezone/builds/moment-timezone-with-data-2010-2020.min.js" />
+        <item url="file://$PROJECT_DIR$/ftGameTime/bower_components/moment/min/locales.min.js" />
+        <item url="file://$PROJECT_DIR$/ftGameTime/bower_components/momentjs/min/locales.min.js" />
+        <item url="file://$PROJECT_DIR$/ftGameTime/bower_components/moment/min/moment-with-locales.min.js" />
+        <item url="file://$PROJECT_DIR$/ftGameTime/bower_components/momentjs/min/moment-with-locales.min.js" />
+      </sourceFilesUrls>
+    </properties>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/ftGameTime/bower_components/moment-timezone/builds/moment-timezone-with-data.min.js" />
+      <root url="file://$PROJECT_DIR$/ftGameTime/bower_components/moment-timezone/builds/moment-timezone-with-data-2010-2020.min.js" />
+      <root url="file://$PROJECT_DIR$/ftGameTime/bower_components/moment/min/locales.min.js" />
+      <root url="file://$PROJECT_DIR$/ftGameTime/bower_components/moment/min/moment-with-locales.min.js" />
+      <root url="file://$PROJECT_DIR$/ftGameTime/bower_components/momentjs/min/locales.min.js" />
+      <root url="file://$PROJECT_DIR$/ftGameTime/bower_components/momentjs/min/moment-with-locales.min.js" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

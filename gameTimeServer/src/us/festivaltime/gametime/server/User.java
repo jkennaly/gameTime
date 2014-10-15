@@ -118,9 +118,9 @@ public class User extends FestivalTimeObject {
         con.setAutoCommit(false);
         */
         String qText = "UPDATE `Users` SET `all_keys`=? WHERE `id`=?";
-        JSONArray param =new JSONArray();
+        JSONArray param = new JSONArray();
 
-        JSONArray type =new JSONArray();
+        JSONArray type = new JSONArray();
         type.put("String");
         param.put(hashed);
         type.put("int");
@@ -139,9 +139,9 @@ public class User extends FestivalTimeObject {
                 .toString();
 
         String qText = "UPDATE `Users` SET `mobile_auth_key`=? WHERE `id`=?";
-        JSONArray param =new JSONArray();
+        JSONArray param = new JSONArray();
 
-        JSONArray type =new JSONArray();
+        JSONArray type = new JSONArray();
         type.put("String");
         param.put(hashed);
         type.put("int");
@@ -356,7 +356,7 @@ public class User extends FestivalTimeObject {
         return jo;
     }
 
-    private JSONArray getVisibleUsers() {
+    JSONArray getVisibleUsers() {
         JSONArray tempUsers = new JSONArray();
         String sql = "select `id` from `Users` where `deleted`!='1' and blocks not like '%--" + id + "--%' ";
         for (int block : blocks) {
@@ -438,5 +438,21 @@ public class User extends FestivalTimeObject {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    int getSetting(int settingId) {
+        int settingValue = 0;
+        String sql = "select `value` from `user_setting_current` where (`user`='0' OR `user`=?) AND `user_setting`=? order by `user` desc";
+        String[] args = {Integer.toString(id), Integer.toString(settingId)};
+        JSONArray userSettings = null;
+        try {
+            userSettings = DBConnect.dbQuery(sql, args);
+            settingValue = userSettings.getJSONObject(0).getInt("value");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return settingValue;
     }
 }

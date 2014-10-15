@@ -1,0 +1,15 @@
+<ion-view title="Login Page"> <!-- title of nav bar -->
+    <ion-content padding="true"> <!-- Adds default padding. Must add manually. -->
+
+        <section>
+            <form role="form" ng-submit="submitLogin()">
+                <h1>Login to FestivalTime</h1>
+                <input type="username" autofocus required placeholder="Username" ng-model="loginForm.username">
+                <input type="password" required placeholder="Password" ng-model="loginForm.password">
+                <button type="submit">Login</button>
+
+                <p class="login_forgot_password"><a ng-href="#/login/forgot">Forgot password?</a></p>
+            </form>
+        </section>
+    </ion-content>
+</ion-view>

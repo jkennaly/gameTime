@@ -1,12 +1,9 @@
 package us.festivaltime.gametime.server;
 
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,19 +93,6 @@ public class Festival extends FestivalTimeObject {
             e.printStackTrace();
         }
 
-        return fests;
-    }
-
-    protected static JSONArray getFestivalDays(Festival fest) {
-        String sql = "select `id` from `days` where `festival`=? and deleted!='1'";
-        String[] args = {Integer.toString(fest.id)};
-        JSONArray fests = new JSONArray();
-        try {
-            JSONArray rawUsers = DBConnect.dbQuery(sql, args);
-            for (int i = 0; i < rawUsers.length(); i++) fests.put(i, rawUsers.getJSONObject(i).getInt("id"));
-        } catch (SQLException | JSONException e) {
-            e.printStackTrace();
-        }
         return fests;
     }
 
@@ -216,88 +200,5 @@ public class Festival extends FestivalTimeObject {
         }
     }
 
-    class FestivalDate extends FestivalTimeObject {
-        static final String CREATE_SQL = "select `id`, `name`, " +
-                "`venue`, `basedate`, `mode` " +
-                "from dates " +
-                "where `id`=? and deleted!='1';";
-        int id;
-        String name;
-        DateTime baseDate;
-        Venue venue;
-        List<Day> days;
-
-        FestivalDate(int idS) throws JSONException {
-            super(idS, CREATE_SQL);
-        }
-
-        protected void setFields(JSONArray resultArray) throws JSONException {
-            JSONObject rs;
-            rs = resultArray.getJSONObject(0);
-            name = rs.getString("name");
-            id = rs.getInt("id");
-//            System.err.println("Fest instantiation: about to get venue ");
-            venue = new Venue(rs.getInt("venue"));
-            Date tempDate = (Date) rs.get("basedate");
-            LocalDate localDate = LocalDate.fromDateFields(tempDate);
-            baseDate = localDate.toDateTimeAtStartOfDay(venue.timeZone);
-            JSONArray dayIDs = Festival.getFestivalDays(Festival.this);
-            days = new ArrayList<>();
-//            System.err.println("Fest instantiation: day IDs gotten: " + dayIDs.toString());
-            for (int i = 0; i < dayIDs.length(); i++) {
-                Day tempDay = new Day(dayIDs.getInt(i));
-//                System.err.println("Fest instantiation: day created: " + Integer.toString(tempDay.id));
-                days.add(tempDay);
-            }
-//            System.err.println("Fest instantiation: field set for date: "+Integer.toString(id));
-
-        }
-
-        JSONObject getAppData(User self, Festival fest) throws JSONException {
-            JSONObject appData = new JSONObject();
-            appData.put("id", id);
-            appData.put("name", name);
-//            System.err.println("Collecting data: venue not yet set for date: " + Integer.toString(id));
-            appData.put("venueData", venue.getAppData(self, fest));
-            JSONArray dayData = new JSONArray();
-//            System.err.println("Collecting data: field set for date: " + Integer.toString(id));
-            for (Day day : days) dayData.put(day.getAppData(self, fest));
-            appData.put("dayData", dayData);
-            return appData;
-        }
-    }
-
-    class Day extends FestivalTimeObject {
-        static final String CREATE_SQL = "select `id`, `name`, " +
-                "`days_offset` " +
-                "from days " +
-                "where `id`=? and deleted!='1';";
-        int id, offset;
-        String name, description;
-
-        Day(int idS) throws JSONException {
-            super(idS, CREATE_SQL);
-        }
-
-        protected void setFields(JSONArray resultArray) throws JSONException {
-            JSONObject rs;
-            rs = resultArray.getJSONObject(0);
-            name = rs.getString("name");
-            id = rs.getInt("id");
-            offset = rs.getInt("days_offset");
-//            System.err.println("Fest instantiation: setting fields for day: " + Integer.toString(id));
-
-
-        }
-
-        JSONObject getAppData(User self, Festival fest) throws JSONException {
-            JSONObject appData = new JSONObject();
-            appData.put("id", id);
-            appData.put("offset", offset);
-            appData.put("name", name);
-            appData.put("description", description);
-            return appData;
-        }
-    }
 
 }

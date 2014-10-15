@@ -2,11 +2,19 @@ package us.festivaltime.gametime.server;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by jbk on 8/30/14.
@@ -15,7 +23,7 @@ public class GameTime {
 
     public static String sanitizeJsonpParam(String s) {
         if (StringUtils.isEmpty(s)) return null;
-        if (!StringUtils.startsWithIgnoreCase(s, "jquery")) return null;
+        if (!StringUtils.startsWithIgnoreCase(s, "angular.callbacks")) return null;
         if (StringUtils.length(s) > 128) return null;
         return s;
     }
@@ -35,27 +43,47 @@ public class GameTime {
 
     public static String parseRequest(HttpServletRequest request) {
         JSONObject jo = new JSONObject();
+        JSONObject incJO = new JSONObject();
         User self;
         int festID;
         Festival curFest;
 
-        String cb = request.getParameter("callback");
-        String reqType = request.getParameter("reqType");
-        String login_auth = request.getParameter("mobile_auth_key");
-        String uname = request.getParameter("uname");
-        String jsonCallbackParam = sanitizeJsonpParam(cb);
-        try {
-            jo.put("response", "Failed");
-            String messageJSON = jsonCallbackParam + "(" + jo.toString() + ");";
-            if (jsonCallbackParam == null || jsonCallbackParam.isEmpty()) return messageJSON;
-        } catch (JSONException e) {
-            e.printStackTrace();
+
+        Map<String, String[]> map = request.getParameterMap();
+        Set set = map.entrySet();
+        Iterator it = set.iterator();
+        while (it.hasNext()) {
+            JSONArray params = new JSONArray();
+            Map.Entry<String, String[]> entry =
+                    (Map.Entry<String, String[]>) it.next();
+            String paramName = entry.getKey();
+            String[] paramValues = entry.getValue();
+            for (int i = 0; i < paramValues.length; i++) params.put(paramValues[i]);
+            try {
+                incJO.put(paramName, params);
+                System.out.println("k: " + paramName + "v: " + params.getString(0));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
+        String jsonCallbackParam = null;
         try {
+            String body = getBody(request);
+            //       System.out.println(body);
+
+            String cb = incJO.getJSONArray("callback").getString(0);
+            String reqType = incJO.getJSONArray("reqType").getString(0);
+            String uname = incJO.getJSONArray("uname").getString(0);
+            jsonCallbackParam = sanitizeJsonpParam(cb);
+
+            jo.put("response", "Failed");
+            String messageJSON = jsonCallbackParam + "(\")]}',\\n\" + " + jo.toString() + ");";
+            if (jsonCallbackParam == null || jsonCallbackParam.isEmpty()) return messageJSON;
+
             switch (reqType) {
                 case "login_status":
-                    jo.put("loginValid", verifyAuth(login_auth, uname));
+                    jo.put("loginValid", verifyAuth(incJO.getJSONArray("mobile_auth_key").getString(0), uname));
                     break;
                 case "challenge_req":
                     // retrieve salt, challenge for username
@@ -63,7 +91,7 @@ public class GameTime {
                     break;
                 case "challenge_sub":
                     // retrieve salt, challenge for username
-                    String response = request.getParameter("response");
+                    String response = incJO.getJSONArray("response").getString(0);
 //                   System.err.println("Challenge response: " + response);
 
                     jo = evaluateResponse(uname, response);
@@ -90,7 +118,7 @@ public class GameTime {
                     break;
                 case "general_data":
                     //Verify request is valid
-                    if (!verifyAuth(login_auth, uname)) {
+                    if (!verifyAuth(incJO.getJSONArray("mobile_auth_key").getString(0), uname)) {
                         jo.put("loginValid", false);
                         break;
                     }
@@ -112,12 +140,12 @@ public class GameTime {
                     break;
                 case "select_purchased":
                     //Verify request is valid
-                    if (!verifyAuth(login_auth, uname)) {
+                    if (!verifyAuth(incJO.getJSONArray("mobile_auth_key").getString(0), uname)) {
                         jo.put("loginValid", false);
                         break;
                     }
                     //Verify festival is purchased
-                    festID = Integer.parseInt(request.getParameter("selectedFestival"));
+                    festID = Integer.parseInt(incJO.getJSONArray("selectedFestival").getString(0));
                     self = new User(uname);
 //                    System.out.println("Request: " + request.getParameter("selectedFestival"));
                     if (!self.checkUserPurchasedFestival(festID)) {
@@ -131,12 +159,12 @@ public class GameTime {
                     break;
                 case "select_unpurchased":
                     //Verify request is valid
-                    if (!verifyAuth(login_auth, uname)) {
+                    if (!verifyAuth(incJO.getJSONArray("mobile_auth_key").getString(0), uname)) {
                         jo.put("loginValid", false);
                         break;
                     }
                     //Verify festival is purchased
-                    festID = Integer.parseInt(request.getParameter("selectedFestival"));
+                    festID = Integer.parseInt(incJO.getJSONArray("selectedFestival").getString(0));
                     self = new User(uname);
 //                    System.out.println("Request: " + request.getParameter("selectedFestival"));
                     if (self.checkUserPurchasedFestival(festID)) {
@@ -150,6 +178,7 @@ public class GameTime {
                     self.purchaseFestival(curFest);
                     //Return data on current festival
                     jo = getAppData(self, curFest, jo);
+                    jo.put("response", "success");
                     break;
                 case "purchase_credits":
                     //If number of credits is less than 5, add 5 credits
@@ -167,6 +196,8 @@ public class GameTime {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 //        System.out.println("Reply: " + jo.toString());
         return jsonCallbackParam + "(" + jo.toString() + ");";
@@ -176,6 +207,8 @@ public class GameTime {
         jo.put("currentFestivalData", curFest.getAppData(self, curFest));
         //Return User festival data
         jo.put("userFestivalData", self.getAppData(self, curFest));
+        jo.put("bandFestivalData", Band.getAppData(self, curFest));
+//        System.out.println("jo: " + jo.toString());
         return jo;
     }
 
@@ -235,6 +268,40 @@ public class GameTime {
             }
         }
         return jo;
+    }
+
+    public static String getBody(HttpServletRequest request) throws IOException {
+
+        String body = null;
+        StringBuilder stringBuilder = new StringBuilder();
+        BufferedReader bufferedReader = null;
+
+        try {
+            InputStream inputStream = request.getInputStream();
+            if (inputStream != null) {
+                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                char[] charBuffer = new char[128];
+                int bytesRead = -1;
+                while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
+                    stringBuilder.append(charBuffer, 0, bytesRead);
+                }
+            } else {
+                stringBuilder.append("");
+            }
+        } catch (IOException ex) {
+            throw ex;
+        } finally {
+            if (bufferedReader != null) {
+                try {
+                    bufferedReader.close();
+                } catch (IOException ex) {
+                    throw ex;
+                }
+            }
+        }
+
+        body = stringBuilder.toString();
+        return body;
     }
 
 }

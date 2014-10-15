@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/ftGameTime/ftGameTime.iml" filepath="$PROJECT_DIR$/ftGameTime/ftGameTime.iml" />
       <module fileurl="file://$PROJECT_DIR$/gameTime.iml" filepath="$PROJECT_DIR$/gameTime.iml" />
-      <module fileurl="file://$PROJECT_DIR$/gameTimeClient/gameTimeClient.iml" filepath="$PROJECT_DIR$/gameTimeClient/gameTimeClient.iml" />
       <module fileurl="file://$PROJECT_DIR$/gameTimeServer/gameTimeServer.iml" filepath="$PROJECT_DIR$/gameTimeServer/gameTimeServer.iml" />
     </modules>
   </component>

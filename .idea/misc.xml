@@ -82,7 +82,7 @@
     <show-object-properties value="true" />
     <loaded-nodes>
       <connection connection-id="11b00627-ef67-46ae-8587-2c994ec1de33">
-        <schema name="festival_master" object-types="column, function, table, view" />
+        <schema name="festival_master" object-types="column, function, procedure, table, view" />
       </connection>
     </loaded-nodes>
   </component>
