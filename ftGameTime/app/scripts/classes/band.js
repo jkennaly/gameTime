@@ -11,6 +11,8 @@ angular.module('ftGameTimeApp')
         var Band = function (id) {
             this.name = bandFestivalData[id].name;
             this.id = id;
+            this.priority = bandFestivalData[id].priority;
+            this.imageSrc = bandFestivalData[id].imageSrc;
             this.ratingsData = bandFestivalData[id].ratingsData;
             this.genre = bandFestivalData[id].genre;
             this.parentGenre = bandFestivalData[id].parentGenre;

@@ -2,7 +2,7 @@
  * Created by jbk on 10/5/14.
  */
 angular.module('ftGameTimeApp')
-    .factory('AppServer', ['$http', 'Sort', function AppServerFactory($http) {
+    .factory('AppServer', ['$http', function AppServerFactory($http) {
 
         return {
             request: function (data) {
@@ -44,7 +44,8 @@ angular.module('ftGameTimeApp')
                         "unpurchasedFestivals",
                         "userFestivalData",
                         "currentFestivalData",
-                        "bandFestivalData"
+                        "bandFestivalData",
+                        "setFestivalData"
                     ];
                     v.forEach(function (element) {
 //            console.log(element);
