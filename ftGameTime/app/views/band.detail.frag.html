@@ -1,21 +1,124 @@
 <ion-view title="User"> <!-- title of nav bar -->
     <ion-content padding="true"> <!-- Adds default padding. Must add manually. -->
         <section>
-            <div>
                 <div class="row">
                     <div class="col-33 col-center center-wrapper">
-                        <img ng-src="{{band.imageSrc}}" class="">
+                        <img ng-src="{{band.current.imageSrc}}" class="">
 
                     </div>
                     <div class="col-67">
-                        <h2>{{band.name}}</h2>
+                        <h2>{{band.current.name}}</h2>
 
-                        <p>{{band.genre}}</p>
+                        <p>{{band.current.genre}}</p>
+
+                        <div class="list list-inset">
+                            <div ng-repeat="set in bandSets" class="item">
+                                <set-display set="set">
+                                </set-display>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
 
+            <div ng-repeat="card in band.current.cardData" ng-controller="CardDataCtrl" class="bandCardData">
+                <div class="item item-divider item-avatar">
+                    <img ng-src="{{ reportUserImage(card.reportAuthor)}}">
+
+                    <h2>{{ reportUserName(card.reportAuthor)}}</h2>
+
+                    <p>{{card.festival}}</p>
+                </div>
+                <div class="item item-text-wrap">
+                    <div class="row">
+                        <div class="col col-pregame center-wrapper">
+                            <h4 class="center-wrapper">Pregame</h4>
+                            <rating ng-model="card.pgRating" max="5"></rating>
+                            <p>{{card.pgComment}}</p>
+                        </div>
+                        <div class="col col-gametime center-wrapper">
+                            <h4 class="center-wrapper">Gametime</h4>
+                            <rating ng-model="card.gtRating" max="5"></rating>
+                            <p>{{card.gtComment}}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <div class="row">
+                <div class="col-50 col-left">
+
+                </div>
+                <div class="col-25 col-center center-wrapper">
+                    Pregame
+                </div>
+                <div class="col-25 col-center center-wrapper">
+                    Gametime
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-50 col-left">
+                    Total checkins
+                </div>
+                <div class="col-25 col-center center-wrapper">
+
+                </div>
+                <div class="col-25 col-center center-wrapper">
+                    {{band.current.ratingsData.numCheckIns}}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-50 col-left">
+                    Your avg. rating
+                </div>
+                <div class="col-25 col-center center-wrapper">
+                    {{band.current.ratingsData.userPgRating}}
+                </div>
+                <div class="col-25 col-center center-wrapper">
+                    {{band.current.ratingsData.userGtRating}}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-50 col-left">
+                    Your people's avg. rating
+                </div>
+                <div class="col-25 col-center center-wrapper">
+                    {{band.current.ratingsData.followedPgRating}}
+                </div>
+                <div class="col-25 col-center center-wrapper">
+                    {{band.current.ratingsData.followedGtRating}}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-50 col-left">
+                    FestivalTime avg. rating (this festival)
+                </div>
+                <div class="col-25 col-center center-wrapper">
+                    {{band.current.ratingsData.sitesPgRating}}
+                </div>
+                <div class="col-25 col-center center-wrapper">
+                    {{band.current.ratingsData.sitesGtRating}}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-50 col-left">
+                    FestivalTime avg. rating (all time)
+                </div>
+                <div class="col-25 col-center center-wrapper">
+                    {{band.current.ratingsData.siteAtPgRating}}
+                </div>
+                <div class="col-25 col-center center-wrapper">
+                    {{band.current.ratingsData.siteAtGtRating}}
+                </div>
+            </div>
+
+
         </section>
     </ion-content>
 </ion-view>

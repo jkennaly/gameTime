@@ -15,13 +15,14 @@ import java.util.List;
  */
 
 public class Set extends FestivalTimeObject {
-    static final String CREATE_SQL = "SELECT `id`, `festival`, `band`, `day`, `date`, `start`, `end`, " +
+    static final String CREATE_SQL = "SELECT `id`, `festival`, `band`, `day`, `stage`, `date`, `start`, `end`, " +
             "count(*) AS total_rows FROM `sets` WHERE `deleted`!='1' AND (`id`=?)";
     int id, bandPriority;
     Band band;
     List<Band> specialGuest;
     FestivalDate festivalDate;
     Day festivalDay;
+    Stage stage;
     Festival festival;
 
     DateTime startTime, endTime;
@@ -47,6 +48,21 @@ public class Set extends FestivalTimeObject {
         return sets;
     }
 
+    static List<Set> getAllDateSets(FestivalDate date) {
+        String sql = "select `id` from `sets` where `deleted`!='1' and `date`=?";
+        String[] args = {Integer.toString(date.id)};
+        List<Set> sets = new ArrayList<>();
+//        System.err.println("Fest instantiation: date IDs gotten: " + dateIDs.toString());
+        try {
+            JSONArray setIDs = DBConnect.dbQuery(sql, args);
+            for (int i = 0; i < setIDs.length(); i++) sets.add(new Set(setIDs.getJSONObject(i).getInt("id")));
+
+        } catch (SQLException | JSONException e) {
+            e.printStackTrace();
+        }
+        return sets;
+    }
+
     static List<Set> getAllRatedSets(Band band) {
         @Language("MySQL") String sql = "SELECT DISTINCT `set` FROM `messages` WHERE deleted!='1' AND `band`=? AND `mode`='2' AND `remark`='2'";
         String[] args = {Integer.toString(band.id)};
@@ -62,6 +78,23 @@ public class Set extends FestivalTimeObject {
         return sets;
     }
 
+        static JSONObject getAppData(FestivalDate date) throws JSONException {
+            JSONObject appData = new JSONObject();
+            List<Set> sets = getAllDateSets(date);
+            for (Set set : sets) {
+                JSONObject tempData = new JSONObject();
+                tempData.put("id", set.id);
+                tempData.put("band", set.band.id);
+                tempData.put("day", set.festivalDay.id);
+                tempData.put("stage", set.stage.id);
+                tempData.put("startTime", set.startTime.getMillis());
+                tempData.put("endTime", set.endTime.getMillis());
+                appData.put(Integer.toString(set.id), tempData);
+            }
+
+            return appData;
+    }
+
     @Override
     void setFields(JSONArray resultArray) throws JSONException {
         JSONObject rs;
@@ -71,6 +104,7 @@ public class Set extends FestivalTimeObject {
         festivalDate = new FestivalDate(rs.getInt("date"));
 
         festivalDay = new Day(rs.getInt("day"));
+        stage = new Stage(rs.getInt("stage"));
         specialGuest = null;
         band = new Band(rs.getInt("band"));
 
@@ -88,19 +122,11 @@ public class Set extends FestivalTimeObject {
         //calculate the start time by adding the Date basedate, the day days_offset, and the start value
 
         int sec = rs.getInt("start");
-        System.out.println("base Date: " + festivalDate.baseDate.toString());
+//        System.out.println("base Date: " + festivalDate.baseDate.toString());
         startTime = festivalDate.baseDate;
         startTime = startTime.plusDays(festivalDay.offset);
         startTime = startTime.plusSeconds(sec);
         endTime = festivalDate.baseDate.plusDays(festivalDay.offset).plusSeconds(rs.getInt("end"));
     }
 
-    JSONObject getAppData(User self, Festival fest) throws JSONException {
-        JSONObject appData = new JSONObject();
-        appData.put("id", id);
-        appData.put("band", band.id);
-        appData.put("startTime", startTime.getMillis());
-        appData.put("endTime", endTime.getMillis());
-        return appData;
-    }
 }

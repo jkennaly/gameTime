@@ -32,31 +32,33 @@ public class Band extends FestivalTimeObject {
         appData.put("appDataTime", time);
         List<Band> bands = getAllBands(fest);
         for (Band band : bands) {
-            System.out.println("getting data for: " + band.name);
+            //           System.out.println("getting data for: " + band.name);
             JSONObject bandData = new JSONObject();
             bandData.put("id", band.id);
             bandData.put("name", band.name);
             bandData.put("genre", band.getGenre(self));
+            bandData.put("priority", band.getPriority(fest));
             bandData.put("parentGenre", band.getParentGenre(self));
+            bandData.put("imageSrc", band.getImageString());
             JSONObject ratings = new JSONObject();
-            System.out.println("getting ratings for: " + band.name);
+            //           System.out.println("getting ratings for: " + band.name);
             ratings.put("userPgRating", band.getUsersRating(self, fest, 1));
-            System.out.println("got a ratings for: " + band.name);
+//            System.out.println("got a ratings for: " + band.name);
             ratings.put("userGtRating", band.getUsersRating(self, fest, 2));
             ratings.put("followedPgRating", band.getFollowedsRating(self, fest, 1));
             ratings.put("followedGtRating", band.getFollowedsRating(self, fest, 2));
-            System.out.println("got some ratings for: " + band.name);
+            //           System.out.println("got some ratings for: " + band.name);
             ratings.put("sitesPgRating", band.getSitesRating(fest, 1));
             ratings.put("sitesGtRating", band.getSitesRating(fest, 2));
             ratings.put("siteAtPgRating", band.getSitesRating(1));
             ratings.put("siteAtGtRating", band.getSitesRating(2));
-            System.out.println("got all ratings for: " + band.name);
+//            System.out.println("got all ratings for: " + band.name);
             ratings.put("numCheckIns", band.numberCheckins());
-            System.out.println("getting card data for: " + band.name);
+//            System.out.println("getting card data for: " + band.name);
             bandData.put("ratingsData", ratings);
             bandData.put("cardData", band.getCardData(self));
             appData.put(String.valueOf(band.id), bandData);
-            System.out.println("appData complete for: " + band.name);
+//            System.out.println("appData complete for: " + band.name);
         }
 
 
@@ -91,6 +93,27 @@ public class Band extends FestivalTimeObject {
             e.printStackTrace();
         }
         return genre;
+    }
+
+    int getPriority(Festival fest) {
+        int priority = 98;
+        String sql = "select `priority` from `band_list` where `band`=? AND `festival`=? AND `deleted`!='1'";
+
+        String[] args = {Integer.toString(id), Integer.toString(fest.id)};
+
+        JSONArray genreRes;
+        try {
+            genreRes = DBConnect.dbQuery(sql, args);
+            priority = genreRes.getJSONObject(0).getInt("priority");
+        } catch (SQLException | JSONException e) {
+            e.printStackTrace();
+        }
+        return priority;
+    }
+
+    private String getImageString() {
+        return "https://www.festivaltime.us/includes/content/blocks/getPicture4.php?band=" + id;
+
     }
 
     @Override
@@ -227,7 +250,7 @@ public class Band extends FestivalTimeObject {
         return intString;
     }
 
-    JSONObject getCardData(User self) throws JSONException {
+    JSONArray getCardData(User self) throws JSONException {
         /*
         A card is the information from a user who checked in to a band
         It's a quick way to see what people have thught about that band
@@ -240,36 +263,33 @@ public class Band extends FestivalTimeObject {
         Their gametime comments associated to the set (if any)
         */
 
-        JSONObject jo = new JSONObject();
+        JSONArray ja = new JSONArray();
         List<Set> ratedSets = Set.getAllRatedSets(this);
         List<User> visibleUsers = new ArrayList<>();
         JSONArray userIds = self.getVisibleUsers();
-        System.out.println("Initial card data collected");
+//        System.out.println("Initial card data collected");
         for (int i = 0; i < userIds.length(); i++) visibleUsers.add(new User(userIds.getInt(i)));
         for (User user : visibleUsers) {
-            JSONObject userReviews = new JSONObject();
             for (Set set : ratedSets) {
-                System.out.println("Checking set " + set.id);
-
+//                System.out.println("Checking set " + set.id);
                 if (Message.userRatedSet(user, set)) {
                     JSONObject showReport = new JSONObject();
                     showReport.put("reportAuthor", user.id);
                     showReport.put("setId", set.id);
                     showReport.put("festival", set.festival.sitename);
-                    System.out.println("Grabbing data for set " + set.id);
+//                    System.out.println("Grabbing data for set " + set.id);
                     showReport.put("pgRating", Message.userPgRating(user, set.band, set.festival));
                     showReport.put("gtRating", Message.userGtRating(user, set));
                     showReport.put("pgComment", Message.userPgComment(user, set.band, set.festival));
                     showReport.put("gtComment", Message.userGtComment(user, set));
-                    userReviews.put(Integer.toString(set.id), showReport);
+                    ja.put(showReport);
                 }
 
             }
-            jo.put(Integer.toString(user.id), userReviews);
         }
 
 
-        return jo;
+        return ja;
     }
 
     String getGenre(User user) {
@@ -301,7 +321,7 @@ public class Band extends FestivalTimeObject {
                 sql = "SELECT `genre`, count(`user`) AS num FROM `bandgenres` WHERE `band`=? GROUP BY genre ORDER BY num DESC LIMIT 1";
                 args = new String[]{Integer.toString(id)};
                 JSONArray otherGenre = DBConnect.dbQuery(sql, args);
-                genreId = otherGenre.getJSONObject(0).getInt("genre");
+                if (otherGenre.length() != 0) genreId = otherGenre.getJSONObject(0).getInt("genre");
             } else genreId = userGenre.getJSONObject(0).getInt("genre");
         } catch (SQLException | JSONException e) {
             e.printStackTrace();

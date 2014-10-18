@@ -15,6 +15,7 @@ angular.module('ftGameTimeApp')
         $scope.bandArray = [];
 
         for (var i = 0; i < FestivalBands.length; i++) {
+//            console.log("i: " + i + "FestivalBands[i]" + FestivalBands[i]);
             $scope.bandArray[i] = new Band(FestivalBands[i]);
         }
     });

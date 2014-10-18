@@ -1,8 +1,11 @@
 package us.festivaltime.gametime.server;
 
+import org.intellij.lang.annotations.Language;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.sql.SQLException;
 
 /**
  * Created by jbk on 10/10/14.
@@ -11,23 +14,100 @@ import org.json.JSONObject;
 public class Message extends FestivalTimeObject {
 
     static boolean userRatedSet(User user, Set set) {
-        return false;
+        boolean retVal = false;
+        @Language("MySQL") String sql = "select `id` from `messages` " +
+                "where `fromuser`=? and `remark`='2' and `deleted`!='1'" +
+                " and `set`=? ";
+        String[] args = {
+                Integer.toString(user.id),
+                Integer.toString(set.id)
+        };
+        JSONArray msgRes;
+        try {
+            msgRes = DBConnect.dbQuery(sql, args);
+            if (msgRes.length() > 0) retVal = true;
+        } catch (SQLException | JSONException e) {
+            e.printStackTrace();
+        }
+        return retVal;
     }
 
     static int userGtRating(User user, Set set) {
-        return -1;
+        int retVal = 0;
+        @Language("MySQL") String sql = "select `content` from `messages` " +
+                "where `fromuser`=? and `remark`='2' and `deleted`!='1'" +
+                " and  `set`=? order by `id` DESC LIMIT 1";
+        String[] args = {
+                Integer.toString(user.id),
+                Integer.toString(set.id)
+        };
+        JSONArray msgRes;
+        try {
+            msgRes = DBConnect.dbQuery(sql, args);
+            if (msgRes.length() > 0) retVal = msgRes.getJSONObject(0).getInt("content");
+        } catch (SQLException | JSONException e) {
+            e.printStackTrace();
+        }
+        return retVal;
     }
 
-    static int userPgRating(User user, Band set, Festival fest) {
-        return -1;
+    static int userPgRating(User user, Band band, Festival fest) {
+        int retVal = 0;
+        @Language("MySQL") String sql = "select `content` from `messages` " +
+                "where `fromuser`=? and `remark`='2' and `deleted`!='1'" +
+                " and  `band`=? and  `festival`=? and `mode`='1' order by `id` DESC LIMIT 1";
+        String[] args = {
+                Integer.toString(user.id),
+                Integer.toString(band.id),
+                Integer.toString(fest.id)
+        };
+        JSONArray msgRes;
+        try {
+            msgRes = DBConnect.dbQuery(sql, args);
+            if (msgRes.length() > 0) retVal = msgRes.getJSONObject(0).getInt("content");
+        } catch (SQLException | JSONException e) {
+            e.printStackTrace();
+        }
+        return retVal;
     }
 
     static String userGtComment(User user, Set set) {
-        return "";
+        String retVal = "";
+        @Language("MySQL") String sql = "select `content` from `messages` " +
+                "where `fromuser`=? and `remark`='1' and `deleted`!='1'" +
+                " and  `set`=? order by `id` ASC ";
+        String[] args = {
+                Integer.toString(user.id),
+                Integer.toString(set.id)
+        };
+        JSONArray msgRes;
+        try {
+            msgRes = DBConnect.dbQuery(sql, args);
+            if (msgRes.length() > 0) retVal += msgRes.getJSONObject(0).getString("content");
+        } catch (SQLException | JSONException e) {
+            e.printStackTrace();
+        }
+        return retVal;
     }
 
-    static String userPgComment(User user, Band set, Festival fest) {
-        return "";
+    static String userPgComment(User user, Band band, Festival fest) {
+        String retVal = "";
+        @Language("MySQL") String sql = "select `content` from `messages` " +
+                "where `fromuser`=? and `remark`='1' and `deleted`!='1'" +
+                " and  `band`=? and `festival`=? order by `id` ASC ";
+        String[] args = {
+                Integer.toString(user.id),
+                Integer.toString(band.id),
+                Integer.toString(fest.id)
+        };
+        JSONArray msgRes;
+        try {
+            msgRes = DBConnect.dbQuery(sql, args);
+            if (msgRes.length() > 0) retVal += msgRes.getJSONObject(0).getString("content");
+        } catch (SQLException | JSONException e) {
+            e.printStackTrace();
+        }
+        return retVal;
     }
 
     @Override

@@ -9,6 +9,17 @@ import org.json.JSONObject;
  */
 
 public class Place extends FestivalTimeObject {
+    static final String CREATE_SQL = "select `id`, `name`, `type`, `layout`, `priority`" +
+            "from `places` " +
+            "where `id`=? and deleted!='1';";
+    int id, type;
+    String name;
+
+    public Place(int idS) throws JSONException {
+
+        super(idS, CREATE_SQL);
+
+    }
 
     @Override
     void setFields(JSONArray resultArray) throws JSONException {

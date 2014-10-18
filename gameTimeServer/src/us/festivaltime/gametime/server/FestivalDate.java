@@ -52,6 +52,7 @@ public class FestivalDate extends FestivalTimeObject {
         JSONObject appData = new JSONObject();
         appData.put("id", id);
         appData.put("name", name);
+        appData.put("baseDate", baseDate.getMillis());
 //            System.err.println("Collecting data: venue not yet set for date: " + Integer.toString(id));
         appData.put("venueData", venue.getAppData(self, fest));
         JSONArray dayData = new JSONArray();

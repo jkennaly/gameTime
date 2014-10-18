@@ -1,0 +1,14 @@
+<div class="set-display">
+
+    <div class="row">
+        <div class="col">
+            {{set.day}}
+        </div>
+        <div class="col">
+            {{set.stage}}
+        </div>
+        <div class="col">
+            {{set.startTime | date : 'shortTime'}} - {{set.endTime | date : 'shortTime'}}
+        </div>
+    </div>
+</div>

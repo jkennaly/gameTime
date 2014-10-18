@@ -3,7 +3,7 @@
  */
 
 angular.module('ftGameTimeApp')
-    .factory('Band', function (Objectify) {
+    .factory('Band', function (Objectify, FestivalSets, Set) {
 
 
         var bandFestivalData = Objectify.result("bandFestivalData");
@@ -17,6 +17,21 @@ angular.module('ftGameTimeApp')
             this.genre = bandFestivalData[id].genre;
             this.parentGenre = bandFestivalData[id].parentGenre;
             this.cardData = bandFestivalData[id].cardData;
+        };
+
+        Band.prototype.getSets = function () {
+            var sets = [];
+            //           console.log(FestivalSets);
+            for (var i = 0; i < FestivalSets.length; i++) {
+                var set = new Set(FestivalSets[i]);
+//                console.log(set);
+                if (set.band == this.id) {
+//                    console.log(set);
+                    sets.push(set);
+                }
+            }
+            return sets;
         }
+
         return Band;
     });

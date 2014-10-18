@@ -14,7 +14,6 @@ import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by jbk on 8/30/14.
@@ -45,12 +44,13 @@ public class GameTime {
         JSONObject jo = new JSONObject();
         JSONObject incJO = new JSONObject();
         User self;
-        int festID;
+        int festID, dateID;
         Festival curFest;
+        FestivalDate curDate;
 
 
         Map<String, String[]> map = request.getParameterMap();
-        Set set = map.entrySet();
+        java.util.Set<Map.Entry<String, String[]>> set = map.entrySet();
         Iterator it = set.iterator();
         while (it.hasNext()) {
             JSONArray params = new JSONArray();
@@ -72,14 +72,16 @@ public class GameTime {
             String body = getBody(request);
             //       System.out.println(body);
 
-            String cb = incJO.getJSONArray("callback").getString(0);
-            String reqType = incJO.getJSONArray("reqType").getString(0);
-            String uname = incJO.getJSONArray("uname").getString(0);
-            jsonCallbackParam = sanitizeJsonpParam(cb);
+            if (incJO.has("callback")) {
+                String cb = incJO.getJSONArray("callback").getString(0);
+                jsonCallbackParam = sanitizeJsonpParam(cb);
+            } else jsonCallbackParam = null;
 
             jo.put("response", "Failed");
             String messageJSON = jsonCallbackParam + "(\")]}',\\n\" + " + jo.toString() + ");";
             if (jsonCallbackParam == null || jsonCallbackParam.isEmpty()) return messageJSON;
+            String reqType = incJO.getJSONArray("reqType").getString(0);
+            String uname = incJO.getJSONArray("uname").getString(0);
 
             switch (reqType) {
                 case "login_status":
@@ -146,6 +148,7 @@ public class GameTime {
                     }
                     //Verify festival is purchased
                     festID = Integer.parseInt(incJO.getJSONArray("selectedFestival").getString(0));
+                    dateID = Integer.parseInt(incJO.getJSONArray("selectedDate").getString(0));
                     self = new User(uname);
 //                    System.out.println("Request: " + request.getParameter("selectedFestival"));
                     if (!self.checkUserPurchasedFestival(festID)) {
@@ -153,9 +156,10 @@ public class GameTime {
                         break;
                     }
                     curFest = new Festival(festID);
+                    curDate = new FestivalDate(dateID);
 
                     //Return data on current festival
-                    jo = getAppData(self, curFest, jo);
+                    jo = getAppData(self, curFest, curDate, jo);
                     break;
                 case "select_unpurchased":
                     //Verify request is valid
@@ -165,6 +169,7 @@ public class GameTime {
                     }
                     //Verify festival is purchased
                     festID = Integer.parseInt(incJO.getJSONArray("selectedFestival").getString(0));
+                    dateID = Integer.parseInt(incJO.getJSONArray("selectedDate").getString(0));
                     self = new User(uname);
 //                    System.out.println("Request: " + request.getParameter("selectedFestival"));
                     if (self.checkUserPurchasedFestival(festID)) {
@@ -172,12 +177,13 @@ public class GameTime {
                         break;
                     }
                     curFest = new Festival(festID);
+                    curDate = new FestivalDate(dateID);
                     if (self.credits < curFest.cost) {
                         self.purchaseCredits();
                     }
                     self.purchaseFestival(curFest);
                     //Return data on current festival
-                    jo = getAppData(self, curFest, jo);
+                    jo = getAppData(self, curFest, curDate, jo);
                     jo.put("response", "success");
                     break;
                 case "purchase_credits":
@@ -203,11 +209,12 @@ public class GameTime {
         return jsonCallbackParam + "(" + jo.toString() + ");";
     }
 
-    private static JSONObject getAppData(User self, Festival curFest, JSONObject jo) throws JSONException {
+    private static JSONObject getAppData(User self, Festival curFest, FestivalDate curDate, JSONObject jo) throws JSONException {
         jo.put("currentFestivalData", curFest.getAppData(self, curFest));
         //Return User festival data
         jo.put("userFestivalData", self.getAppData(self, curFest));
         jo.put("bandFestivalData", Band.getAppData(self, curFest));
+        jo.put("setFestivalData", Set.getAppData(curDate));
 //        System.out.println("jo: " + jo.toString());
         return jo;
     }
