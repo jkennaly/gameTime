@@ -1,0 +1,33 @@
+<!-- 
+  Create tabs with an icon and label, using the tabs-positive style. 
+  Each tab's child <ion-nav-view> directive will have its own 
+  navigation history that also transitions its views in and out.
+-->
+<ion-tabs class="tabs-icon-top">
+
+    <!-- Festival Home Tab -->
+    <ion-tab title="Home" icon="icon ion-home" href="#/tab/festival/home">
+        <ion-nav-view name="tab-festival-home"></ion-nav-view>
+    </ion-tab>
+
+    <!-- People Tab -->
+    <ion-tab title="People" icon="icon ion-person" href="#/tab/user/overview">
+        <ion-nav-view name="tab-user-overview"></ion-nav-view>
+    </ion-tab>
+
+    <!-- Bands Tab -->
+    <ion-tab title="Bands" icon="icon ion-music-note" href="#/tab/band/overview">
+        <ion-nav-view name="tab-band-overview"></ion-nav-view>
+    </ion-tab>
+
+    <!-- Change Festival Tab -->
+    <ion-tab title="Festival" icon="icon ion-cloud" href="#/tab/festival/select">
+        <ion-nav-view name="tab-festival-select"></ion-nav-view>
+    </ion-tab>
+
+    <!-- Sign Out Tab -->
+    <ion-tab title="Sign Out" icon="icon ion-log-out" href="#/tab/login">
+        <ion-nav-view name="tab-login"></ion-nav-view>
+    </ion-tab>
+
+</ion-tabs>

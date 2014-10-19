@@ -11,9 +11,4 @@
  */
 angular.module('ftGameTimeApp')
     .controller('LoginFailedUsernameCtrl', function ($scope) {
-        $scope.awesomeThings = [
-            'HTML5 Boilerplate',
-            'AngularJS',
-            'Karma'
-        ];
     });

@@ -16,10 +16,6 @@ angular.module('ftGameTimeApp')
         $scope.festivals.purchased = FestivalPurchased;
         $scope.festivals.unpurchased = FestivalUnpurchased;
 
-        $scope.dateData = { "msg": "Test!" };
-
-        $scope.email = 'old';
-
         $scope.festivals.chooseFest = function () {
 
             /*
@@ -60,7 +56,7 @@ angular.module('ftGameTimeApp')
          */
 
 
-    }]).controller('DateCtrl', function ($scope, $location, AppServer) {
+    }]).controller('DateCtrl', function ($scope, $location, $state, AppServer) {
         $scope.festivals.dateSelected = null;
 
         $scope.festivals.chooseDate = function () {
@@ -80,6 +76,7 @@ angular.module('ftGameTimeApp')
 
             reqChallenge.success(function () {
                 $scope.dateCtrl.remove();
+                $state.reload();
                 $location.path("/festival/home");
             }).error(function () {
                 $scope.dateCtrl.remove();

@@ -3,7 +3,7 @@
  */
 
 angular.module('ftGameTimeApp')
-    .factory('FestivalSets', function (Objectify) {
+    .factory('FestivalSets', function FestivalSetsFactory(Objectify) {
         var fBands = Objectify.result("setFestivalData");
         var bandIds = Object.keys(fBands);
         return bandIds;

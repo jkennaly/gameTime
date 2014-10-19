@@ -5,7 +5,7 @@
 angular.module('ftGameTimeApp')
     .directive('socialButtons', function () {
 
-        console.log("Directive was called");
+//        console.log("Directive was called");
         return {
             restrict: 'E',
             scope: {

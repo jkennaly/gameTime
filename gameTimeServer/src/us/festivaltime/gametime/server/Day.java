@@ -39,6 +39,20 @@ public class Day extends FestivalTimeObject {
 
     }
 
+    static JSONObject getAppData(FestivalDate date) throws JSONException {
+        JSONObject appData = new JSONObject();
+        List<Day> days = getDateDays(date);
+        for (Day day : days) {
+            JSONObject tempData = new JSONObject();
+            tempData.put("id", day.id);
+            tempData.put("offset", day.offset);
+            tempData.put("name", day.name);
+            tempData.put("description", day.description);
+            appData.put(Integer.toString(day.id), tempData);
+        }
+        return appData;
+    }
+
     protected void setFields(JSONArray resultArray) throws JSONException {
         JSONObject rs;
         rs = resultArray.getJSONObject(0);
@@ -48,14 +62,5 @@ public class Day extends FestivalTimeObject {
 //            System.err.println("Fest instantiation: setting fields for day: " + Integer.toString(id));
 
 
-    }
-
-    JSONObject getAppData(User self, Festival fest) throws JSONException {
-        JSONObject appData = new JSONObject();
-        appData.put("id", id);
-        appData.put("offset", offset);
-        appData.put("name", name);
-        appData.put("description", description);
-        return appData;
     }
 }

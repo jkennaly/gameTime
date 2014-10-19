@@ -211,11 +211,16 @@ public class GameTime {
 
     private static JSONObject getAppData(User self, Festival curFest, FestivalDate curDate, JSONObject jo) throws JSONException {
         jo.put("currentFestivalData", curFest.getAppData(self, curFest));
+        jo.put("dateFestivalData", curDate.getAppData(self, curFest));
         //Return User festival data
         jo.put("userFestivalData", self.getAppData(self, curFest));
         jo.put("bandFestivalData", Band.getAppData(self, curFest));
         jo.put("setFestivalData", Set.getAppData(curDate));
 //        System.out.println("jo: " + jo.toString());
+
+        jo.put("dayFestivalData", Day.getAppData(curDate));
+        jo.put("placeFestivalData", Place.getAppData(curFest));
+        jo.put("messageFestivalData", Message.getAppData(self, curDate));
         return jo;
     }
 

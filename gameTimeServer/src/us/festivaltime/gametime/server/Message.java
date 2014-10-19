@@ -3,9 +3,9 @@ package us.festivaltime.gametime.server;
 import org.intellij.lang.annotations.Language;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by jbk on 10/10/14.
@@ -110,13 +110,38 @@ public class Message extends FestivalTimeObject {
         return retVal;
     }
 
+    static JSONArray getAppData(User self, FestivalDate curDate) throws JSONException {
+        JSONArray msgRes = new JSONArray();
+        List<User> others = self.getVisibleUsers();
+        String sql = "SELECT *  FROM `messages` " +
+                "WHERE" +
+                //Get pregame messages about the fest, and gametime messages about the date
+                " ((`festival`=? and `mode`='1') or ( `date`=? and `mode`='2' ))" +
+                //Do not get deleted messages
+                " and `deleted`!='1'" +
+                //Only get public messages or private msgs to this user
+                " and (`privacy`='1' or (`privacy`='2' and `touser`=?))" +
+                //Only get messages from visible users
+                " and ( `fromuser`='" + self.id + "' ";
+        for (User user : others) sql = sql + " or `fromuser`='" + user.id + "' ";
+        sql = sql + ")";
+        String[] args = {Integer.toString(
+                curDate.getFestivalId()),
+                Integer.toString(curDate.id),
+                Integer.toString(self.id)
+        };
+//        System.out.println(sql);
+        try {
+            msgRes = DBConnect.dbQuery(sql, args);
+        } catch (SQLException | JSONException e) {
+            e.printStackTrace();
+        }
+        return msgRes;
+    }
+
     @Override
     void setFields(JSONArray resultArray) throws JSONException {
 
 
-    }
-
-    JSONObject getAppData(User self, Festival fest) throws JSONException {
-        return null;
     }
 }

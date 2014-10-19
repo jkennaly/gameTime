@@ -1,9 +1,10 @@
-<ion-view title="Users"> <!-- title of nav bar -->
+<ion-view title="People"> <!-- title of nav bar -->
+
     <ion-content padding="true"> <!-- Adds default padding. Must add manually. -->
         <section>
             <ion-list>
                 <a ng-repeat="user in userArray | orderBy: ['+other()', '-followed()', '-purchased'] "
-                   class="item item-avatar" ng-href="#/user/detail/{{user.id}}">
+                   class="item item-avatar" ng-href="#/tab/user/detail/{{user.id}}">
                     <img ng-src="{{user.imageSrc}}">
 
                     <h2>{{user.username}}</h2>

@@ -1,49 +1,38 @@
-<ion-view title="User"> <!-- title of nav bar -->
+<ion-view title="{{band.current.name}}"> <!-- title of nav bar -->
+    <ion-header-bar class="bar bar-subheader">
+        <div class="tabs">
+            <a class="tab-item" ng-href="#/tab/band/overview">
+                Bands
+            </a>
+        </div>
+    </ion-header-bar>
     <ion-content padding="true"> <!-- Adds default padding. Must add manually. -->
         <section>
-                <div class="row">
-                    <div class="col-33 col-center center-wrapper">
-                        <img ng-src="{{band.current.imageSrc}}" class="">
+            <div class="row responsive-lg">
+                <div class="col-33 col-center center-wrapper">
+                    <img ng-src="{{band.current.imageSrc}}" class="">
 
-                    </div>
-                    <div class="col-67">
-                        <h2>{{band.current.name}}</h2>
-
-                        <p>{{band.current.genre}}</p>
-
-                        <div class="list list-inset">
-                            <div ng-repeat="set in bandSets" class="item">
-                                <set-display set="set">
-                                </set-display>
-                            </div>
-                        </div>
-
-                    </div>
                 </div>
+                <div class="col-67">
+                    <h2>{{band.current.name}}</h2>
 
+                    <p>{{band.current.genre}}</p>
 
-            <div ng-repeat="card in band.current.cardData" ng-controller="CardDataCtrl" class="bandCardData">
-                <div class="item item-divider item-avatar">
-                    <img ng-src="{{ reportUserImage(card.reportAuthor)}}">
-
-                    <h2>{{ reportUserName(card.reportAuthor)}}</h2>
-
-                    <p>{{card.festival}}</p>
-                </div>
-                <div class="item item-text-wrap">
-                    <div class="row">
-                        <div class="col col-pregame center-wrapper">
-                            <h4 class="center-wrapper">Pregame</h4>
-                            <rating ng-model="card.pgRating" max="5"></rating>
-                            <p>{{card.pgComment}}</p>
-                        </div>
-                        <div class="col col-gametime center-wrapper">
-                            <h4 class="center-wrapper">Gametime</h4>
-                            <rating ng-model="card.gtRating" max="5"></rating>
-                            <p>{{card.gtComment}}</p>
+                    <div class="list list-inset">
+                        <div ng-repeat="set in bandSets" class="item">
+                            <set-display set="set">
+                            </set-display>
                         </div>
                     </div>
+
                 </div>
+            </div>
+
+
+            <current-shows band="band"></current-shows>
+
+            <div ng-repeat="card in band.current.cardData" class="bandCardData">
+                <show-report card="card"></show-report>
             </div>
 
             <div class="row">

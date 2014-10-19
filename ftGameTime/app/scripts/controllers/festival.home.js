@@ -10,5 +10,6 @@
  * Controller of the ftGameTimeApp
  */
 angular.module('ftGameTimeApp')
-    .controller('FestivalHomeCtrl', function ($scope) {
+    .controller('FestivalHomeCtrl', function ($scope, FestivalFestival) {
+        $scope.curFest = FestivalFestival;
     });

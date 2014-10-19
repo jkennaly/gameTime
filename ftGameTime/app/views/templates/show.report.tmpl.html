@@ -1,0 +1,23 @@
+<div class="show-report item item-divider item-avatar">
+
+    <img ng-src="{{ reportUserImage(card.reportAuthor)}}">
+
+    <h2>{{ reportUserName(card.reportAuthor)}}</h2>
+
+    <p>{{card.festival}}</p>
+</div>
+<div class="item item-text-wrap">
+    <div class="row">
+        <div class="col col-pregame center-wrapper">
+            <h4 class="center-wrapper">Pregame</h4>
+            <rating ng-model="card.pgRating" max="5"></rating>
+            <p>{{card.pgComment}}</p>
+        </div>
+        <div class="col col-gametime center-wrapper">
+            <h4 class="center-wrapper">Gametime</h4>
+            <rating ng-model="card.gtRating" max="5"></rating>
+            <p>{{card.gtComment}}</p>
+        </div>
+    </div>
+
+</div>
