@@ -12,6 +12,7 @@
 angular.module('ftGameTimeApp')
     .controller('LoginCtrl', ['$scope', 'AppServer', '$location', function ($scope, AppServer, $location) {
 
+        localStorage.clear();
         $scope.loginForm = {};
 
         // process the form

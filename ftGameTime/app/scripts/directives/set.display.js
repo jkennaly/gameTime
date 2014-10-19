@@ -4,7 +4,7 @@
 
 angular.module('ftGameTimeApp')
     .directive('setDisplay', function () {
-        console.log("Directive was called again");
+//        console.log("Directive was called again");
         return {
             restrict: 'E',
             scope: {
@@ -12,6 +12,5 @@ angular.module('ftGameTimeApp')
             },
 //        template: '<div > Test</div>'
             templateUrl: "views/templates/set.display.tmpl.html"
-
         };
     });

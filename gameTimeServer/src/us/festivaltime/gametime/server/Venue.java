@@ -38,7 +38,7 @@ public class Venue extends FestivalTimeObject {
 
     }
 
-    JSONObject getAppData(User self, Festival fest) throws JSONException {
+    JSONObject getAppData() throws JSONException {
         JSONObject appData = new JSONObject();
         appData.put("id", id);
         appData.put("name", name);

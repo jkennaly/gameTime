@@ -10,21 +10,19 @@
  * Controller of the ftGameTimeApp
  */
 angular.module('ftGameTimeApp')
-    .controller('BandDetailCtrl', function ($scope, $routeParams, Band, Set) {
+    .controller('BandDetailCtrl', function ($scope, $stateParams, Band, FestivalFestival) {
         $scope.band = {};
-        $scope.band.current = new Band($routeParams.bandID);
+        $scope.festival = {};
+        $scope.band.current = new Band($stateParams.bandID);
         $scope.bandSets = $scope.band.current.getSets();
-        console.log($scope.bandSets);
+        $scope.festival.current = FestivalFestival;
+
+        var len = $scope.band.current.cardData.length;
+        while (len--) {
+            if ($scope.band.current.cardData[len].festival == FestivalFestival.sitename) {
+                $scope.band.current.cardData.splice(len, 1);
+            }
+        }
 
 
-    })
-    .controller('CardDataCtrl', function ($scope, User) {
-        $scope.reportUserImage = function (reportAuthor) {
-            var user = new User(reportAuthor);
-            return user.imageSrc;
-        }
-        $scope.reportUserName = function (reportAuthor) {
-            var user = new User(reportAuthor);
-            return user.username;
-        }
     });

@@ -265,10 +265,9 @@ public class Band extends FestivalTimeObject {
 
         JSONArray ja = new JSONArray();
         List<Set> ratedSets = Set.getAllRatedSets(this);
-        List<User> visibleUsers = new ArrayList<>();
-        JSONArray userIds = self.getVisibleUsers();
+        List<User> visibleUsers = self.getVisibleUsers();
 //        System.out.println("Initial card data collected");
-        for (int i = 0; i < userIds.length(); i++) visibleUsers.add(new User(userIds.getInt(i)));
+
         for (User user : visibleUsers) {
             for (Set set : ratedSets) {
 //                System.out.println("Checking set " + set.id);

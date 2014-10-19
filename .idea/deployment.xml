@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="Local" uploadOnCheckin="3a6b8598-67aa-46aa-9940-b155f9b0ec60" autoUploadExternalChanges="true">
+  <component name="PublishConfigData" serverName="Local" autoUploadExternalChanges="true">
     <serverData>
       <paths name="Festival Time">
         <serverdata>
@@ -37,7 +37,6 @@
         </serverdata>
       </paths>
     </serverData>
-    <option name="myUploadOnCheckinName" value="Festival Time" />
   </component>
 </project>
 

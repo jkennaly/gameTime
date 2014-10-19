@@ -1,4 +1,11 @@
-<ion-view title="User"> <!-- title of nav bar -->
+<ion-view title="{{user.current.username}}"> <!-- title of nav bar -->
+    <ion-header-bar class="bar bar-subheader">
+        <div class="tabs">
+            <a class="tab-item" ng-href="#/tab/user/overview">
+                People
+            </a>
+        </div>
+    </ion-header-bar>
     <ion-content padding="true"> <!-- Adds default padding. Must add manually. -->
         <section>
             <div>

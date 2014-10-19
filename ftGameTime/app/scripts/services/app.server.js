@@ -45,7 +45,10 @@ angular.module('ftGameTimeApp')
                         "userFestivalData",
                         "currentFestivalData",
                         "bandFestivalData",
-                        "setFestivalData"
+                        "setFestivalData",
+                        "placeFestivalData",
+                        "dayFestivalData",
+                        "messageFestivalData"
                     ];
                     v.forEach(function (element) {
 //            console.log(element);

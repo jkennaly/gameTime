@@ -7,6 +7,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static us.festivaltime.gametime.server.DBConnect.updateRecord;
 
@@ -173,10 +176,9 @@ public class User extends FestivalTimeObject {
     }
 
     public JSONArray getOthersData() throws JSONException {
-        JSONArray others = getVisibleUsers();
+        List<User> others = getVisibleUsers();
         JSONArray otherData = new JSONArray();
-        for (int i = 0; i < others.length(); i++) {
-            User other = new User(others.getInt(i));
+        for (User other : others) {
             JSONObject jo = other.getUserData();
             otherData.put(jo);
         }
@@ -184,15 +186,14 @@ public class User extends FestivalTimeObject {
     }
 
     public JSONObject getAppData(User self, Festival fest) throws JSONException {
-        JSONArray others = self.getVisibleUsers();
+        List<User> others = self.getVisibleUsers();
         JSONObject jo = new JSONObject();
         long time = System.currentTimeMillis();
         jo.put("appDataTime", time);
 
-        for (int i = 0; i < others.length(); i++) {
+        for (User other : others) {
             //collect app data
             JSONObject userData = new JSONObject();
-            User other = new User(others.getInt(i));
             userData.put("img", other.getImageString());
             userData.put("recentFests", other.getRecentFestivals());
             userData.put("purchased", other.checkUserPurchasedFestival(fest.id));
@@ -356,8 +357,8 @@ public class User extends FestivalTimeObject {
         return jo;
     }
 
-    JSONArray getVisibleUsers() {
-        JSONArray tempUsers = new JSONArray();
+    List<User> getVisibleUsers() {
+        List<User> users = new ArrayList<>();
         String sql = "select `id` from `Users` where `deleted`!='1' and blocks not like '%--" + id + "--%' ";
         for (int block : blocks) {
             sql = sql + "and `id`!='" + block + "' ";
@@ -366,13 +367,14 @@ public class User extends FestivalTimeObject {
         try {
             JSONArray rawUsers = DBConnect.dbQuery(sql, args);
             for (int i = 0; i < rawUsers.length(); i++) {
-                tempUsers.put(i, rawUsers.getJSONObject(i).getInt("id"));
-
+                int userId = rawUsers.getJSONObject(i).getInt("id");
+                User user = new User(userId);
+                if (user.getSetting(68) == 1 || Arrays.asList(user.follows).contains(this.id)) users.add(user);
             }
         } catch (SQLException | JSONException e) {
             e.printStackTrace();
         }
-        return tempUsers;
+        return users;
     }
 
     public JSONObject getUserData() throws JSONException {
