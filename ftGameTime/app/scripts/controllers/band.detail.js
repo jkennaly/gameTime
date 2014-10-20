@@ -16,6 +16,7 @@ angular.module('ftGameTimeApp')
         $scope.band.current = new Band($stateParams.bandID);
         $scope.bandSets = $scope.band.current.getSets();
         $scope.festival.current = FestivalFestival;
+//        console.log("start time", $scope.bandSets[0].startTime);
 
         var len = $scope.band.current.cardData.length;
         while (len--) {

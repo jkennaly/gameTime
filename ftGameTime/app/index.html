@@ -57,25 +57,11 @@
 
 <!-- build:js({.tmp,app}) scripts/scripts.js -->
 <script src="scripts/app.js"></script>
-<script src="scripts/services/objectify.js"></script>
-<script src="scripts/services/app.server.js"></script>
-<script src="scripts/services/festival.bands.js"></script>
-<script src="scripts/services/festival.sets.js"></script>
-<script src="scripts/services/festival.date.js"></script>
-<script src="scripts/services/festival.self.js"></script>
-<script src="scripts/services/festival.users.js"></script>
-<script src="scripts/services/festival.purchased.js"></script>
-<script src="scripts/services/festival.unpurchased.js"></script>
-<script src="scripts/services/festival.festival.js"></script>
-<script src="scripts/services/festival.message.js"></script>
-<script src="scripts/services/band.cards.current.js"></script>
-<script src="scripts/classes/band.js"></script>
-<script src="scripts/classes/user.js"></script>
-<script src="scripts/classes/set.js"></script>
-<script src="scripts/directives/social.buttons.js"></script>
-<script src="scripts/directives/set.display.js"></script>
-<script src="scripts/directives/show.report.js"></script>
-<script src="scripts/directives/current.show.reports.js"></script>
+<script src="scripts/classes/ft.band.js"></script>
+<script src="scripts/classes/ft.day.js"></script>
+<script src="scripts/classes/ft.place.js"></script>
+<script src="scripts/classes/ft.set.js"></script>
+<script src="scripts/classes/ft.user.js"></script>
 <script src="scripts/controllers/band.detail.js"></script>
 <script src="scripts/controllers/band.overview.js"></script>
 <script src="scripts/controllers/festival.home.js"></script>
@@ -86,8 +72,32 @@
 <script src="scripts/controllers/login.failed.username.js"></script>
 <script src="scripts/controllers/login.forgot.js"></script>
 <script src="scripts/controllers/login.js"></script>
+<script src="scripts/controllers/schedule.js"></script>
 <script src="scripts/controllers/user.detail.js"></script>
 <script src="scripts/controllers/user.overview.js"></script>
+<script src="scripts/directives/current.show.reports.js"></script>
+<script src="scripts/directives/ft.band.avatar.js"></script>
+<script src="scripts/directives/ft.band.name.js"></script>
+<script src="scripts/directives/ft.day.name.js"></script>
+<script src="scripts/directives/ft.place.name.js"></script>
+<script src="scripts/directives/ft.schedule.js"></script>
+<script src="scripts/directives/set.display.js"></script>
+<script src="scripts/directives/show.report.js"></script>
+<script src="scripts/directives/social.buttons.js"></script>
+<script src="scripts/services/app.server.js"></script>
+<script src="scripts/services/band.cards.current.js"></script>
+<script src="scripts/services/festival.bands.js"></script>
+<script src="scripts/services/festival.date.js"></script>
+<script src="scripts/services/festival.days.js"></script>
+<script src="scripts/services/festival.festival.js"></script>
+<script src="scripts/services/festival.message.js"></script>
+<script src="scripts/services/festival.places.js"></script>
+<script src="scripts/services/festival.purchased.js"></script>
+<script src="scripts/services/festival.self.js"></script>
+<script src="scripts/services/festival.sets.js"></script>
+<script src="scripts/services/festival.unpurchased.js"></script>
+<script src="scripts/services/festival.users.js"></script>
+<script src="scripts/services/objectify.js"></script>
 <!-- endbuild -->
 
 <script type="text/ng-template" id="/views/templates/social.buttons.tmpl.html"></script>

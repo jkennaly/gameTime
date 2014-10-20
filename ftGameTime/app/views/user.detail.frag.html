@@ -39,27 +39,30 @@
 
                     <label for="atFav">All Time Favorites</label>
                     <ul id="atFav">
-                        <li ng-repeat="fav in user.current.atFav" class="item">
-                            <p>{{fav}}</p>
+                        <li class="item">
+                            <!--<p>{{fav}}</p>-->
+                            <ft-band-avatar band-id="fav" ng-repeat="fav in user.current.atFav"></ft-band-avatar>
                         </li>
                     </ul>
 
                     <label for="atWorst">All Time Worst</label>
                     <ul id="atWorst">
                         <li class="item">
-                            <p>{{user.current.atWorst}}</p>
+                            <!--<p>{{user.current.atWorst}}</p>-->
+                            <ft-band-avatar band-id="user.current.atWorst"></ft-band-avatar>
                         </li>
                     </ul>
                     <label for="gtFav">{{currentFestivalData.sitename}} Favorites so far</label>
                     <ul id="gtFav">
-                        <li ng-repeat="fav in user.current.gtFav" class="item">
-                            <p>{{fav}}</p>
+                        <li class="item">
+                            <ft-band-avatar band-id="fav"
+                                            ng-repeat="fav in user.current.gtFav track by $index"></ft-band-avatar>
                         </li>
                     </ul>
                     <label for="pgFav">Excited to see</label>
                     <ul id="pgFav">
-                        <li ng-repeat="fav in user.current.pgFav" class="item">
-                            <p>{{fav}}</p>
+                        <li class="item">
+                            <ft-band-avatar band-id="fav" ng-repeat="fav in user.current.pgFav"></ft-band-avatar>
                         </li>
                     </ul>
 

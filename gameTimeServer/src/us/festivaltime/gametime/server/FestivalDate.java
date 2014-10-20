@@ -37,9 +37,9 @@ public class FestivalDate extends FestivalTimeObject {
 //            System.err.println("Fest instantiation: about to get venue ");
         venue = new Venue(rs.getInt("venue"));
         Date tempDate = (Date) rs.get("basedate");
-        //     System.out.println("temp Date: " + tempDate.toString());
+        //            System.out.println("temp Date: " + tempDate.toString());
         LocalDate localDate = LocalDate.fromDateFields(tempDate);
-        //      System.out.println("local Date: " + localDate.toString());
+//              System.out.println("local Date: " + localDate.toString());
         baseDate = localDate.toDateTimeAtStartOfDay(venue.timeZone);
 //        System.out.println("base Date: " + baseDate.toString());
         days = Day.getDateDays(this);
@@ -53,7 +53,7 @@ public class FestivalDate extends FestivalTimeObject {
         appData.put("id", id);
         appData.put("name", name);
         appData.put("baseDate", baseDate.getMillis());
-//            System.err.println("Collecting data: venue not yet set for date: " + Integer.toString(id));
+        System.err.println("baseDate in millis: " + baseDate.getMillis());
         appData.put("venueData", venue.getAppData());
         appData.put("dayData", Day.getAppData(this));
         return appData;

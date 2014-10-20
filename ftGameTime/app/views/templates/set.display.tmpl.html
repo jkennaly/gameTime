@@ -1,11 +1,13 @@
 <div class="set-display">
 
-    <div class="row">
+    <div class="row responsive-sm">
         <div class="col">
-            {{set.day}}
+            <!--{{set.day}}-->
+            <ft-day-name day-id="set.day"></ft-day-name>
         </div>
         <div class="col">
-            {{set.stage}}
+            <!--{{set.stage}}-->
+            <ft-place-name place-id="set.stage"></ft-place-name>
         </div>
         <div class="col">
             {{set.startTime | date : 'shortTime'}} - {{set.endTime | date : 'shortTime'}}

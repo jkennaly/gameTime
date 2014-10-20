@@ -1,0 +1,10 @@
+<a class="item item-avatar" ng-href="#/tab/band/detail/{{band.id}}" ng-if="band.id">
+    <img ng-src="{{band.imageSrc}}">
+
+    <h2>{{band.name}}</h2>
+</a>
+
+<a class="item item-avatar" ng-if="!band.id">
+
+    <h2>{{band.name}}</h2>
+</a>

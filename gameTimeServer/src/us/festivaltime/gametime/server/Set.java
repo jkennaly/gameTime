@@ -22,7 +22,7 @@ public class Set extends FestivalTimeObject {
     List<Band> specialGuest;
     FestivalDate festivalDate;
     Day festivalDay;
-    Stage stage;
+    Place stage;
     Festival festival;
 
     DateTime startTime, endTime;
@@ -78,21 +78,21 @@ public class Set extends FestivalTimeObject {
         return sets;
     }
 
-        static JSONObject getAppData(FestivalDate date) throws JSONException {
-            JSONObject appData = new JSONObject();
-            List<Set> sets = getAllDateSets(date);
-            for (Set set : sets) {
-                JSONObject tempData = new JSONObject();
-                tempData.put("id", set.id);
-                tempData.put("band", set.band.id);
-                tempData.put("day", set.festivalDay.id);
-                tempData.put("stage", set.stage.id);
-                tempData.put("startTime", set.startTime.getMillis());
-                tempData.put("endTime", set.endTime.getMillis());
-                appData.put(Integer.toString(set.id), tempData);
-            }
+    static JSONObject getAppData(FestivalDate date) throws JSONException {
+        JSONObject appData = new JSONObject();
+        List<Set> sets = getAllDateSets(date);
+        for (Set set : sets) {
+            JSONObject tempData = new JSONObject();
+            tempData.put("id", set.id);
+            tempData.put("band", set.band.id);
+            tempData.put("day", set.festivalDay.id);
+            tempData.put("stage", set.stage.id);
+            tempData.put("startTime", set.startTime.getMillis());
+            tempData.put("endTime", set.endTime.getMillis());
+            appData.put(Integer.toString(set.id), tempData);
+        }
 
-            return appData;
+        return appData;
     }
 
     @Override
@@ -104,7 +104,7 @@ public class Set extends FestivalTimeObject {
         festivalDate = new FestivalDate(rs.getInt("date"));
 
         festivalDay = new Day(rs.getInt("day"));
-        stage = new Stage(rs.getInt("stage"));
+        stage = new Place(rs.getInt("stage"));
         specialGuest = null;
         band = new Band(rs.getInt("band"));
 
@@ -124,9 +124,14 @@ public class Set extends FestivalTimeObject {
         int sec = rs.getInt("start");
 //        System.out.println("base Date: " + festivalDate.baseDate.toString());
         startTime = festivalDate.baseDate;
+//        System.out.println("baseDate (sets): " + startTime.getMillis() );
         startTime = startTime.plusDays(festivalDay.offset);
+//        System.out.println("baseDate (sets) days offset: " + startTime.getMillis() );
+        startTime = startTime.plusSeconds(festival.start_time);
+//        System.out.println("baseDate (sets) days offset: " + startTime.getMillis() );
         startTime = startTime.plusSeconds(sec);
-        endTime = festivalDate.baseDate.plusDays(festivalDay.offset).plusSeconds(rs.getInt("end"));
+//        System.out.println("baseDate (sets) start: " + startTime.getMillis() );
+        endTime = festivalDate.baseDate.plusDays(festivalDay.offset).plusSeconds(festival.start_time).plusSeconds(rs.getInt("end"));
     }
 
 }

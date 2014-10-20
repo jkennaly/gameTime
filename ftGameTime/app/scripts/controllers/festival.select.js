@@ -56,7 +56,7 @@ angular.module('ftGameTimeApp')
          */
 
 
-    }]).controller('DateCtrl', function ($scope, $location, $state, AppServer) {
+    }]).controller('DateCtrl', function ($scope, $location, $state, $window, AppServer) {
         $scope.festivals.dateSelected = null;
 
         $scope.festivals.chooseDate = function () {
@@ -76,8 +76,8 @@ angular.module('ftGameTimeApp')
 
             reqChallenge.success(function () {
                 $scope.dateCtrl.remove();
-                $state.reload();
                 $location.path("/festival/home");
+                $window.location.reload();
             }).error(function () {
                 $scope.dateCtrl.remove();
                 $location.path("/login/failed/network");

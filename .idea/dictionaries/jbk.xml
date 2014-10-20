@@ -1,36 +1,67 @@
 <component name="ProjectDictionaryState">
   <dictionary name="jbk">
     <words>
+      <w>allo</w>
+      <w>appcache</w>
       <w>basedate</w>
       <w>biginteger</w>
+      <w>browsehappy</w>
       <w>chall</w>
       <w>checkin</w>
+      <w>checkins</w>
+      <w>cordova</w>
+      <w>correpsonding</w>
+      <w>cors</w>
       <w>dbconnect</w>
       <w>dbname</w>
       <w>dbuser</w>
+      <w>endbower</w>
+      <w>endbuild</w>
       <w>festivaltime</w>
+      <w>fixurl</w>
       <w>fromuser</w>
       <w>gametime</w>
+      <w>github</w>
+      <w>glyphicon</w>
+      <w>goog</w>
+      <w>grunt's</w>
       <w>hashedpw</w>
+      <w>howto</w>
+      <w>htaccess</w>
+      <w>httpd</w>
       <w>iconpos</w>
       <w>iconshadow</w>
       <w>jdbc</w>
       <w>jsonjq</w>
       <w>jsonp</w>
+      <w>jumbotron</w>
       <w>logcheck</w>
+      <w>loginbutton</w>
       <w>longvarbinary</w>
       <w>longvarchar</w>
+      <w>ngdoc</w>
       <w>pagecreate</w>
       <w>pageinit</w>
       <w>pageshow</w>
+      <w>phantomjs</w>
+      <w>qunit</w>
+      <w>robotstxt</w>
       <w>rsmd</w>
+      <w>safariextz</w>
+      <w>scss</w>
       <w>sitename</w>
       <w>sjcl</w>
+      <w>statusbar</w>
       <w>struct</w>
+      <w>subheader</w>
+      <w>svgz</w>
       <w>tmpl</w>
+      <w>toolset</w>
       <w>uname</w>
       <w>unfollowed</w>
       <w>unpurchased</w>
+      <w>webgl</w>
+      <w>webp</w>
       <w>wrapperels</w>
     </words>
   </dictionary>

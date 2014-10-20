@@ -43,6 +43,8 @@ angular.module('ftGameTimeApp')
                     card.festival = FestivalFestival.sitename;
                     card.pgComment = "";
                     card.gtComment = "";
+                    card.day = null;
+                    card.stage = null;
                     var currentSet = 0;
                     var collectedSets = [];
                     //Loop through the messages until until an entire loop passes without a rating for a new set
@@ -79,7 +81,10 @@ angular.module('ftGameTimeApp')
                             }
                             if (currentSet > 0) {
                                 var set = new Set(currentSet);
-                                card.festival = FestivalFestival.sitename + " " + set.day + " " + set.stage;
+                                card.festival = FestivalFestival.sitename;
+                                card.day = set.day;
+                                card.stage = set.stage;
+
                                 cards.push(card);
                                 collectedSets.push(currentSet);
                                 currentSet = 0;

@@ -1,0 +1,22 @@
+<div class="schedule ft-schedule-day">
+    <!--<h3><ft-day-name day-id="day.id"></ft-day-name> </h3>-->
+    <h3>
+        <ft-day-name day-id="day.id"></ft-day-name>
+    </h3>
+    <div class="ft-schedule-stage">
+        <div class="ft-schedule-header">Time</div>
+        <div class="ft-schedule-set" ng-repeat="hour in time.hours ">
+            {{hour| date: 'shortTime'}}
+        </div>
+    </div>
+    <div class="ft-schedule-stage" ng-repeat="stage in festival.places | filter: {type: '1'} | orderBy: 'priority'">
+        <div class="ft-schedule-header">{{stage.name}}</div>
+        <div class="ft-schedule-band-wrapper"
+             ng-repeat="set in festival.sets | filter: {stage: stage.id, day: day.id} | orderBy: 'startTime'">
+            <div class="ft-schedule-spacer" space-millis="set.space">{{set.space}}</div>
+            <div class="ft-schedule-set" set-millis="set.millis">{{set.millis}}
+                <ft-band-name band-id="set.band"></ft-band-name>
+            </div>
+        </div>
+    </div>
+</div>

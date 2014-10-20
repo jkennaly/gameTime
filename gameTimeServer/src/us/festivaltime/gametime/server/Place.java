@@ -16,7 +16,7 @@ public class Place extends FestivalTimeObject {
     static final String CREATE_SQL = "select `id`, `name`, `type`, `layout`, `priority`" +
             "from `places` " +
             "where `id`=? and deleted!='1';";
-    int id, type;
+    int id, type, layout, priority;
     String name;
 
     public Place(int idS) throws JSONException {
@@ -44,6 +44,10 @@ public class Place extends FestivalTimeObject {
         List<Place> places = getFestivalPlaces(fest);
         for (Place place : places) {
             JSONObject tempData = new JSONObject();
+            tempData.put("name", place.name);
+            tempData.put("type", place.type);
+            tempData.put("layout", place.layout);
+            tempData.put("priority", place.priority);
             tempData.put("id", place.id);
             appData.put(Integer.toString(place.id), tempData);
         }
@@ -52,6 +56,12 @@ public class Place extends FestivalTimeObject {
 
     @Override
     void setFields(JSONArray resultArray) throws JSONException {
-
+        JSONObject rs;
+        rs = resultArray.getJSONObject(0);
+        name = rs.getString("name");
+        id = rs.getInt("id");
+        type = rs.getInt("type");
+        layout = rs.getInt("layout");
+        priority = rs.getInt("priority");
     }
 }

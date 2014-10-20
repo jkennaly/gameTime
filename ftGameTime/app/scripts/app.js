@@ -154,7 +154,34 @@ angular
                         controller: 'UserDetailCtrl'
                     }
                 }
+            })
+            .state('tab.schedule', {
+                url: '/schedule',
+                views: {
+                    'tab-schedule': {
+                        templateUrl: 'views/schedule.frag.html',
+                        controller: 'ScheduleCtrl'
+                    }
+                }
             });
         // if none of the above states are matched, use this as the fallback
         $urlRouterProvider.otherwise('/tab/festival/home');
+    })
+    .controller('MenuCtrl', function ($scope, $ionicSideMenuDelegate) {
+
+        $scope.test = {};
+        $scope.test.text = "test123";
+
+        $scope.menuCtrl = {};
+        $scope.rightButtons = [
+            {
+                type: 'button-icon button-clear ion-navicon-round',
+                tap: function (e) {
+                    $ionicSideMenuDelegate.toggleRight($scope.$$childHead);
+                }
+            }
+        ];
+
+        $scope.menuCtrl.showFeature = false;
+
     });

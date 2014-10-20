@@ -1,14 +1,11 @@
 <ion-view title="Bands"> <!-- title of nav bar -->
-    <ion-content padding="true"> <!-- Adds default padding. Must add manually.
-        -->
+    <ion-content padding="true"> <!-- Adds default padding. Must add manually.-->
         <section>
             <ion-list>
-                <a ng-repeat="band in bandArray | orderBy: ['priority', 'name']" class="item item-avatar"
-                   ng-href="#/tab/band/detail/{{band.id}}">
-                    <img ng-src="{{band.imageSrc}}">
-
-                    <h2>{{band.name}}</h2>
-                </a>
+                <ft-band-avatar
+                        band-id="band"
+                        ng-repeat="band in bandIds | orderBy: ['priority', 'name']">
+                </ft-band-avatar>
             </ion-list>
         </section>
     </ion-content>

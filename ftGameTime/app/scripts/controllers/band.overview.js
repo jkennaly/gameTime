@@ -12,10 +12,12 @@
 angular.module('ftGameTimeApp')
     .controller('BandOverviewCtrl', function ($scope, FestivalBands, Band) {
 
-        $scope.bandArray = [];
+        /* $scope.bandArray = [];
 
-        for (var i = 0; i < FestivalBands.length; i++) {
-//            console.log("i: " + i + "FestivalBands[i]" + FestivalBands[i]);
-            $scope.bandArray[i] = new Band(FestivalBands[i]);
-        }
+         for (var i = 0; i < FestivalBands.length; i++) {
+         //            console.log("i: " + i + "FestivalBands[i]" + FestivalBands[i]);
+         $scope.bandArray[i] = new Band(FestivalBands[i]);
+         }*/
+
+        $scope.bandIds = FestivalBands;
     });
