@@ -53,7 +53,7 @@ public class FestivalDate extends FestivalTimeObject {
         appData.put("id", id);
         appData.put("name", name);
         appData.put("baseDate", baseDate.getMillis());
-        System.err.println("baseDate in millis: " + baseDate.getMillis());
+//        System.err.println("baseDate in millis: " + baseDate.getMillis());
         appData.put("venueData", venue.getAppData());
         appData.put("dayData", Day.getAppData(this));
         return appData;

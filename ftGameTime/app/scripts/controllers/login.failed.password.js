@@ -1,7 +1,7 @@
 /**
  * Created by jbk on 10/5/14.
  */
-
+'use strict';
 /**
  * @ngdoc function
  * @name ftGameTimeApp.controller:LoginFailedPasswordCtrl
@@ -11,9 +11,5 @@
  */
 angular.module('ftGameTimeApp')
     .controller('LoginFailedPasswordCtrl', function ($scope) {
-        $scope.awesomeThings = [
-            'HTML5 Boilerplate',
-            'AngularJS',
-            'Karma'
-        ];
+
     });

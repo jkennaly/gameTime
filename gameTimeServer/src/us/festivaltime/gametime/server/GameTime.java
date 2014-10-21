@@ -237,17 +237,23 @@ public class GameTime {
     }
 
     private static JSONObject provideChallenge(String uname) throws JSONException {
-        User user = new User(uname);
         JSONObject jo = new JSONObject();
-        long challenge = System.currentTimeMillis();
         try {
-            user.storeResponse(challenge);
-        } catch (SQLException e) {
-            e.printStackTrace();
+            User user = new User(uname);
+            long challenge = System.currentTimeMillis();
+            try {
+                user.storeResponse(challenge);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            jo.put("challenge", challenge);
+            jo.put("salt", user.salt);
+            jo.put("uname", user.username);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Illegal username " + uname);
         }
-        jo.put("challenge", challenge);
-        jo.put("salt", user.salt);
-        jo.put("uname", user.username);
+
+
         return jo;
     }
 

@@ -61,6 +61,10 @@ public class User extends FestivalTimeObject {
         String followString, blockString;
         JSONObject rs;
         rs = resultArray.getJSONObject(0);
+        if (rs.getInt("total_rows") == 0) {
+            throw new IllegalArgumentException();
+        }
+//        System.out.println("rs: " + rs.toString());
         hashedpw = rs.getString("hashedpw");
         salt = rs.getString("salt");
         username = rs.getString("username");

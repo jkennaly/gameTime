@@ -1,7 +1,7 @@
 /**
  * Created by jbk on 10/5/14.
  */
-
+'use strict';
 /**
  * @ngdoc function
  * @name ftGameTimeApp.controller:FestivalSelectCtrl
@@ -10,11 +10,12 @@
  * Controller of the ftGameTimeApp
  */
 angular.module('ftGameTimeApp')
-    .controller('FestivalSelectCtrl', ['$scope', '$ionicModal', 'FestivalPurchased', 'FestivalUnpurchased', function ($scope, $ionicModal, FestivalPurchased, FestivalUnpurchased) {
+    .controller('FestivalSelectCtrl', function ($scope, $ionicModal, FestivalPurchased, FestivalUnpurchased) {
         $scope.festivals = {};
         $scope.festivals.selected = null;
         $scope.festivals.purchased = FestivalPurchased;
         $scope.festivals.unpurchased = FestivalUnpurchased;
+        console.log("Rolling");
 
         $scope.festivals.chooseFest = function () {
 
@@ -34,7 +35,7 @@ angular.module('ftGameTimeApp')
 
             $scope.dateCtrl.show();
 
-        }
+        };
 
         $ionicModal.fromTemplateUrl('modal.html', function (modal) {
             $scope.dateCtrl = modal;
@@ -56,13 +57,13 @@ angular.module('ftGameTimeApp')
          */
 
 
-    }]).controller('DateCtrl', function ($scope, $location, $state, $window, AppServer) {
+    }).controller('DateCtrl', function ($scope, $location, $state, $window, AppServer) {
         $scope.festivals.dateSelected = null;
 
         $scope.festivals.chooseDate = function () {
 
             var reqType;
-            reqType = $scope.festivals.purchased.indexOf($scope.festivals.selected) > -1 ? "select_purchased" : "select_unpurchased";
+            reqType = $scope.festivals.purchased.indexOf($scope.festivals.selected) > -1 ? 'select_purchased' : 'select_unpurchased';
 
             //        alert("Select Purchased Festival: " + form.select_purchased);
             // submit a festival to receive the gametime data
@@ -76,11 +77,11 @@ angular.module('ftGameTimeApp')
 
             reqChallenge.success(function () {
                 $scope.dateCtrl.remove();
-                $location.path("/festival/home");
+                $state.go('^.home');
                 $window.location.reload();
             }).error(function () {
                 $scope.dateCtrl.remove();
-                $location.path("/login/failed/network");
+                $state.go('ft.login.failed.network');
             });
             return false;
 
@@ -89,4 +90,3 @@ angular.module('ftGameTimeApp')
 
 
     });
-;

@@ -178,7 +178,8 @@ module.exports = function (grunt) {
         jshint: {
             options: {
                 jshintrc: '.jshintrc',
-                reporter: require('jshint-stylish')
+                reporter: require('jshint-stylish'),
+                ignores: ['']
             },
             all: {
                 src: [
@@ -506,7 +507,7 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('build', 'building your application', function (target) {
-        console.log("build is running target: " + target);
+        console.log('build is running target: ' + target);
         if (!target) {
             grunt.task.run([
                 'clean:dist',

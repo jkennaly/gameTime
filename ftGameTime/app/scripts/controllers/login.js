@@ -9,25 +9,27 @@
  * # LoginCtrl
  * Controller of the ftGameTimeApp
  */
+'use strict';
 angular.module('ftGameTimeApp')
-    .controller('LoginCtrl', ['$scope', 'AppServer', '$location', function ($scope, AppServer, $location) {
+    .controller('LoginCtrl', ['$scope', 'AppServer', '$state', function ($scope, AppServer, $state) {
 
-        localStorage.clear();
+//        localStorage.clear();
+
         $scope.loginForm = {};
 
         // process the form
         $scope.submitLogin = function () {
             var data = {
-                reqType: "challenge_req",
+                reqType: 'challenge_req',
                 uname: $scope.loginForm.username
             };
-//      alert("data: " + data.uname);
+//      alert('data: ' + data.uname);
             var reqChallenge = AppServer.request(data).response;
             reqChallenge.success(function (data) {
                 // receive salt and challenge, or that the username does not exist
                 if (!data.uname) {
                     // if DNE, suggest creating an account or allow retry
-                    $location.path('/login/failed/username');
+                    $state.go('^.failed.username');
                     return false;
                 }
                 // if exists, concatenate submitted password with salt
@@ -54,32 +56,33 @@ angular.module('ftGameTimeApp')
                 //        alert(hashChallPW);
                 // send response
                 var data2 = {
-                    reqType: "challenge_sub",
+                    reqType: 'challenge_sub',
                     uname: data.uname,
                     response: hashChallPW
                 };
                 var reqResponse = AppServer.request(data2).response;
                 reqResponse.success(function (data) {
                     // receive either an auth token, or that the password is incorrect
+//                    console.log("So far so good");
                     if (data.pwValid) {
-                        localStorage.setItem("mobile_auth_key", data.auth_key);
-                        localStorage.setItem("uname", data.uname);
-                        //                       alert("about to call festival_select");
-                        $location.path("/festival/select");
+                        localStorage.setItem('mobile_auth_key', data.auth_key);
+                        localStorage.setItem('uname', data.uname);
+                        //                       alert('about to call festival_select');
+                        $state.go('ft.gt.festival.select');
 
                         return true;
                     } else {
                         // if password is incorrect, suggest forgot password link or allow retry
-                        $location.path("/login/failed/password");
+                        $state.go('^.failed.password');
                         return true;
                     }
                 }).error(function () {
-                    $location.path("login/failed/network");
+                    $state.go('^.failed.network');
                     return false;
                 });
 
             }).error(function () {
-                $location.path("login/failed/network");
+                $state.go('^.failed.network');
                 return false;
             });
 

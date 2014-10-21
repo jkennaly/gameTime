@@ -1,7 +1,7 @@
 /**
  * Created by jbk on 10/5/14.
  */
-
+'use strict';
 /**
  * @ngdoc function
  * @name ftGameTimeApp.controller:BandOverviewCtrl
@@ -10,7 +10,7 @@
  * Controller of the ftGameTimeApp
  */
 angular.module('ftGameTimeApp')
-    .controller('BandOverviewCtrl', function ($scope, FestivalBands, Band) {
+    .controller('BandOverviewCtrl', function ($scope, FestivalBands) {
 
         /* $scope.bandArray = [];
 

@@ -31,7 +31,7 @@ angular.module('ftGameTimeApp')
                 }
                 for (i = 0; i < FestivalPlaces.length; i++) {
                     $scope.festival.places.push(new Place(FestivalPlaces[i]));
-                    console.log("stage: " + $scope.festival.places[i].name + " type: " + $scope.festival.places[i].type);
+//                    console.log("stage: " + $scope.festival.places[i].name + " type: " + $scope.festival.places[i].type);
                 }
 
                 var prevEnd = FestivalFestival.start_time * 1000 + day.offset * 24 * 3600 * 1000;

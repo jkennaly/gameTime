@@ -1,7 +1,7 @@
 /**
  * Created by jbk on 10/5/14.
  */
-
+'use strict';
 /**
  * @ngdoc function
  * @name ftGameTimeApp.controller:BandDetailCtrl
@@ -20,7 +20,7 @@ angular.module('ftGameTimeApp')
 
         var len = $scope.band.current.cardData.length;
         while (len--) {
-            if ($scope.band.current.cardData[len].festival == FestivalFestival.sitename) {
+            if ($scope.band.current.cardData[len].festival === FestivalFestival.sitename) {
                 $scope.band.current.cardData.splice(len, 1);
             }
         }

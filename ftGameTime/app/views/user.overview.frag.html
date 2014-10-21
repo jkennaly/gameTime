@@ -4,8 +4,8 @@
         <section>
             <ion-list>
                 <a ng-repeat="user in userArray | orderBy: ['+other()', '-followed()', '-purchased'] "
-                   class="item item-avatar" ng-href="#/tab/user/detail/{{user.id}}">
-                    <img ng-src="{{user.imageSrc}}">
+                   class="item item-avatar" ui-sref="ft.gt.user.detail({userID: user.id})">
+                <img ng-src="{{user.imageSrc}}">
 
                     <h2>{{user.username}}</h2>
                 </a>
