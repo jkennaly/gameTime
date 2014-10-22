@@ -3,29 +3,30 @@
  */
 
 angular.module('ftGameTimeApp')
-    .factory('Set', function (Objectify) {
+    .factory('Set', function (FestivalSets) {
 
 
-        var setFestivalData = Objectify.result("setFestivalData");
         // instantiate our initial object
         var Set = function (id) {
+
+            var targetSet = {};
+            for (var i = 0; i < FestivalSets.length; i++) {
+                /* console.log(FestivalSets[i]);
+                 console.log(id);*/
+                if (FestivalSets[i].id == id) {
+                    targetSet = FestivalSets[i];
+                    break;
+                }
+            }
+
             this.id = id;
-            this.startTime = new Date(setFestivalData[id].startTime);
-            this.endTime = new Date(setFestivalData[id].endTime);
-            this.band = setFestivalData[id].band;
-            this.day = setFestivalData[id].day;
-            this.stage = setFestivalData[id].stage;
+            this.startTime = new Date(targetSet.startTime);
+            this.endTime = new Date(targetSet.endTime);
+            this.band = targetSet.band;
+            this.day = targetSet.day;
+            this.stage = targetSet.stage;
 
         };
-        Set.getBandSets = function (band) {
-            var setFestivalData = Objectify.result("setFestivalData");
-            console.log(setFestivalData);
-            var sets = [];
-            for (var set in setFestivalData) {
-                if (set.band == band) sets.push(set);
-            }
-            return sets;
-        }
 
         return Set;
     });

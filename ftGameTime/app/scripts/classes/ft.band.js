@@ -52,19 +52,19 @@ angular.module('ftGameTimeApp')
 
         };
 
-        Band.prototype.getSets = function () {
-            var sets = [];
-            //           console.log(FestivalSets);
-            for (var i = 0; i < FestivalSets.length; i++) {
-                var set = new Set(FestivalSets[i]);
-//                console.log(set);
-                if (set.band == this.id) {
-//                    console.log(set);
-                    sets.push(set);
-                }
-            }
-            return sets;
-        }
+        /*   Band.prototype.getSets = function () {
+         var sets = [];
+         //           console.log(FestivalSets);
+         for (var i = 0; i < FestivalSets.length; i++) {
+         var set = new Set(FestivalSets[i]);
+         //                console.log(set);
+         if (set.band == this.id) {
+         //                    console.log(set);
+         sets.push(set);
+         }
+         }
+         return sets;
+         }*/
 
         return Band;
     });

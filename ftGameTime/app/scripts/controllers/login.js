@@ -11,9 +11,9 @@
  */
 'use strict';
 angular.module('ftGameTimeApp')
-    .controller('LoginCtrl', ['$scope', 'AppServer', '$state', function ($scope, AppServer, $state) {
+    .controller('LoginCtrl', function ($scope, AppServer, $state) {
 
-//        localStorage.clear();
+        localStorage.clear();
 
         $scope.loginForm = {};
 
@@ -69,6 +69,7 @@ angular.module('ftGameTimeApp')
                         localStorage.setItem('uname', data.uname);
                         //                       alert('about to call festival_select');
                         $state.go('ft.gt.festival.select');
+                        $window.location.reload();
 
                         return true;
                     } else {
@@ -88,4 +89,4 @@ angular.module('ftGameTimeApp')
 
         };
 
-    }]);
+    });

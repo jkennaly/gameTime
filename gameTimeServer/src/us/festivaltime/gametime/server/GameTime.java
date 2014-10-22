@@ -210,17 +210,50 @@ public class GameTime {
     }
 
     private static JSONObject getAppData(User self, Festival curFest, FestivalDate curDate, JSONObject jo) throws JSONException {
+        long preTime, postTime, timeTaken;
+        preTime = System.currentTimeMillis();
         jo.put("currentFestivalData", curFest.getAppData(self, curFest));
+        postTime = System.currentTimeMillis();
+        timeTaken = postTime - preTime;
+        preTime = postTime;
+        System.out.println("FestivalData collection time: " + timeTaken);
         jo.put("dateFestivalData", curDate.getAppData(self, curFest));
+        postTime = System.currentTimeMillis();
+        timeTaken = postTime - preTime;
+        preTime = postTime;
+        System.out.println("Date Data collection time: " + timeTaken);
         //Return User festival data
         jo.put("userFestivalData", self.getAppData(self, curFest));
+        postTime = System.currentTimeMillis();
+        timeTaken = postTime - preTime;
+        preTime = postTime;
+        System.out.println("User Data collection time: " + timeTaken);
         jo.put("bandFestivalData", Band.getAppData(self, curFest));
+        postTime = System.currentTimeMillis();
+        timeTaken = postTime - preTime;
+        preTime = postTime;
+        System.out.println("Band Data collection time: " + timeTaken);
         jo.put("setFestivalData", Set.getAppData(curDate));
+        postTime = System.currentTimeMillis();
+        timeTaken = postTime - preTime;
+        preTime = postTime;
+        System.out.println("Set Data collection time: " + timeTaken);
 //        System.out.println("jo: " + jo.toString());
 
         jo.put("dayFestivalData", Day.getAppData(curDate));
+        postTime = System.currentTimeMillis();
+        timeTaken = postTime - preTime;
+        preTime = postTime;
+        System.out.println("Day Data collection time: " + timeTaken);
         jo.put("placeFestivalData", Place.getAppData(curFest));
+        postTime = System.currentTimeMillis();
+        timeTaken = postTime - preTime;
+        preTime = postTime;
+        System.out.println("Place Data collection time: " + timeTaken);
         jo.put("messageFestivalData", Message.getAppData(self, curDate));
+        postTime = System.currentTimeMillis();
+        timeTaken = postTime - preTime;
+        System.out.println("Message Data collection time: " + timeTaken);
         return jo;
     }
 

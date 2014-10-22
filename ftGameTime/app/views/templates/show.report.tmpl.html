@@ -1,4 +1,5 @@
-<div class="show-report item item-divider item-avatar">
+<div class="show-report item item-divider item-avatar" ui-sref="ft.gt.user.detail({userID: card.reportAuthor})">
+
 
     <img ng-src="{{ reportUserImage(card.reportAuthor)}}">
 
@@ -12,6 +13,7 @@
     <p>
         <ft-place-name place-id="card.stage"></ft-place-name>
     </p>
+
 </div>
 <div class="item item-text-wrap">
     <div class="row">

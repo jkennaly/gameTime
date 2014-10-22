@@ -104,14 +104,14 @@ angular
                 abstract: true,
                 views: {
                     'ft-gt-band': {
-                        template: '<ion-nav-view name="ft-gt-band-view"></ion-nav-view>'
+                        template: '<ion-nav-view name="ft-gt-band"></ion-nav-view>'
                     }
                 }
             })
             .state('ft.gt.band.overview', {
                 url: '/overview',
                 views: {
-                    'ft-gt-band-view': {
+                    'ft-gt-band': {
                         templateUrl: 'views/band.overview.frag.html',
                         controller: 'BandOverviewCtrl'
                     }
@@ -120,7 +120,7 @@ angular
             .state('ft.gt.band.detail', {
                 url: '/:bandID',
                 views: {
-                    'ft-gt-band-view': {
+                    'ft-gt-band': {
                         templateUrl: 'views/band.detail.frag.html',
                         controller: 'BandDetailCtrl'
                     }
@@ -131,7 +131,7 @@ angular
                 abstract: true,
                 views: {
                     'ft-gt-festival': {
-                        template: '<ion-nav-view name="ft-gt-festival-view"></ion-nav-view>'
+                        template: '<ion-nav-view name="ft-gt-festival"></ion-nav-view>'
                     }
                 }
 
@@ -139,7 +139,7 @@ angular
             .state('ft.gt.festival.home', {
                 url: '/home',
                 views: {
-                    'ft-gt-festival-view': {
+                    'ft-gt-festival': {
                         templateUrl: 'views/festival.home.frag.html',
                         controller: 'FestivalHomeCtrl'
                     }
@@ -148,7 +148,7 @@ angular
             .state('ft.gt.festival.select', {
                 url: '/select',
                 views: {
-                    'ft-gt-festival-view': {
+                    'ft-gt-festival': {
                         templateUrl: 'views/festival.select.frag.html',
                         controller: 'FestivalSelectCtrl'
                     }
@@ -159,14 +159,14 @@ angular
                 abstract: true,
                 views: {
                     'ft-gt-user': {
-                        template: '<ion-nav-view name="ft-gt-user-view"></ion-nav-view>'
+                        template: '<ion-nav-view name="ft-gt-user"></ion-nav-view>'
                     }
                 }
             })
             .state('ft.gt.user.overview', {
                 url: '/overview',
                 views: {
-                    'ft-gt-user-view': {
+                    'ft-gt-user': {
                         templateUrl: 'views/user.overview.frag.html',
                         controller: 'UserOverviewCtrl'
                     }
@@ -175,7 +175,7 @@ angular
             .state('ft.gt.user.detail', {
                 url: '/:userID',
                 views: {
-                    'ft-gt-user-view': {
+                    'ft-gt-user': {
                         templateUrl: 'views/user.detail.frag.html',
                         controller: 'UserDetailCtrl'
                     }

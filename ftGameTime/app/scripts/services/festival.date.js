@@ -4,5 +4,5 @@
 
 angular.module('ftGameTimeApp')
     .factory('FestivalDate', function (Objectify) {
-        return Objectify.result("currentFestivalData");
+        return Objectify.result("dateFestivalData");
     });

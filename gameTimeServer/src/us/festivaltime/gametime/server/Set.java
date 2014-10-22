@@ -78,8 +78,8 @@ public class Set extends FestivalTimeObject {
         return sets;
     }
 
-    static JSONObject getAppData(FestivalDate date) throws JSONException {
-        JSONObject appData = new JSONObject();
+    static JSONArray getAppData(FestivalDate date) throws JSONException {
+        JSONArray appData = new JSONArray();
         List<Set> sets = getAllDateSets(date);
         for (Set set : sets) {
             JSONObject tempData = new JSONObject();
@@ -89,7 +89,7 @@ public class Set extends FestivalTimeObject {
             tempData.put("stage", set.stage.id);
             tempData.put("startTime", set.startTime.getMillis());
             tempData.put("endTime", set.endTime.getMillis());
-            appData.put(Integer.toString(set.id), tempData);
+            appData.put(tempData);
         }
 
         return appData;

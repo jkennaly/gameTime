@@ -15,7 +15,7 @@ angular.module('ftGameTimeApp')
         $scope.festivals.selected = null;
         $scope.festivals.purchased = FestivalPurchased;
         $scope.festivals.unpurchased = FestivalUnpurchased;
-        console.log("Rolling");
+//        console.log("Rolling");
 
         $scope.festivals.chooseFest = function () {
 
@@ -77,7 +77,7 @@ angular.module('ftGameTimeApp')
 
             reqChallenge.success(function () {
                 $scope.dateCtrl.remove();
-                $state.go('^.home');
+                $location.path('ft/gametime/band/overview');
                 $window.location.reload();
             }).error(function () {
                 $scope.dateCtrl.remove();

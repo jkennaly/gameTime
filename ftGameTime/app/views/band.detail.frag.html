@@ -19,8 +19,8 @@
                     <p>{{band.current.genre}}</p>
 
                     <div class="list list-inset">
-                        <div ng-repeat="set in bandSets" class="item">
-                            <set-display set="set">
+                        <div ng-repeat="set in bandSets | filter: bandSet | orderBy: 'startTime'" class="item">
+                        <set-display set="set">
                             </set-display>
                         </div>
                     </div>

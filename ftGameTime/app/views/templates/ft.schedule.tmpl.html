@@ -13,8 +13,14 @@
         <div class="ft-schedule-header">{{stage.name}}</div>
         <div class="ft-schedule-band-wrapper"
              ng-repeat="set in festival.sets | filter: {stage: stage.id, day: day.id} | orderBy: 'startTime'">
-            <div class="ft-schedule-spacer" space-millis="set.space">{{set.space}}</div>
-            <div class="ft-schedule-set" set-millis="set.millis">{{set.millis}}
+            <p>prevEnd: {{set.prevEnd}}</p>
+
+            <p>startTime: {{set.startTime}}</p>
+
+            <p>endTime: {{set.endTime}}</p>
+
+            <div class="ft-schedule-spacer" space-millis="set.space"></div>
+            <div class="ft-schedule-set" set-millis="set.millis">
                 <ft-band-name band-id="set.band"></ft-band-name>
             </div>
         </div>
