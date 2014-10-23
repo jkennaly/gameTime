@@ -23,6 +23,7 @@ angular.module('ftGameTimeApp')
                 $scope.festival.sets = [];
                 $scope.time = {};
                 $scope.time.hours = [];
+                $scope.festival.length = FestivalFestival.length;
                 if ($scope.dayId) {
                     var day = new Day($scope.dayId);
                     $scope.day = day;
@@ -32,7 +33,8 @@ angular.module('ftGameTimeApp')
                     $scope.time.hours.push(displayTime);
                 }
                 for (i = 0; i < FestivalPlaces.length; i++) {
-                    $scope.festival.places.push(new Place(FestivalPlaces[i]));
+                    var place = new Place(FestivalPlaces[i])
+                    if (place.type == 1) $scope.festival.places.push(place);
 //                    console.log("stage: " + $scope.festival.places[i].name + " type: " + $scope.festival.places[i].type);
                 }
                 console.log("festival base date: " + FestivalDate.baseDate);

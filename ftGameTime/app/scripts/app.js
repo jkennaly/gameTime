@@ -17,7 +17,8 @@ angular
         'ngSanitize',
         'ngTouch',
         'ionic',
-        'ionic.rating'
+        'ionic.rating',
+        'angularMoment'
     ])
 
     .run(function ($ionicPlatform) {

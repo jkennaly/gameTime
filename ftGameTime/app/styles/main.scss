@@ -52,6 +52,20 @@ body {
   margin: 19px;
 }
 
+/* Schedule Styles */
+.ft-schedule-stage {
+  display: inline;
+  float: left;
+}
+
+.ft-schedule-set {
+  background-color: lightblue;
+}
+
+hr {
+  height: 1px;
+}
+
 /* rating star styles */
 ul.rating li {
   display: inline;

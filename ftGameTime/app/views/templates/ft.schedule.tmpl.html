@@ -1,28 +1,53 @@
-<div class="schedule ft-schedule-day">
+<div class="schedule ft-schedule-day" style="width:{{(festival.places.length * 12 +6)*12}}px;">
     <!--<h3><ft-day-name day-id="day.id"></ft-day-name> </h3>-->
-    <h3>
-        <ft-day-name day-id="day.id"></ft-day-name>
+    <h3 style="width: 100%">
+    <ft-day-name day-id="day.id"></ft-day-name>
     </h3>
-    <div class="ft-schedule-stage">
-        <div class="ft-schedule-header">Time</div>
-        <div class="ft-schedule-set" ng-repeat="hour in time.hours ">
-            {{hour| date: 'shortTime'}}
+
+    <!-- Stage Names -->
+    <div style="width:100%;overflow:auto;">
+        <div class="ft-schedule-header" style="width: 72px;float: left;">Time</div>
+        <div class="ft-schedule-header"
+             ng-repeat="stage in festival.places | filter: {type: '1'} | orderBy: 'priority'"
+             style="width: 144px;float: left;">
+            {{stage.name}}
         </div>
     </div>
-    <div class="ft-schedule-stage" ng-repeat="stage in festival.places | filter: {type: '1'} | orderBy: 'priority'">
-        <div class="ft-schedule-header">{{stage.name}}</div>
-        <div class="ft-schedule-band-wrapper"
-             ng-repeat="set in festival.sets | filter: {stage: stage.id, day: day.id} | orderBy: 'startTime'">
-            <p>prevEnd: {{set.prevEnd}}</p>
 
-            <p>startTime: {{set.startTime}}</p>
 
-            <p>endTime: {{set.endTime}}</p>
+    <div style="width:{{(festival.places.length * 12 + 6)*12}}px;
+            height: {{((festival.length + 7200) / 900)*12}}px;position: relative;">
+        <ion-content style="position: absolute" direction="xy" locking="false">
+            <div class="ft-schedule-stage"
+                 style=" width: 72px;height: {{((festival.length + 7200) / 900)*12}}px;display:block;">
 
-            <div class="ft-schedule-spacer" space-millis="set.space"></div>
-            <div class="ft-schedule-set" set-millis="set.millis">
-                <ft-band-name band-id="set.band"></ft-band-name>
+                <div class="ft-schedule-set" ng-repeat="hour in time.hours " style="height: 48px;">
+                    {{hour| date: 'shortTime'}}
+                </div>
             </div>
-        </div>
+
+
+            <div class="ft-schedule-stage"
+                 style=" width: 144px;height: {{((festival.length + 7200) / 900)*12}}px;overflow: auto;"
+                 ng-repeat="stage in festival.places | filter: {type: '1'} | orderBy: 'priority'">
+
+                <div class="ft-schedule-band-wrapper"
+                     ng-repeat="set in festival.sets | filter: {stage: stage.id, day: day.id} | orderBy: 'startTime'">
+                    <!-- <p>prevEnd: {{set.prevEnd}}</p>
+
+                     <p>startTime: {{set.startTime}}</p>
+
+                     <p>endTime: {{set.endTime}}</p>
+         -->
+                    <div class="ft-schedule-spacer" space-millis="set.space"
+                         style="height: {{((set.startTime - set.prevEnd)/900000)*12}}px; "></div>
+                    <div class="ft-schedule-set" set-millis="set.millis"
+                         style="height: {{((set.endTime - set.startTime)/900000)*12}}px; overflow: hidden;"
+                         ui-sref="ft.gt.band.detail({bandID: set.band})">
+                        <ft-band-name band-id="set.band"></ft-band-name>
+                    </div>
+                </div>
+            </div>
+        </ion-content>
     </div>
 </div>
