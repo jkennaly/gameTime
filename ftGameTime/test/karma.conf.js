@@ -30,6 +30,7 @@ module.exports = function (config) {
             'bower_components/ionic/release/js/ionic-angular.js',
             'bower_components/ionic-rating/ionic-rating.js',
             'bower_components/sjcl/sjcl.js',
+            'bower_components/angular-moment/angular-moment.js',
             'bower_components/angular-ui-router/release/angular-ui-router.js',
 
             'app/scripts/**/*.js',

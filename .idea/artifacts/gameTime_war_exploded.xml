@@ -20,6 +20,7 @@
           <element id="library" level="project" name="mail-1.4" />
           <element id="library" level="project" name="joda-time-2.4" />
           <element id="library" level="project" name="commons-codec-1.9" />
+          <element id="file-copy" path="$APPLICATION_HOME_DIR$/lib/annotations.jar" />
         </element>
         <element id="file-copy" path="$PROJECT_DIR$/web/WEB-INF/context.xml" />
         <element id="file-copy" path="$PROJECT_DIR$/gameTimeServer/src/props/queries.properties" />

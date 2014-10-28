@@ -2,7 +2,7 @@
  * Created by jbk on 10/5/14.
  */
 angular.module('ftGameTimeApp')
-    .factory('AppServer', ['$http', function AppServerFactory($http) {
+    .factory('AppServer', function AppServerFactory($http, SERVER) {
 
         return {
             request: function (data) {
@@ -29,7 +29,7 @@ angular.module('ftGameTimeApp')
                 //       alert(data.uname);
 
 
-                var serverURL = "http://localhost:8080/?callback=JSON_CALLBACK";
+                var serverURL = SERVER.URL;
                 var httpResponse = $http({
                     method: 'JSONP',
                     url: serverURL,
@@ -72,4 +72,4 @@ angular.module('ftGameTimeApp')
                 }
             }
         }
-    }]);
+    });

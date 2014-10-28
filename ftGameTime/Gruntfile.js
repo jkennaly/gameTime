@@ -399,6 +399,48 @@ module.exports = function (grunt) {
             }
         },
 
+        //ng-constant will create a module that can be injected at build depending on environment
+        ngconstant: {
+            options: {
+                name: 'ftConfig',
+                wrap: '"use strict";\n\n{%= __ngModule %}',
+                space: '  '
+            },
+            development: {
+                options: {
+                    dest: '<%= yeoman.app %>/scripts/config.js'
+                },
+                constants: {
+                    ENV: 'development',
+                    SERVER: {
+                        URL: 'http://localhost:8080/?callback=JSON_CALLBACK'
+                    }
+                }
+            },
+            test: {
+                options: {
+                    dest: '<%= yeoman.app %>/scripts/config.js'
+                },
+                constants: {
+                    ENV: 'test',
+                    SERVER: {
+                        URL: 'http://test.festivaltime.us:8080/gametime_war/?callback=JSON_CALLBACK'
+                    }
+                }
+            },
+            production: {
+                options: {
+                    dest: '<%= yeoman.app %>/scripts/config.js'
+                },
+                constants: {
+                    ENV: 'production',
+                    SERVER: {
+                        URL: 'http://www.festivaltime.us/app/gametime_war/?callback=JSON_CALLBACK'
+                    }
+                }
+            }
+        },
+
         // Replace Google CDN references
         cdnify: {
             dist: {
@@ -473,6 +515,7 @@ module.exports = function (grunt) {
         grunt.task.run([
             'clean:server',
             'wiredep',
+            'ngconstant:development',
             'concurrent:server',
             'autoprefixer',
             'connect:livereload',
@@ -486,6 +529,7 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('test', [
+        'ngconstant:development',
         'clean:server',
         'concurrent:test',
         'autoprefixer',
@@ -567,8 +611,27 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('default', [
+        'ngconstant:production',
         'newer:jshint',
         'test',
+        'build'
+    ]);
+
+    grunt.registerTask('dev-env', [
+        'test',
+        'build'
+    ]);
+
+    grunt.registerTask('test-env', [
+        'test',
+        'ngconstant:test',
+        'build'
+    ]);
+
+    grunt.registerTask('production-env', [
+        'newer:jshint',
+        'test',
+        'ngconstant:production',
         'build'
     ]);
 };

@@ -39,6 +39,7 @@
       <w>loginbutton</w>
       <w>longvarbinary</w>
       <w>longvarchar</w>
+      <w>ngconstant</w>
       <w>ngdoc</w>
       <w>pagecreate</w>
       <w>pageinit</w>

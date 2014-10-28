@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="Local" autoUploadExternalChanges="true">
+  <component name="PublishConfigData" autoUpload="Always" serverName="FestivalTime Test WAR" autoUploadExternalChanges="true">
     <serverData>
       <paths name="Festival Time">
         <serverdata>
@@ -19,12 +19,30 @@
           <mappings>
             <mapping deploy="/www/html/gametime" local="$PROJECT_DIR$" web="/gametime" />
             <mapping deploy="/www/html/gametimeServer" local="$PROJECT_DIR$/gameTimeServer" web="/app/gametime_war" />
-            <mapping deploy="/www/html/gametime" local="$PROJECT_DIR$/gameTimeClient" web="/gametime" />
+            <mapping deploy="/www/html/gametime" local="$PROJECT_DIR$/ftGameTime/www" web="/gametime" />
           </mappings>
           <excludedPaths>
             <excludedPath local="true" path="$PROJECT_DIR$/gameTimeServer/src/props" />
             <excludedPath local="true" path="$PROJECT_DIR$/gameTimeClient/php/var.php" />
           </excludedPaths>
+        </serverdata>
+      </paths>
+      <paths name="FestivalTime Test WAR">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/www/test/html/" local="$PROJECT_DIR$/ftGameTime/www" web="/" />
+            <mapping deploy="/webapps" local="$PROJECT_DIR$/gameTimeServer" web="/gametime_war" />
+            <mapping local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="FestivalTime Test WWW">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/www/test/html" local="$PROJECT_DIR$/ftGameTime/www" web="/" />
+            <mapping local="$PROJECT_DIR$/gameTimeServer" />
+            <mapping local="$PROJECT_DIR$" />
+          </mappings>
         </serverdata>
       </paths>
       <paths name="Local">
@@ -37,6 +55,7 @@
         </serverdata>
       </paths>
     </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
   </component>
 </project>
 

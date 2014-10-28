@@ -18,7 +18,8 @@ angular
         'ngTouch',
         'ionic',
         'ionic.rating',
-        'angularMoment'
+        'angularMoment',
+        'ftConfig'
     ])
 
     .run(function ($ionicPlatform) {
