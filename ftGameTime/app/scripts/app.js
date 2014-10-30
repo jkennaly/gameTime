@@ -193,5 +193,13 @@ angular
                 }
             });
         // if none of the above states are matched, use this as the fallback
-        $urlRouterProvider.otherwise('/ft/login/login');
+        $urlRouterProvider.otherwise(function () {
+            var user = localStorage.getItem('uname');
+            var fest = localStorage.getItem('currentFestivalData');
+            var retVal;
+            if (fest) retVal = '/ft/gametime/band/overview';
+            else if (user) retVal = '/ft/festival/select';
+            else retVal = '/ft/login/login';
+            return retVal;
+        });
     });

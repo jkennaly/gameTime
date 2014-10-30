@@ -10,11 +10,11 @@
  * Controller of the ftGameTimeApp
  */
 angular.module('ftGameTimeApp')
-    .controller('UserDetailCtrl', function ($scope, $stateParams, Objectify, User, FestivalDate) {
+    .controller('UserDetailCtrl', function ($scope, $stateParams, Objectify, User, FestivalFestival) {
         var festStatus;
         var userFestivalData = Objectify.result('userFestivalData');
         var selfData = Objectify.result('selfData');
-        $scope.currentFestivalData = FestivalDate;
+        $scope.currentFestivalData = FestivalFestival;
         $scope.userImage = userFestivalData[$stateParams.userID].img['userImage-' + $stateParams.userID];
         $scope.user = {};
         $scope.user.current = new User($stateParams.userID);
@@ -25,6 +25,6 @@ angular.module('ftGameTimeApp')
         } else {
             festStatus = ' is not signed up for ';
         }
-        $scope.status = ($scope.user.current.username + festStatus + FestivalDate.sitename);
+        $scope.status = ($scope.user.current.username + festStatus + FestivalFestival.sitename);
         $scope.self = $scope.user.current.id === selfData.id;
     });

@@ -424,7 +424,7 @@ module.exports = function (grunt) {
                 constants: {
                     ENV: 'test',
                     SERVER: {
-                        URL: 'http://test.festivaltime.us:8080/gametime_war/?callback=JSON_CALLBACK'
+                        URL: 'http://192.168.1.101:8080/gametime_war/?callback=JSON_CALLBACK'
                     }
                 }
             },
@@ -471,6 +471,12 @@ module.exports = function (grunt) {
                         cwd: '.tmp/images',
                         dest: '<%= yeoman.dist %>/images',
                         src: ['generated/*']
+                    },
+                    {
+                        expand: true,
+                        cwd: 'bower_components/ionic/release/fonts/',
+                        dest: '<%= yeoman.dist %>/fonts',
+                        src: ['*']
                     }
                 ]
             },

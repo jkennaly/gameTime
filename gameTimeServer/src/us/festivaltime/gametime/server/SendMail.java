@@ -1,13 +1,11 @@
 package us.festivaltime.gametime.server;
 
-import java.util.Properties;
 import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.io.IOException;
+import java.util.Properties;
 
 /**
  * Created by jbk on 9/2/14.
@@ -16,15 +14,15 @@ public class SendMail {
 
     public static void main(String[] args) {
 
-        final String username = "festivaltime.us";
-        final String password = "3apTQMUrGy2Mha$k";
 
         Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
-
+        try {
+            props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("mail.properties"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        final String username = props.getProperty("username");
+        final String password = props.getProperty("password");
         Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {

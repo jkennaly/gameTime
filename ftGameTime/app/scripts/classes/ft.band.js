@@ -9,7 +9,7 @@ angular.module('ftGameTimeApp')
         var bandFestivalData = Objectify.result("bandFestivalData");
         // instantiate our initial object
         var isInt = function is_int(value) {
-            for (i = 0; i < value.length; i++) {
+            for (var i = 0; i < value.length; i++) {
                 if ((value.charAt(i) < '0') || (value.charAt(i) > '9')) return false
             }
             return true;

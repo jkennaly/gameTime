@@ -31,7 +31,7 @@
         <serverdata>
           <mappings>
             <mapping deploy="/www/test/html/" local="$PROJECT_DIR$/ftGameTime/www" web="/" />
-            <mapping deploy="/webapps" local="$PROJECT_DIR$/gameTimeServer" web="/gametime_war" />
+            <mapping deploy="/www/tomee1.7/webapps" local="$PROJECT_DIR$/gameTimeServer" web="/gametime_war" />
             <mapping local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>

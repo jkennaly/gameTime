@@ -11,7 +11,7 @@
  */
 'use strict';
 angular.module('ftGameTimeApp')
-    .controller('LoginCtrl', function ($scope, AppServer, $state) {
+    .controller('LoginCtrl', function ($scope, $window, AppServer, $state) {
 
         localStorage.clear();
 
