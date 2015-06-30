@@ -96,7 +96,7 @@ public class GameTime {
                     String to = "jbk@festivaltime.us";
                     String subject = "Email Test";
                     String mailBody = "Challenge requested for " + uname;
-                    sendMail(from, to, subject, mailBody, null);
+//                    sendMail(from, to, subject, mailBody, null);
                     break;
                 case "challenge_sub":
                     // retrieve salt, challenge for username

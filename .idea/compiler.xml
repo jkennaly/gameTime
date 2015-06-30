@@ -25,6 +25,8 @@
         <module name="gameTime" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="gameTime" target="1.5" />
+    </bytecodeTargetLevel>
   </component>
 </project>
-
