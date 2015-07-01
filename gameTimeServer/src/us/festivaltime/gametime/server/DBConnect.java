@@ -18,6 +18,18 @@ import java.util.Properties;
 public class DBConnect {
 
 
+    static String getGenre(Band band, User user) throws SQLException {
+        Connection con;
+        con = getDBConnection();
+        CallableStatement cStmt = con.prepareCall("{? = call getGenre(?, ?)}");
+        cStmt.registerOutParameter(1, Types.VARCHAR);
+        cStmt.setInt(2, band.id);
+        cStmt.setInt(3, user.id);
+        cStmt.execute();
+        String outputValue = cStmt.getString(1);
+        return outputValue;
+    }
+
     static JSONArray dbQuery(String qText, String[] args) throws SQLException, JSONException {
         Connection con;
         PreparedStatement stmt;

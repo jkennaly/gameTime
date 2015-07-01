@@ -15,12 +15,18 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Created by jbk on 8/30/14.
  */
 public class GameTime {
+    private static Festival FESTIVAL;
+    private static FestivalDate FESTIVAL_DATE;
+    private static User SELF;
+
+
 
     public static String sanitizeJsonpParam(String s) {
         if (StringUtils.isEmpty(s)) return null;
@@ -63,7 +69,7 @@ public class GameTime {
             for (int i = 0; i < paramValues.length; i++) params.put(paramValues[i]);
             try {
                 incJO.put(paramName, params);
-                System.out.println("k: " + paramName + "v: " + params.getString(0));
+//                System.out.println("k: " + paramName + "v: " + params.getString(0));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -218,6 +224,7 @@ public class GameTime {
 
     private static JSONObject getAppData(User self, Festival curFest, FestivalDate curDate, JSONObject jo) throws JSONException {
         long preTime, postTime, timeTaken;
+        List<User> visibleUsers = self.getVisibleUsers();
         preTime = System.currentTimeMillis();
         jo.put("currentFestivalData", curFest.getAppData(self, curFest));
         postTime = System.currentTimeMillis();
@@ -230,17 +237,17 @@ public class GameTime {
         preTime = postTime;
         System.out.println("Date Data collection time: " + timeTaken);
         //Return User festival data
-        jo.put("userFestivalData", self.getAppData(self, curFest));
+        jo.put("userFestivalData", self.getAppData(self, curFest, visibleUsers));
         postTime = System.currentTimeMillis();
         timeTaken = postTime - preTime;
         preTime = postTime;
         System.out.println("User Data collection time: " + timeTaken);
-        jo.put("bandFestivalData", Band.getAppData(self, curFest));
+        jo.put("bandFestivalData", Band.getAppData(self, curFest, visibleUsers));
         postTime = System.currentTimeMillis();
         timeTaken = postTime - preTime;
         preTime = postTime;
         System.out.println("Band Data collection time: " + timeTaken);
-        jo.put("setFestivalData", Set.getAppData(curDate));
+        jo.put("setFestivalData", Set.getAppData(curDate, curFest));
         postTime = System.currentTimeMillis();
         timeTaken = postTime - preTime;
         preTime = postTime;
@@ -257,7 +264,7 @@ public class GameTime {
         timeTaken = postTime - preTime;
         preTime = postTime;
         System.out.println("Place Data collection time: " + timeTaken);
-        jo.put("messageFestivalData", Message.getAppData(self, curDate));
+        jo.put("messageFestivalData", Message.getAppData(self, curDate, visibleUsers));
         postTime = System.currentTimeMillis();
         timeTaken = postTime - preTime;
         System.out.println("Message Data collection time: " + timeTaken);

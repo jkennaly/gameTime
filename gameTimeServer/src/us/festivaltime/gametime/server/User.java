@@ -19,8 +19,10 @@ import static us.festivaltime.gametime.server.DBConnect.updateRecord;
 public class User extends FestivalTimeObject {
     static final String CREATE_SQL = "SELECT `id`, `hashedpw`, `salt`, `username`, `email`, `level`, `all_keys`, `mobile_auth_key`, `follows`, " +
             "`blocks`, `credits`, count(*) AS total_rows FROM `Users` WHERE `deleted`!='1' AND (`id`=?)";
+    private final int id;
     String hashedpw, salt, username, email, level, all_keys, mobile_auth_key;
-    int[] follows, blocks;
+    int[] follows;
+    int[] blocks;
     int credits;
 
     public User(String unameOrEmail) throws JSONException {
@@ -55,6 +57,26 @@ public class User extends FestivalTimeObject {
 
         super(idS, CREATE_SQL);
 
+    }
+    private User(int id, String followString, String username){
+
+        this.id = id;
+        this.username = username;
+        String[] fs = followString.split("--");
+        int i;
+        int j = 0;
+        int k;
+        int[] followsTemp = new int[fs.length];
+        for (i = 0; i < fs.length; i++)
+            try {
+                followsTemp[j] = Integer.parseInt(fs[i]);
+                if (followsTemp[j] > 0) j++;
+            } catch (NumberFormatException ignored) {
+            }
+        follows = new int[j];
+        for (k = 0; k < j; k++) {
+            follows[k] = followsTemp[k];
+        }
     }
 
     protected void setFields(JSONArray resultArray) throws JSONException {
@@ -189,8 +211,7 @@ public class User extends FestivalTimeObject {
         return otherData;
     }
 
-    public JSONObject getAppData(User self, Festival fest) throws JSONException {
-        List<User> others = self.getVisibleUsers();
+    public JSONObject getAppData(User self, Festival fest, List<User> others) throws JSONException {
         JSONObject jo = new JSONObject();
         long time = System.currentTimeMillis();
         jo.put("appDataTime", time);
@@ -363,17 +384,33 @@ public class User extends FestivalTimeObject {
 
     List<User> getVisibleUsers() {
         List<User> users = new ArrayList<>();
+        long preTime, postTime, timeTaken;
+
         String sql = "select `id` from `Users` where `deleted`!='1' and blocks not like '%--" + id + "--%' ";
         for (int block : blocks) {
             sql = sql + "and `id`!='" + block + "' ";
         }
         String[] args = {};
         try {
+            preTime = System.currentTimeMillis();
             JSONArray rawUsers = DBConnect.dbQuery(sql, args);
+            postTime = System.currentTimeMillis();
+            timeTaken = postTime - preTime;
+            preTime = postTime;
+            System.out.println("bandFestivalData: get visible users for cards time: " + timeTaken);
+
             for (int i = 0; i < rawUsers.length(); i++) {
                 int userId = rawUsers.getJSONObject(i).getInt("id");
+
                 User user = new User(userId);
-                if (user.getSetting(68) == 1 || Arrays.asList(user.follows).contains(this.id)) users.add(user);
+                postTime = System.currentTimeMillis();
+                timeTaken = postTime - preTime;
+                preTime = postTime;
+                System.out.println("bandFestivalData: construct a user for cards time: " + timeTaken);
+                if (user.getSetting(68) == 1 || Arrays.asList(user.follows).contains(this.id)) users.add(user);postTime = System.currentTimeMillis();
+                timeTaken = postTime - preTime;
+                preTime = postTime;
+                System.out.println("bandFestivalData: add a user to list for cards time: " + timeTaken);
             }
         } catch (SQLException | JSONException e) {
             e.printStackTrace();
@@ -389,12 +426,14 @@ public class User extends FestivalTimeObject {
         for (int i = 0; i < follows.length; i++) {
             followsArray.put(i, follows[i]);
         }
+        selfData.put("follows", followsArray);
+        /*
         JSONArray blocksArray = new JSONArray();
         for (int i = 0; i < blocks.length; i++) {
             blocksArray.put(i, blocks[i]);
         }
-        selfData.put("follows", followsArray);
         selfData.put("blocks", blocksArray);
+        */
         return selfData;
     }
 

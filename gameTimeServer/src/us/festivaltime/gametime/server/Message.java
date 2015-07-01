@@ -110,9 +110,8 @@ public class Message extends FestivalTimeObject {
         return retVal;
     }
 
-    static JSONArray getAppData(User self, FestivalDate curDate) throws JSONException {
+    static JSONArray getAppData(User self, FestivalDate curDate, List<User> others) throws JSONException {
         JSONArray msgRes = new JSONArray();
-        List<User> others = self.getVisibleUsers();
         String sql = "SELECT *  FROM `messages` " +
                 "WHERE" +
                 //Get pregame messages about the fest, and gametime messages about the date
