@@ -19,7 +19,7 @@ import static us.festivaltime.gametime.server.DBConnect.updateRecord;
 public class User extends FestivalTimeObject {
     static final String CREATE_SQL = "SELECT `id`, `hashedpw`, `salt`, `username`, `email`, `level`, `all_keys`, `mobile_auth_key`, `follows`, " +
             "`blocks`, `credits`, count(*) AS total_rows FROM `Users` WHERE `deleted`!='1' AND (`id`=?)";
-    private final int id;
+    int id;
     String hashedpw, salt, username, email, level, all_keys, mobile_auth_key;
     int[] follows;
     int[] blocks;
@@ -58,7 +58,7 @@ public class User extends FestivalTimeObject {
         super(idS, CREATE_SQL);
 
     }
-    private User(int id, String followString, String username){
+    public User(int id, String followString, String username){
 
         this.id = id;
         this.username = username;
@@ -383,38 +383,13 @@ public class User extends FestivalTimeObject {
     }
 
     List<User> getVisibleUsers() {
-        List<User> users = new ArrayList<>();
-        long preTime, postTime, timeTaken;
-
-        String sql = "select `id` from `Users` where `deleted`!='1' and blocks not like '%--" + id + "--%' ";
-        for (int block : blocks) {
-            sql = sql + "and `id`!='" + block + "' ";
-        }
-        String[] args = {};
+        List<User> users = null;
         try {
-            preTime = System.currentTimeMillis();
-            JSONArray rawUsers = DBConnect.dbQuery(sql, args);
-            postTime = System.currentTimeMillis();
-            timeTaken = postTime - preTime;
-            preTime = postTime;
-            System.out.println("bandFestivalData: get visible users for cards time: " + timeTaken);
-
-            for (int i = 0; i < rawUsers.length(); i++) {
-                int userId = rawUsers.getJSONObject(i).getInt("id");
-
-                User user = new User(userId);
-                postTime = System.currentTimeMillis();
-                timeTaken = postTime - preTime;
-                preTime = postTime;
-                System.out.println("bandFestivalData: construct a user for cards time: " + timeTaken);
-                if (user.getSetting(68) == 1 || Arrays.asList(user.follows).contains(this.id)) users.add(user);postTime = System.currentTimeMillis();
-                timeTaken = postTime - preTime;
-                preTime = postTime;
-                System.out.println("bandFestivalData: add a user to list for cards time: " + timeTaken);
-            }
-        } catch (SQLException | JSONException e) {
+            users = DBConnect.getVisibleUsersData(this);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return users;
     }
 

@@ -10,6 +10,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -17,6 +19,34 @@ import java.util.Properties;
  */
 public class DBConnect {
 
+
+    static List<User> getVisibleUsersData(User user) throws SQLException {
+        Connection con;
+        List<User> users = new ArrayList<>();
+        con = getDBConnection();
+        CallableStatement cStmt = con.prepareCall("{call visibleUsersData(?)}");
+        cStmt.setInt(1, user.id);
+        boolean hadResults = cStmt.execute();
+
+        //
+        // Process all returned result sets
+        //
+
+        while (hadResults) {
+            ResultSet rs1 = cStmt.getResultSet();
+            while (rs1.next()) {
+            //  System.out.println(rs1.getString("username") + " " + rs1.getString("follows") + " " + rs1.getInt("id"));
+                User user1 = new User(rs1.getInt("id"), rs1.getString("follows"), rs1.getString("username"));
+                users.add(user1);
+            }
+            rs1.close();
+
+
+
+            hadResults = cStmt.getMoreResults();
+        }
+        return users;
+    }
 
     static String getGenre(Band band, User user) throws SQLException {
         Connection con;
