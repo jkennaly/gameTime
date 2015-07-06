@@ -36,7 +36,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="Jersey-2.2" level="project" />
     <orderEntry type="library" exported="" name="javax.json.processing-1.0" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="TomEE FestivalTime" level="application_server_libraries" />
     <orderEntry type="library" exported="" name="jersey-server-1.2" level="project" />
     <orderEntry type="module" module-name="gameTimeServer" exported="" />
     <orderEntry type="library" exported="" name="guava-18.0" level="project" />

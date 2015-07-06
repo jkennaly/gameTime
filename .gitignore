@@ -1,7 +1,3 @@
 # Created by .gitignore support plugin (hsz.mobi)
-gameTimeServer/src/props/dbconnect.properties
-.idea/workspace.xml.old
-gameTimeClient
-ftGameTime/www
-gameTimeServer/src/props/mail.properties
 dist
+out

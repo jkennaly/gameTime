@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="FestivalTime Test WAR" autoUploadExternalChanges="true">
+  <component name="PublishConfigData" autoUpload="Always" serverName="DragonAge" autoUploadExternalChanges="true">
+    <serverData>
+      <paths name="DragonAge">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/black044/tomcat/webapps" local="$PROJECT_DIR$/out/artifacts/gametime_war" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
     <option name="myAutoUpload" value="ALWAYS" />
   </component>
 </project>

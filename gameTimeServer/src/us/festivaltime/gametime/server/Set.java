@@ -159,7 +159,7 @@ public class Set extends FestivalTimeObject {
         System.out.println("Festival id: " + rs.getInt("festival"));
         System.out.println("Date id: " + rs.getInt("date"));
         festival = new Festival(rs.getInt("festival"));
-        festivalDate = rs.getInt("date") > 0 ? new FestivalDate(rs.getInt("date")) : null;
+
 
         festivalDay = new Day(rs.getInt("day"));
         stage = new Place(rs.getInt("stage"));
@@ -180,16 +180,27 @@ public class Set extends FestivalTimeObject {
         //calculate the start time by adding the Date basedate, the day days_offset, and the start value
 
         int sec = rs.getInt("start");
+        if (rs.getInt("date") > 0) {
+            festivalDate = new FestivalDate(rs.getInt("date"));
 //        System.out.println("base Date: " + festivalDate.baseDate.toString());
-        startTime = festivalDate.baseDate;
+            startTime=festivalDate.baseDate;
 //        System.out.println("baseDate (sets): " + startTime.getMillis() );
-        startTime = startTime.plusDays(festivalDay.offset);
+            startTime=startTime.plusDays(festivalDay.offset);
 //        System.out.println("baseDate (sets) days offset: " + startTime.getMillis() );
-        startTime = startTime.plusSeconds(festival.start_time);
+            startTime=startTime.plusSeconds(festival.start_time);
 //        System.out.println("baseDate (sets) days offset: " + startTime.getMillis() );
-        startTime = startTime.plusSeconds(sec);
+            startTime=startTime.plusSeconds(sec);
 //        System.out.println("baseDate (sets) start: " + startTime.getMillis() );
-        endTime = festivalDate.baseDate.plusDays(festivalDay.offset).plusSeconds(festival.start_time).plusSeconds(rs.getInt("end"));
-    }
+            endTime=festivalDate.baseDate.plusDays(festivalDay.offset).plusSeconds(festival.start_time).plusSeconds(rs.getInt("end")
+
+            );
+        }
+        else {
+            festivalDate = null;
+//        System.out.println("base Date: " + festivalDate.baseDate.toString());
+            startTime=  null;
+            endTime = null;
+        }
+        }
 
 }

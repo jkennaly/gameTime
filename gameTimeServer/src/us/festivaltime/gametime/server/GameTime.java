@@ -114,9 +114,9 @@ public class GameTime {
 
                     self = new User(uname);
                     //Get current user data
-//                    System.err.println("User instantiated: " + self.id);
+                    System.err.println("User instantiated: " + self.id);
                     jo.put("selfData", self.getUserData());
-//                    System.err.println("User data got: " + self.id);
+                    System.err.println("User data got: " + self.id);
 
                     //Get selfProfile
 

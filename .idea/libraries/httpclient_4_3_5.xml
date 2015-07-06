@@ -4,8 +4,6 @@
       <root url="jar://$PROJECT_DIR$/lib/httpclient-4.3.5.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES>
-      <root url="jar://$USER_HOME$/.ideaLibSources/httpclient-4.3.5-sources.jar!/" />
-    </SOURCES>
+    <SOURCES />
   </library>
 </component>

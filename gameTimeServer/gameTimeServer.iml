@@ -10,7 +10,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="TomEE FestivalTime" level="application_server_libraries" />
     <orderEntry type="library" exported="" name="org.json-20120521" level="project" />
     <orderEntry type="library" exported="" name="commons-lang3-3.3.2" level="project" />
     <orderEntry type="library" exported="" name="httpclient-4.3.5" level="project" />
@@ -41,4 +40,3 @@
     <orderEntry type="library" name="mysql-connector-java-5.1.32-bin" level="project" />
   </component>
 </module>
-
